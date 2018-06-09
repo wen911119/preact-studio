@@ -1,4 +1,6 @@
 {
+	"name": "preact-toolkit",
+  "version": "1.0.0",
 	"devDependencies": {
 		"lerna": "^2.11.0"
 	}
