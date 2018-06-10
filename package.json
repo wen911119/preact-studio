@@ -1,7 +1,15 @@
 {
-	"name": "preact-toolkit",
+  "name": "preact-toolkit",
   "version": "1.0.0",
-	"devDependencies": {
-		"lerna": "^2.11.0"
-	}
+  "devDependencies": {
+		"lerna": "^2.11.0",
+		"eslint": "^4.9.0",
+    "eslint-config-synacor": "^2.0.2"
+  },
+  "scripts": {
+    "lint": "eslint ./ --cache --ignore-pattern .gitignore"
+  },
+  "pre-commit": [
+    "lint"
+  ]
 }
