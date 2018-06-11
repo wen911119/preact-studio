@@ -25,7 +25,9 @@
     "preact-compat": "^3.17.0",
     "preact-layoutview": "^1.0.0",
     "preact-router": "^2.5.7",
-    "preact-text": "^1.0.0"
+    "preact-text": "^1.0.0",
+    "preact-appshell":"1.0.1",
+    "preact-modal":"1.0.0"
   },
   "jest": {
     "verbose": true,

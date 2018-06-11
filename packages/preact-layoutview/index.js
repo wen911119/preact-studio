@@ -1,6 +1,6 @@
 import { h } from 'preact'
 function pxToRem (px) {
-  return `${px / 75}rem`
+  return px && `${px / 75}rem`
 }
 
 function alternateInsert (arr, item) {
@@ -36,8 +36,8 @@ export const RowView = ({
         marginRight: pxToRem(margin[1]),
         marginBottom: pxToRem(margin[2]),
         marginLeft: pxToRem(margin[3]),
-        height,
-        width
+        height: pxToRem(height),
+        width: pxToRem(width)
       },
       style
     )}
@@ -74,8 +74,8 @@ export const ColumnView = ({
         marginRight: pxToRem(margin[1]),
         marginBottom: pxToRem(margin[2]),
         marginLeft: pxToRem(margin[3]),
-        height,
-        width
+        height: pxToRem(height),
+        width: pxToRem(width)
       },
       style
     )}
@@ -99,8 +99,8 @@ export const XCenterView = ({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: bgColor,
-        height,
-        width
+        height: pxToRem(height),
+        width: pxToRem(width)
       },
       style
     )}
