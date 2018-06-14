@@ -3,6 +3,7 @@ import { Modal } from 'preact-modal'
 import style from './style'
 import Text from 'preact-text'
 import Line from 'preact-line'
+import Touchable from 'preact-touchable'
 import {
   RowView,
   SlotRowView,
@@ -34,7 +35,9 @@ export default class Home extends Component {
           <Text color="#f8584f">44444</Text>
           <Text color="#f8584f">55555</Text>
         </SlotColumnView>
-        <div onClick={() => this.setState({ open: true })}>打开modal</div>
+        <Touchable onPress={()=>{}} onLongPress={() => this.setState({ open: true })}>
+          <Text>打开modal</Text>
+        </Touchable>
         <Modal open={open} onMaskClick={() => this.setState({ open: false })}>
           <XCenterView
             height={100}
