@@ -48,9 +48,11 @@ export default class Modal extends Component {
     }
   }
   componentWillReceiveProps (nextProps) {
-    if (!(this.state.close = nextProps.open)) {
-      // 延迟0.3s关闭，等动画结束
-      setTimeout(() => this.setState({ close: true }), 300)
+    if (this.props.open !== nextProps.open) {
+      if (!(this.state.close = nextProps.open)) {
+        // 延迟0.29s关闭，在动画结束之前就得关闭，要不然会闪一下。因为提前10毫秒关这时候透明度几乎为0，闪一下看不出来。
+        setTimeout(() => this.setState({ close: true }), 290)
+      }
     }
   }
   render = (
