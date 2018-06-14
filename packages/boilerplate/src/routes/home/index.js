@@ -2,6 +2,7 @@ import { h, Component } from 'preact'
 import { Modal } from 'preact-modal'
 import style from './style'
 import Text from 'preact-text'
+import Line from 'preact-line'
 import {
   RowView,
   SlotRowView,
@@ -22,13 +23,16 @@ export default class Home extends Component {
           <Text color="#f8584f">wenjun</Text>
           <Text color="#f8584f">22222</Text>
         </RowView>
-        <SlotRowView height={100} gap={30}>
+        <SlotRowView height={100} slot={30}>
           <Text color="#f8584f">wenjun</Text>
           <Text color="#f8584f">22222</Text>
         </SlotRowView>
-        <SlotColumnView gap={30}>
-          <Text color="#f8584f">wenjun</Text>
+        <SlotColumnView slot={<Line />}>
+          <Text color="#f8584f">11111</Text>
           <Text color="#f8584f">22222</Text>
+          <Text color="#f8584f">33333</Text>
+          <Text color="#f8584f">44444</Text>
+          <Text color="#f8584f">55555</Text>
         </SlotColumnView>
         <div onClick={() => this.setState({ open: true })}>打开modal</div>
         <Modal open={open} onMaskClick={() => this.setState({ open: false })}>

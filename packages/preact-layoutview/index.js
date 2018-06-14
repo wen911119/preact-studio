@@ -109,16 +109,31 @@ export const XCenterView = ({
   </div>
 )
 
-export const Slot = ({ gap = 0 }) => <div style={{ width: gap }} />
+export const SpaceHolder = ({ width = 0, height = 0 }) => <div style={{ width: pxToRem(width), height: pxToRem(height) }} />
 
-export const SlotRowView = ({ gap = 0, children, ...otherProps }) => {
-  const allChildren = alternateInsert(children, <Slot gap={gap} />)
+export const SlotRowView = ({ slot, children, ...otherProps }) => {
+  let allChildren = children
+  if (slot) {
+    if (typeof slot === 'number') {
+      allChildren = alternateInsert(children, <SpaceHolder width={slot} />)
+    }
+    else {
+      allChildren = alternateInsert(children, slot)
+    }
+  }
   return <RowView {...otherProps}>{allChildren}</RowView>
 }
 
-export const Gap = ({ gap = 0 }) => <div style={{ height: gap }} />
 
-export const SlotColumnView = ({ gap = 0, children, ...otherProps }) => {
-  const allChildren = alternateInsert(children, <Gap gap={gap} />)
+export const SlotColumnView = ({ slot = 0, children, ...otherProps }) => {
+  let allChildren = children
+  if (slot) {
+    if (typeof slot === 'number') {
+      allChildren = alternateInsert(children, <SpaceHolder height={slot} />)
+    }
+    else {
+      allChildren = alternateInsert(children, slot)
+    }
+  }
   return <ColumnView {...otherProps}>{allChildren}</ColumnView>
 }
