@@ -18,9 +18,11 @@ export const RowView = ({
   bgColor = 'transparent',
   padding = [0, 0, 0, 0],
   margin = [0, 0, 0, 0],
-  style = {}
+  style = {},
+  className
 }) => (
   <div
+    className={className}
     style={Object.assign(
       {
         display: 'flex',
@@ -56,9 +58,11 @@ export const ColumnView = ({
   bgColor = 'transparent',
   width,
   height,
-  style = {}
+  style = {},
+  className
 }) => (
   <div
+    className={className}
     style={Object.assign(
       {
         display: 'flex',
@@ -85,6 +89,7 @@ export const ColumnView = ({
 )
 
 export const XCenterView = ({
+  className,
   children,
   style = {},
   height,
@@ -92,6 +97,7 @@ export const XCenterView = ({
   bgColor = 'transparent'
 }) => (
   <div
+    className={className}
     style={Object.assign(
       {
         display: 'flex',
@@ -109,7 +115,9 @@ export const XCenterView = ({
   </div>
 )
 
-export const SpaceHolder = ({ width = 0, height = 0 }) => <div style={{ width: pxToRem(width), height: pxToRem(height) }} />
+export const SpaceHolder = ({ width = 0, height = 0 }) => (
+  <div style={{ width: pxToRem(width), height: pxToRem(height) }} />
+)
 
 export const SlotRowView = ({ slot, children, ...otherProps }) => {
   let allChildren = children
@@ -123,7 +131,6 @@ export const SlotRowView = ({ slot, children, ...otherProps }) => {
   }
   return <RowView {...otherProps}>{allChildren}</RowView>
 }
-
 
 export const SlotColumnView = ({ slot = 0, children, ...otherProps }) => {
   let allChildren = children

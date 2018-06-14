@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { Modal } from 'preact-modal'
+import Modal from 'preact-modal'
 import style from './style'
 import Text from 'preact-text'
 import Line from 'preact-line'
@@ -35,15 +35,16 @@ export default class Home extends Component {
           <Text color="#f8584f">44444</Text>
           <Text color="#f8584f">55555</Text>
         </SlotColumnView>
-        <Touchable onPress={()=>{}} onLongPress={() => this.setState({ open: true })}>
+        <Touchable onPress={() => this.setState({ open: true })} onLongPress={() => this.setState({ open: true })}>
           <Text>打开modal</Text>
         </Touchable>
         <Modal open={open} onMaskClick={() => this.setState({ open: false })}>
           <XCenterView
-            height={100}
-            width={700}
+            className="dialog"
+            height={300}
+            width={500}
             bgColor="#fff"
-            style={{ borderRadius: '0.2rem' }}
+            style={{ borderRadius: '0.1rem' }}
           >
             <Text color="#f8584f">modal</Text>
           </XCenterView>
