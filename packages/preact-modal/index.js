@@ -9,7 +9,7 @@ const baseStyle = {
   right: 0,
   top: 0,
   bottom: 0,
-  backgroundColor: 'rgba(0,0,0,0.2)',
+  backgroundColor: 'rgba(0,0,0,0.45)',
   justifyContent: 'center',
   alignItems: 'center',
   animationDuration: '.3s',

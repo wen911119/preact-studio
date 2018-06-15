@@ -1,7 +1,7 @@
 import { h } from 'preact'
 
 const Line = ({ color = '#eaeaea' }) => (
-  <hr style={{ border: 0, backgroundColor: color, height: '1px', margin: 0 }} />
+  <div className="border-t-1" style={{ borderTopStyle: 'solid', borderTopColor: color }} />
 )
 
 export default Line

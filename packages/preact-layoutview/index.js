@@ -25,6 +25,7 @@ export const RowView = ({
     className={className}
     style={Object.assign(
       {
+        boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'row',
         alignItems: vAlign,
@@ -51,8 +52,8 @@ export const RowView = ({
 export const ColumnView = ({
   children,
   flexDirection = 'column',
-  vAlign = 'inherit',
-  hAlign = 'inherit',
+  vAlign = 'initial',
+  hAlign = 'initial',
   padding = [0, 0, 0, 0],
   margin = [0, 0, 0, 0],
   bgColor = 'transparent',
@@ -60,33 +61,38 @@ export const ColumnView = ({
   height,
   style = {},
   className
-}) => (
-  <div
-    className={className}
-    style={Object.assign(
-      {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: hAlign,
-        justifyContent: vAlign,
-        backgroundColor: bgColor,
-        paddingTop: pxToRem(padding[0]),
-        paddingRight: pxToRem(padding[1]),
-        paddingBottom: pxToRem(padding[2]),
-        paddingLeft: pxToRem(padding[3]),
-        marginTop: pxToRem(margin[0]),
-        marginRight: pxToRem(margin[1]),
-        marginBottom: pxToRem(margin[2]),
-        marginLeft: pxToRem(margin[3]),
-        height: pxToRem(height),
-        width: pxToRem(width)
-      },
-      style
-    )}
-  >
-    {children}
-  </div>
-)
+}) => {
+  let mergedStyle = Object.assign(
+    {
+      boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: hAlign,
+      justifyContent: vAlign,
+      backgroundColor: bgColor,
+      paddingTop: pxToRem(padding[0]),
+      paddingRight: pxToRem(padding[1]),
+      paddingBottom: pxToRem(padding[2]),
+      paddingLeft: pxToRem(padding[3]),
+      marginTop: pxToRem(margin[0]),
+      marginRight: pxToRem(margin[1]),
+      marginBottom: pxToRem(margin[2]),
+      marginLeft: pxToRem(margin[3])
+    },
+    style
+  )
+  if (height) {
+    mergedStyle.height = pxToRem(height)
+  }
+  if (width) {
+    mergedStyle.width = pxToRem(width)
+  }
+  return (
+    <div className={className} style={mergedStyle}>
+      {children}
+    </div>
+  )
+}
 
 export const XCenterView = ({
   className,
@@ -100,6 +106,7 @@ export const XCenterView = ({
     className={className}
     style={Object.assign(
       {
+        boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',

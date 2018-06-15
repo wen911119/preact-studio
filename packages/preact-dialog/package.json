@@ -1,0 +1,24 @@
+{
+  "name": "preact-dialog",
+  "version": "1.0.3",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "dependencies": {
+    "preact-touchable": "^1.0.4",
+    "preact-layoutview": "^1.0.5",
+    "preact-text": "^1.0.4",
+    "preact-modal": "^1.0.7",
+    "preact-line": "^1.0.3"
+  },
+  "peerDependencies": {
+    "preact": "^8.2.6"
+  }
+}
