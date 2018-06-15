@@ -1,6 +1,6 @@
 {
   "name": "preact-dialog",
-  "version": "1.0.3",
+  "version": "1.0.8",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -12,11 +12,11 @@
     "preact"
   ],
   "dependencies": {
-    "preact-touchable": "^1.0.4",
-    "preact-layoutview": "^1.0.5",
-    "preact-text": "^1.0.4",
-    "preact-modal": "^1.0.7",
-    "preact-line": "^1.0.3"
+    "preact-layoutview": "^1.0.8",
+    "preact-line": "^1.0.8",
+    "preact-modal": "^1.0.8",
+    "preact-text": "^1.0.8",
+    "preact-touchable": "^1.0.8"
   },
   "peerDependencies": {
     "preact": "^8.2.6"
