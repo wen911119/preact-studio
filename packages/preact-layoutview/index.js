@@ -1,7 +1,5 @@
 import { h } from 'preact'
-function pxToRem (px) {
-  return px && `${px / 75}rem`
-}
+import px2rem from 'p-to-r'
 
 function alternateInsert (arr, item) {
   let insertedArr = arr.reduce((all, current) => all.concat(current, item), [])
@@ -31,16 +29,16 @@ export const RowView = ({
         alignItems: vAlign,
         justifyContent: hAlign,
         backgroundColor: bgColor,
-        paddingTop: pxToRem(padding[0]),
-        paddingRight: pxToRem(padding[1]),
-        paddingBottom: pxToRem(padding[2]),
-        paddingLeft: pxToRem(padding[3]),
-        marginTop: pxToRem(margin[0]),
-        marginRight: pxToRem(margin[1]),
-        marginBottom: pxToRem(margin[2]),
-        marginLeft: pxToRem(margin[3]),
-        height: pxToRem(height),
-        width: pxToRem(width)
+        paddingTop: px2rem(padding[0]),
+        paddingRight: px2rem(padding[1]),
+        paddingBottom: px2rem(padding[2]),
+        paddingLeft: px2rem(padding[3]),
+        marginTop: px2rem(margin[0]),
+        marginRight: px2rem(margin[1]),
+        marginBottom: px2rem(margin[2]),
+        marginLeft: px2rem(margin[3]),
+        height: px2rem(height),
+        width: px2rem(width)
       },
       style
     )}
@@ -70,22 +68,22 @@ export const ColumnView = ({
       alignItems: hAlign,
       justifyContent: vAlign,
       backgroundColor: bgColor,
-      paddingTop: pxToRem(padding[0]),
-      paddingRight: pxToRem(padding[1]),
-      paddingBottom: pxToRem(padding[2]),
-      paddingLeft: pxToRem(padding[3]),
-      marginTop: pxToRem(margin[0]),
-      marginRight: pxToRem(margin[1]),
-      marginBottom: pxToRem(margin[2]),
-      marginLeft: pxToRem(margin[3])
+      paddingTop: px2rem(padding[0]),
+      paddingRight: px2rem(padding[1]),
+      paddingBottom: px2rem(padding[2]),
+      paddingLeft: px2rem(padding[3]),
+      marginTop: px2rem(margin[0]),
+      marginRight: px2rem(margin[1]),
+      marginBottom: px2rem(margin[2]),
+      marginLeft: px2rem(margin[3])
     },
     style
   )
   if (height) {
-    mergedStyle.height = pxToRem(height)
+    mergedStyle.height = px2rem(height)
   }
   if (width) {
-    mergedStyle.width = pxToRem(width)
+    mergedStyle.width = px2rem(width)
   }
   return (
     <div className={className} style={mergedStyle}>
@@ -112,8 +110,8 @@ export const XCenterView = ({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: bgColor,
-        height: pxToRem(height),
-        width: pxToRem(width)
+        height: px2rem(height),
+        width: px2rem(width)
       },
       style
     )}
@@ -123,7 +121,7 @@ export const XCenterView = ({
 )
 
 export const SpaceHolder = ({ width = 0, height = 0 }) => (
-  <div style={{ width: pxToRem(width), height: pxToRem(height) }} />
+  <div style={{ width: px2rem(width), height: px2rem(height) }} />
 )
 
 export const SlotRowView = ({ slot, children, ...otherProps }) => {

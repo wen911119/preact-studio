@@ -1,8 +1,9 @@
 import { h } from 'preact'
+import px2rem from 'p-to-r'
 const Text = ({ children, size = 30, color = '#333', style = {} }) => (
   <span
     style={Object.assign(
-      { color, fontSize: pxToRem(size), lineHeight: '1.2em' },
+      { color, fontSize: px2rem(size), lineHeight: '1.2em' },
       style
     )}
   >
@@ -10,7 +11,3 @@ const Text = ({ children, size = 30, color = '#333', style = {} }) => (
   </span>
 )
 export default Text
-
-function pxToRem (px) {
-  return `${px / 75}rem`
-}

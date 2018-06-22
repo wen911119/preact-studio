@@ -11,6 +11,9 @@
   "keywords": [
     "preact"
   ],
+  "dependencies": {
+    "p-to-r": "^1.0.0"
+  },
   "peerDependencies": {
     "preact": "^8.2.6"
   }
