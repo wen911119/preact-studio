@@ -59,12 +59,9 @@ const Dialog = ({
         <RowView height={81}>
           <TouchableBlock
             onPress={onConfirm}
-            className="border-r-1"
             style={{
               flex: 1,
-              height: '100%',
-              borderRightStyle: 'solid',
-              borderRightColor: '#dad9de'
+              height: '100%'
             }}
           >
             <XCenterView style={{ height: '100%' }}>
@@ -73,6 +70,7 @@ const Dialog = ({
               </Text>
             </XCenterView>
           </TouchableBlock>
+          <Line color="#dad9de" v />
           <TouchableBlock
             onPress={onCancel}
             style={{ flex: 1, height: '100%' }}

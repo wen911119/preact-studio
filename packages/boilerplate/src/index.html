@@ -13,16 +13,6 @@
 		<style>
 			html{font-size: 37.5px;font-size: 10vw;font-size: 10vmin}
 			* {-webkit-tap-highlight-color: transparent;-webkit-user-select: none;}	
-			.border-r-1 { border-right-width: 1px }
-			.border-t-1 { border-top-width: 1px }
-			@media screen and (-webkit-min-device-pixel-ratio: 2) {
-    		.border-r-1 { border-right-width: 1px }
-				.border-t-1 { border-top-width: 1px }
-			}
-			@media screen and (-webkit-min-device-pixel-ratio: 3) {
-					.border-r-1 { border-right-width: 0.333333px }
-					.border-t-1 { border-top-width: 0.333333px }
-			}
 		</style>
 		<% for (var chunk of webpack.chunks) { %>
 		 <% if (chunk.names.length === 1 && chunk.names[0] === 'polyfills') continue; %>
