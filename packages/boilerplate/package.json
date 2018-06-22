@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "preact-boilerplate",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "license": "MIT",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
@@ -24,12 +24,12 @@
     "preact": "^8.2.6",
     "preact-appshell": "^1.0.2",
     "preact-compat": "^3.17.0",
-    "preact-dialog": "^1.0.8",
-    "preact-layoutview": "^1.0.8",
-    "preact-line": "^1.0.8",
+    "preact-dialog": "^1.0.9",
+    "preact-layoutview": "^1.0.9",
+    "preact-line": "^1.0.9",
     "preact-modal": "^1.0.8",
     "preact-router": "^2.5.7",
-    "preact-text": "^1.0.8",
+    "preact-text": "^1.0.9",
     "preact-touchable": "^1.0.8"
   },
   "jest": {
