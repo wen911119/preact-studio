@@ -1,5 +1,7 @@
 import { h, Component } from 'preact'
-
+import Loading from 'preact-loading'
+import Text from 'preact-text'
+import { SlotRowView } from 'preact-layoutview'
 // copy from https://github.com/ElemeFE/mint-ui/blob/master/packages/infinite-scroll/src/directive.js
 const getScrollEventTarget = element => {
   let currentNode = element
@@ -180,7 +182,10 @@ export default class ScrollListener extends Component {
             {pullDownText}
           </div>
           {children}
-          <div>{nomore ? '没有更多了～' : 'loading...'}</div>
+          <SlotRowView height={50} slot={12} hAlign="center">
+            {nomore || <Loading size={36} />}
+            <Text size={28} color="#ccc">{nomore ? '没有更多了～' : '加载中...'}</Text>
+          </SlotRowView>
         </div>
       </div>
     )

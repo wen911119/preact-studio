@@ -69,9 +69,9 @@ export default class Home extends Component {
       _list.push(i)
     }
     let _list2 = this.state.list.concat(_list)
-    setTimeout(()=>{
+    setTimeout(() => {
       this.setState({ list: _list2 }, () => {
-        done(_list2.length>60)
+        done(_list2.length > 60)
       })
     }, 2000)
   }
