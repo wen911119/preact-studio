@@ -62,14 +62,18 @@ export default class Home extends Component {
     open: false,
     list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   }
-  loadMore () {
+  loadMore (done) {
     console.log('load-more')
     let _list = []
     for (let l = this.state.list.length, i = l + 1; i < l + 11; i++) {
       _list.push(i)
     }
     let _list2 = this.state.list.concat(_list)
-    this.setState({ list: _list2 }, () => {})
+    setTimeout(()=>{
+      this.setState({ list: _list2 }, () => {
+        done(_list2.length>60)
+      })
+    }, 2000)
   }
   refresh (done) {
     console.log('refresh')
@@ -92,10 +96,10 @@ export default class Home extends Component {
         <TouchableInline onPress={() => this.setState({ open: true })}>
           <Text>打开modal</Text>
         </TouchableInline>
-        <Scroller onBottom={this.loadMore} onRefresh={this.refresh} height='300px'>
+        <Scroller loadmore={this.loadMore} refresh={this.refresh}>
           <List list={list} />
         </Scroller>
-        <RowView height={100} bgColor="#ccc">
+        {/* <RowView height={100} bgColor="#ccc">
           <Text color="#f8584f">wenjun</Text>
           <Text color="#f8584f">22222</Text>
         </RowView>
@@ -126,7 +130,7 @@ export default class Home extends Component {
         <SlotRowView height={100} slot={30}>
           <Text color="#f8584f">wenjun</Text>
           <Text color="#f8584f">22222</Text>
-        </SlotRowView>
+        </SlotRowView> */}
         <Dialog
           open={open}
           title="无法访问照片"

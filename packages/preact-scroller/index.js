@@ -19,49 +19,10 @@ const getScrollEventTarget = element => {
   return window
 }
 
-const normalElementScrollListener = (onTop, onBottom) => e => {
-  // offsetHeight是滚动容器高度
-  // scrollHeight是滚动内容的总高度
-  // scrollTop 是已经滚动上去的高度
-  const { offsetHeight, scrollHeight, scrollTop } = e.target
-  if (scrollTop === 0) {
-    onTop()
-    return
-  }
-  if (offsetHeight + scrollTop === scrollHeight) {
-    onBottom()
-  }
-}
-
-const windowScrollListener = (onTop, onBottom) => {
-  let maxScrollTop = 0
-  let lastScrollTop = 0
-  let timer = null
-  return e => {
-    // offsetHeight是滚动容器高度
-    // scrollHeight是滚动内容的总高度
-    // scrollTop 是已经滚动上去的高度
-    const { offsetHeight, scrollHeight, scrollTop } = e.target.scrollingElement
-    if (scrollTop === 0) {
-      onTop()
-    }
-    if (scrollTop > lastScrollTop) {
-      // 正在向下滚
-      clearTimeout(timer)
-      maxScrollTop = scrollTop
-      if (offsetHeight + maxScrollTop > scrollHeight - 100) {
-        // 已经进入敏感区域
-        timer = setTimeout(onBottom, 200)
-      }
-    }
-    lastScrollTop = scrollTop
-  }
-}
-
 export default class ScrollListener extends Component {
   onTop () {
     // 下拉刷新处于待命状态
-    this.props.onRefresh && (this.pullDownRefreshEnable = true)
+    this.props.refresh && (this.pullDownRefreshEnable = true)
   }
   onTouchMove (e) {
     if (this.isRefreshing) {
@@ -112,10 +73,10 @@ export default class ScrollListener extends Component {
       this.isRefreshing = true
       if (this.state.pullDownDistance > 50) {
         const p = new Promise(resolve => {
-          this.props.onRefresh(resolve)
+          this.props.refresh(resolve)
         })
-        p.then(() => {
-          this.setState({ pullDownDistance: 0 }, () => {
+        p.then(nomore => {
+          this.setState({ pullDownDistance: 0, nomore: !!nomore }, () => {
             this.isRefreshing = false
           })
         })
@@ -139,39 +100,50 @@ export default class ScrollListener extends Component {
     this.onTouchMove = this.onTouchMove.bind(this)
     this.onTouchStart = this.onTouchStart.bind(this)
     this.onTouchEnd = this.onTouchEnd.bind(this)
-    this.pullDownRefreshEnable = false
-    this.touchStartPointY = 0
+    this.pullDownRefreshEnable = false // 是否启用下拉刷新手势的监听
+    this.touchStartPointY = 0 // 滑动手势起始点的y坐标，用于计算滑动距离和方向
     this.enableTouchendListener = false // 是否启用Touchmove的监听,只有触发了下拉刷新之后 才启用监听
     this.isRefreshing = false // 是否正在下拉刷新中
-    this.lastMoved = true
-    this.percentBaseHeight = 0 // 计算下拉百分比的基数
+    this.lastMoved = true // 上一帧动画是否已经完成
+    this.onLoading = false // 是否正在加载更多中
     this.state = {
       pullDownDistance: 0,
-      pullDownText: '下拉刷新'
+      pullDownText: '下拉刷新',
+      nomore: false
     }
   }
   componentDidMount () {
     this.scrollEventTarget = getScrollEventTarget(this.scrollWrap)
-    let scrollListener
-    if (this.scrollEventTarget === window) {
-      // window滚动需要特殊处理
-      scrollListener = windowScrollListener(this.onTop, this.props.onBottom)
-      this.percentBaseHeight = this.scrollEventTarget.innerHeight
-    }
-    else {
-      // 其它的局部滚动
-      scrollListener = normalElementScrollListener(
-        this.onTop,
-        this.props.onBottom
-      )
-      this.percentBaseHeight = Math.min(
-        this.scrollEventTarget.clientHeight,
-        window.innerHeight
-      )
-    }
-    this.scrollEventTarget.addEventListener('scroll', scrollListener)
+    this.scrollEventTarget.addEventListener('scroll', e => {
+      // offsetHeight是滚动容器高度
+      // scrollHeight是滚动内容的总高度
+      // scrollTop 是已经滚动上去的高度
+      // scrollEventTarget是window时，在e.target.scrollingElement上取值
+      const { offsetHeight, scrollHeight, scrollTop } =
+        e.target.scrollingElement || e.target
+      if (scrollTop === 0) {
+        this.onTop()
+        return
+      }
+      if (
+        this.props.loadmore &&
+        !this.onLoading &&
+        !this.state.nomore &&
+        offsetHeight + scrollTop >=
+          scrollHeight - (this.props.loadmoreOffset || 100) // loadmoreOffset默认100，在window上滚动时不建议小于这个值
+      ) {
+        this.onLoading = true
+        const p = new Promise(resolve => {
+          this.props.loadmore(resolve)
+        })
+        p.then(nomore => {
+          this.onLoading = false
+          nomore && this.setState({ nomore: true })
+        })
+      }
+    })
   }
-  render ({ children, height }, { pullDownDistance, pullDownText }) {
+  render ({ children, height }, { pullDownDistance, pullDownText, nomore }) {
     let _style = {
       overflow: 'hidden'
     }
@@ -208,6 +180,7 @@ export default class ScrollListener extends Component {
             {pullDownText}
           </div>
           {children}
+          <div>{nomore ? '没有更多了～' : 'loading...'}</div>
         </div>
       </div>
     )
