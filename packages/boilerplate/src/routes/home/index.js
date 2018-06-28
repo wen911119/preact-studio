@@ -12,24 +12,6 @@ import {
   XCenterView
 } from 'preact-layoutview'
 
-const getScrollEventTarget = function (element) {
-  let currentNode = element
-  // bugfix, see http://w3help.org/zh-cn/causes/SD9013 and http://stackoverflow.com/questions/17016740/onscroll-function-is-not-working-for-chrome
-  while (
-    currentNode &&
-    currentNode.tagName !== 'HTML' &&
-    currentNode.tagName !== 'BODY' &&
-    currentNode.nodeType === 1
-  ) {
-    let overflowY = getComputedStyle(currentNode).overflowY
-    if (overflowY === 'scroll' || overflowY === 'auto') {
-      return currentNode
-    }
-    currentNode = currentNode.parentNode
-  }
-  return window
-}
-
 class ListItem extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     return false
@@ -65,7 +47,7 @@ export default class Home extends Component {
   loadMore (done) {
     console.log('load-more')
     let _list = []
-    for (let l = this.state.list.length, i = l + 1; i < l + 11; i++) {
+    for (let l = this.state.list.length, i = l + 1; i < l + 10001; i++) {
       _list.push(i)
     }
     let _list2 = this.state.list.concat(_list)
@@ -99,38 +81,6 @@ export default class Home extends Component {
         <Scroller loadmore={this.loadMore} refresh={this.refresh}>
           <List list={list} />
         </Scroller>
-        {/* <RowView height={100} bgColor="#ccc">
-          <Text color="#f8584f">wenjun</Text>
-          <Text color="#f8584f">22222</Text>
-        </RowView>
-        <SlotRowView height={100} slot={30}>
-          <Text color="#f8584f">wenjun</Text>
-          <Text color="#f8584f">22222</Text>
-        </SlotRowView>
-        <RowView height={100} bgColor="#ccc">
-          <Text color="#f8584f">wenjun</Text>
-          <Text color="#f8584f">22222</Text>
-        </RowView>
-        <SlotRowView height={100} slot={30}>
-          <Text color="#f8584f">wenjun</Text>
-          <Text color="#f8584f">22222</Text>
-        </SlotRowView>
-        <RowView height={100} bgColor="#ccc">
-          <Text color="#f8584f">wenjun</Text>
-          <Text color="#f8584f">22222</Text>
-        </RowView>
-        <SlotRowView height={100} slot={30}>
-          <Text color="#f8584f">wenjun</Text>
-          <Text color="#f8584f">22222</Text>
-        </SlotRowView>
-        <RowView height={100} bgColor="#ccc">
-          <Text color="#f8584f">wenjun</Text>
-          <Text color="#f8584f">22222</Text>
-        </RowView>
-        <SlotRowView height={100} slot={30}>
-          <Text color="#f8584f">wenjun</Text>
-          <Text color="#f8584f">22222</Text>
-        </SlotRowView> */}
         <Dialog
           open={open}
           title="无法访问照片"
