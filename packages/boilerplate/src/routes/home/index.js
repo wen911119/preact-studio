@@ -75,6 +75,7 @@ export default class Home extends Component {
           <Text color="#f8584f">wenjun</Text>
           <Text color="#f8584f">22222</Text>
         </SlotRowView>
+        <i class="iconfont icon-add" />
         <TouchableInline onPress={() => this.setState({ open: true })}>
           <Text>打开modal</Text>
         </TouchableInline>
