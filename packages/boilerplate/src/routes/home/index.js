@@ -47,7 +47,7 @@ export default class Home extends Component {
   loadMore (done) {
     console.log('load-more')
     let _list = []
-    for (let l = this.state.list.length, i = l + 1; i < l + 10001; i++) {
+    for (let l = this.state.list.length, i = l + 1; i < l + 11; i++) {
       _list.push(i)
     }
     let _list2 = this.state.list.concat(_list)

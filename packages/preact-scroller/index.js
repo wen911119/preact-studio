@@ -1,7 +1,4 @@
 import { h, Component } from 'preact'
-import Loading from 'preact-loading'
-import Text from 'preact-text'
-import { SlotRowView } from 'preact-layoutview'
 // copy from https://github.com/ElemeFE/mint-ui/blob/master/packages/infinite-scroll/src/directive.js
 const getScrollEventTarget = element => {
   let currentNode = element
@@ -19,6 +16,31 @@ const getScrollEventTarget = element => {
     currentNode = currentNode.parentNode
   }
   return window
+}
+
+let DefaultLoadMore = ({ nomore }) => (
+  <div
+    style={{
+      fontSize: '14px',
+      lineHeight: '50px',
+      textAlign: 'center',
+      color: '#ccc'
+    }}
+  >
+    {nomore ? '没有更多了~' : '正在加载中...'}
+  </div>
+)
+export const SetDefaultLoadMoreComponent = c => {
+  DefaultLoadMore = c
+}
+
+let DefaultPullDownRefresh = ({ stage }) => (
+  <div style={{ fontSize: '14px', lineHeight: '50px', textAlign: 'center' }}>
+    {stage === 1 ? '下拉刷新' : stage === 2 ? '释放刷新' : '正在刷新...'}
+  </div>
+)
+export const SetDefaultPullDownRefreshComponent = c => {
+  DefaultPullDownRefresh = c
 }
 
 export default class ScrollListener extends Component {
@@ -46,7 +68,7 @@ export default class ScrollListener extends Component {
             this.setState(
               {
                 pullDownDistance: _d,
-                pullDownText: _d > 50 ? '释放刷新' : '下拉刷新'
+                pullDownStage: _d > 50 ? 2 : 1
               },
               () => {
                 this.lastMoved = true
@@ -83,7 +105,7 @@ export default class ScrollListener extends Component {
           })
         })
         requestAnimationFrame(() => {
-          this.setState({ pullDownText: '正在刷新...', pullDownDistance: 50 })
+          this.setState({ pullDownStage: 3, pullDownDistance: 50 })
         })
       }
       else {
@@ -110,9 +132,11 @@ export default class ScrollListener extends Component {
     this.onLoading = false // 是否正在加载更多中
     this.state = {
       pullDownDistance: 0,
-      pullDownText: '下拉刷新',
+      pullDownStage: 1,
       nomore: false
     }
+    this.PullDownRefresh = props.refreshComponent || DefaultPullDownRefresh
+    this.LoadMore = props.loadmoreComponent || DefaultLoadMore
   }
   componentDidMount () {
     this.scrollEventTarget = getScrollEventTarget(this.scrollWrap)
@@ -145,7 +169,7 @@ export default class ScrollListener extends Component {
       }
     })
   }
-  render ({ children, height }, { pullDownDistance, pullDownText, nomore }) {
+  render ({ children, height }, { pullDownDistance, pullDownStage, nomore }) {
     let _style = {
       overflow: 'hidden'
     }
@@ -170,22 +194,9 @@ export default class ScrollListener extends Component {
             transition: this.isRefreshing ? '330ms' : 'none'
           }}
         >
-          <div
-            style={{
-              height: '50px',
-              fontSize: '16px',
-              backgroundColor: '#ccc',
-              lineHeight: '50px',
-              textAlign: 'center'
-            }}
-          >
-            {pullDownText}
-          </div>
+          <this.PullDownRefresh stage={pullDownStage} />
           {children}
-          <SlotRowView height={50} slot={12} hAlign="center">
-            {nomore || <Loading size={36} />}
-            <Text size={28} color="#ccc">{nomore ? '没有更多了～' : '加载中...'}</Text>
-          </SlotRowView>
+          <this.LoadMore nomore={nomore} />
         </div>
       </div>
     )
