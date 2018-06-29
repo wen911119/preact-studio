@@ -2,17 +2,12 @@ import { h, Component } from 'preact'
 import Dialog from 'preact-dialog'
 import style from './style'
 import Text from 'preact-text'
-import Line from 'preact-line'
 import { TouchableInline } from 'preact-touchable'
 import Scroller from 'preact-scroller'
-import Loading from 'preact-loading'
 import {
   RowView,
   SlotRowView,
-  SlotColumnView,
-  XCenterView
 } from 'preact-layoutview'
-import PullDownComponent from '../../components/PullDownComponent'
 class ListItem extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     return false
@@ -82,7 +77,6 @@ export default class Home extends Component {
         <Scroller
           loadmore={this.loadMore}
           refresh={this.refresh}
-          refreshComponent={PullDownComponent}
         >
           <List list={list} />
         </Scroller>
