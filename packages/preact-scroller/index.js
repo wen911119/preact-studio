@@ -100,7 +100,7 @@ export default class ScrollListener extends Component {
           this.props.refresh(resolve)
         })
         p.then(nomore => {
-          this.setState({ pullDownDistance: 0, nomore: !!nomore }, () => {
+          this.setState({ pullDownDistance: 0, nomore: !!nomore, pullDownStage: 4 }, () => {
             this.isRefreshing = false
           })
         })

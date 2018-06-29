@@ -5,13 +5,14 @@ import Text from 'preact-text'
 import Line from 'preact-line'
 import { TouchableInline } from 'preact-touchable'
 import Scroller from 'preact-scroller'
+import Loading from 'preact-loading'
 import {
   RowView,
   SlotRowView,
   SlotColumnView,
   XCenterView
 } from 'preact-layoutview'
-
+import PullDownComponent from '../../components/PullDownComponent'
 class ListItem extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     return false
@@ -75,11 +76,14 @@ export default class Home extends Component {
           <Text color="#f8584f">wenjun</Text>
           <Text color="#f8584f">22222</Text>
         </SlotRowView>
-        <i class="iconfont icon-add" />
         <TouchableInline onPress={() => this.setState({ open: true })}>
           <Text>打开modal</Text>
         </TouchableInline>
-        <Scroller loadmore={this.loadMore} refresh={this.refresh}>
+        <Scroller
+          loadmore={this.loadMore}
+          refresh={this.refresh}
+          refreshComponent={PullDownComponent}
+        >
           <List list={list} />
         </Scroller>
         <Dialog
