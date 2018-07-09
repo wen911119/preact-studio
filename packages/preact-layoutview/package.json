@@ -5,6 +5,8 @@
   "author": "wen911119@gmail.com",
   "license": "ISC",
   "main": "index.js",
+  "raw": "index.js",
+  "module": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

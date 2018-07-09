@@ -5,6 +5,7 @@
   "author": "wen911119@gmail.com",
   "license": "ISC",
   "main": "index.js",
+  "module": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +17,7 @@
     "preact-loading": "^1.0.12",
     "preact-text": "^1.0.12"
   },
+  "compileDependencies": ["preact-layoutview", "preact-loading", "preact-text"],
   "peerDependencies": {
     "preact": "^8.2.6"
   }
