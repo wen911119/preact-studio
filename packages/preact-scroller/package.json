@@ -1,6 +1,6 @@
 {
   "name": "preact-scroller",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,11 +13,15 @@
     "preact"
   ],
   "dependencies": {
-    "preact-layoutview": "^1.0.0",
-    "preact-loading": "^1.0.12",
-    "preact-text": "^1.0.12"
+    "preact-layoutview": "^1.0.13",
+    "preact-loading": "^1.0.13",
+    "preact-text": "^1.0.13"
   },
-  "compileDependencies": ["preact-layoutview", "preact-loading", "preact-text"],
+  "compileDependencies": [
+    "preact-layoutview",
+    "preact-loading",
+    "preact-text"
+  ],
   "peerDependencies": {
     "preact": "^8.2.6"
   }
