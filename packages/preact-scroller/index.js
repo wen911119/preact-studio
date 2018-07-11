@@ -36,7 +36,13 @@ export const SetDefaultLoadMoreComponent = c => {
 
 let DefaultPullDownRefresh = ({ stage }) => (
   <div style={{ fontSize: '14px', lineHeight: '50px', textAlign: 'center' }}>
-    {stage === 1 ? '下拉刷新' : stage === 2 ? '释放刷新' : '正在刷新...'}
+    {stage === 1
+      ? '下拉刷新'
+      : stage === 2
+        ? '释放刷新'
+        : stage === 3
+          ? '正在刷新...'
+          : '刷新完成'}
   </div>
 )
 export const SetDefaultPullDownRefreshComponent = c => {
@@ -100,9 +106,12 @@ export default class ScrollListener extends Component {
           this.props.refresh(resolve)
         })
         p.then(nomore => {
-          this.setState({ pullDownDistance: 0, nomore: !!nomore, pullDownStage: 4 }, () => {
-            this.isRefreshing = false
-          })
+          this.setState(
+            { pullDownDistance: 0, nomore: !!nomore, pullDownStage: 4 },
+            () => {
+              this.isRefreshing = false
+            }
+          )
         })
         requestAnimationFrame(() => {
           this.setState({ pullDownStage: 3, pullDownDistance: 50 })
