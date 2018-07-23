@@ -52,7 +52,7 @@ export const SetDefaultPullDownRefreshComponent = c => {
 export default class ScrollListener extends Component {
   onTop () {
     // 下拉刷新处于待命状态
-    this.props.refresh && (this.pullDownRefreshEnable = true)
+    this.props.refresh && (this.onTopNow = true)
   }
   onTouchMove (e) {
     if (this.isRefreshing) {
@@ -60,32 +60,40 @@ export default class ScrollListener extends Component {
       e.preventDefault()
       return
     }
-    if (this.pullDownRefreshEnable) {
+    if (this.onTopNow || this.onBottomNow) {
       const distance = e.targetTouches[0].screenY - this.touchStartPointY
       if (distance > 0) {
         // 下拉
-        this.enableTouchendListener = true
-        e.preventDefault()
-        if (this.lastMoved) {
-          this.lastMoved = false
-          // const _d = (distance / this.percentBaseHeight) * 200
-          const _d = distance / 2
-          requestAnimationFrame(() => {
-            this.setState(
-              {
-                pullDownDistance: _d,
-                pullDownStage: _d > 50 ? 2 : 1
-              },
-              () => {
-                this.lastMoved = true
-              }
-            )
-          })
+        if (this.onTopNow) {
+          this.enableTouchendListener = true
+          e.preventDefault()
+          if (this.lastMoved) {
+            this.lastMoved = false
+            // const _d = (distance / this.percentBaseHeight) * 200
+            const _d = distance / 2
+            requestAnimationFrame(() => {
+              this.setState(
+                {
+                  pullDownDistance: _d,
+                  pullDownStage: _d > 50 ? 2 : 1
+                },
+                () => {
+                  this.lastMoved = true
+                }
+              )
+            })
+          }
+        }
+        else if (this.onBottomNow) {
+          this.onBottomNow = false
         }
       }
-      else {
+      else if (this.onTopNow) {
         // 上划
-        this.pullDownRefreshEnable = false
+        this.onTopNow = false
+      }
+      else if (this.onBottomNow) {
+        e.preventDefault()
       }
     }
   }
@@ -94,7 +102,7 @@ export default class ScrollListener extends Component {
       e.preventDefault()
       return
     }
-    this.pullDownRefreshEnable &&
+    (this.onTopNow || this.onBottomNow) &&
       (this.touchStartPointY = e.targetTouches[0].screenY)
   }
   onTouchEnd (e) {
@@ -133,7 +141,8 @@ export default class ScrollListener extends Component {
     this.onTouchMove = this.onTouchMove.bind(this)
     this.onTouchStart = this.onTouchStart.bind(this)
     this.onTouchEnd = this.onTouchEnd.bind(this)
-    this.pullDownRefreshEnable = false // 是否启用下拉刷新手势的监听
+    this.onTopNow = false // 是否启用下拉刷新手势的监听
+    this.onBottomNow = false
     this.touchStartPointY = 0 // 滑动手势起始点的y坐标，用于计算滑动距离和方向
     this.enableTouchendListener = false // 是否启用Touchmove的监听,只有触发了下拉刷新之后 才启用监听
     this.isRefreshing = false // 是否正在下拉刷新中
@@ -156,9 +165,14 @@ export default class ScrollListener extends Component {
       // scrollEventTarget是window时，在e.target.scrollingElement上取值
       const { offsetHeight, scrollHeight, scrollTop } =
         e.target.scrollingElement || e.target
+      console.log(offsetHeight, scrollHeight, scrollTop)
       if (scrollTop === 0) {
         this.onTop()
         return
+      }
+      if (offsetHeight + scrollTop === scrollHeight) {
+        console.log('onBottomNow')
+        this.onBottomNow = true
       }
       if (
         this.props.loadmore &&
