@@ -1,6 +1,6 @@
 {
   "name": "preact-scroller",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -12,8 +12,6 @@
   "keywords": [
     "preact"
   ],
-  "dependencies": {
-  },
   "compileDependencies": [
     "preact-layoutview",
     "preact-loading",
