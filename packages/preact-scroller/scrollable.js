@@ -1,4 +1,5 @@
 import { h, Component } from 'preact'
+
 export default class Scrollable extends Component {
   render ({ children, distance, action, header, footer }) {
     let _style = { transition: action === 'none' ? '330ms' : 'none' }
