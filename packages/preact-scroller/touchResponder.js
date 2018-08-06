@@ -9,39 +9,35 @@ export default class TouchResponder extends Component {
     const { position } = this.props
 
     if (position !== 'middle' && this.lastMoved) {
-      const distance = e.targetTouches[0].screenY - this.touchStartPoint.screenY
-      if (
-        (distance > 0 && position === 'top') ||
-        (distance < 0 && position === 'bottom')
-      ) {
-        // 下拉或上拉动作
-        // this.lastMoved = false;
-        e.preventDefault()
-        const action = position === 'top' ? 'pulldown' : 'pullup'
-        this.setState({ distance, action })
-        // 换成requestAnimationFrame看不到明显优势，并且在安卓上有一定几率block掉touchend事件，非常坑爹。
-        // requestAnimationFrame(() => {
-        //   this.setState({ distance, action }, () => {
-        //     this.lastMoved = true;
-        //   });
-        // });
-      }
-      else {
-        return e
+      const angle =
+        (this.touchStartPoint.clientY - e.touches[0].clientY) /
+        (this.touchStartPoint.clientX - e.touches[0].clientX)
+      if (Math.abs(angle) > 0.5) {
+        // 判断角度，因为swiper的阀值是<0.5，所以这里要大于0.5
+        const distance =
+          e.targetTouches[0].screenY - this.touchStartPoint.screenY
+        if (
+          (distance > 0 && position === 'top') ||
+          (distance < 0 && position === 'bottom')
+        ) {
+          // 下拉或上拉动作
+          // this.lastMoved = false;
+          e.preventDefault()
+          const action = position === 'top' ? 'pulldown' : 'pullup'
+          this.setState({ distance, action })
+          // 换成requestAnimationFrame看不到明显优势，并且在安卓上有一定几率block掉touchend事件，非常坑爹。
+          // requestAnimationFrame(() => {
+          //   this.setState({ distance, action }, () => {
+          //     this.lastMoved = true;
+          //   });
+          // });
+        }
       }
     }
   }
   onTouchEnd () {
-    if (this.props.position !== 'middle') {
-      if (this.props.wait) {
-        this.setState({ distance: this.props.wait.point, action: 'none' })
-        this.props.wait.then(() => {
-          this.setState({ distance: 0, action: 'none' })
-        })
-      }
-      else {
-        this.setState({ distance: 0, action: 'none' })
-      }
+    if (this.props.position !== 'middle' && this.state.distance !== 0) {
+      this.setState({ distance: 0, action: 'none' })
       // requestAnimationFrame(() => {
       //   this.setState({ distance: 0, action: "none" });
       // });
