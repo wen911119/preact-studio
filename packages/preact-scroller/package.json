@@ -1,6 +1,6 @@
 {
-  "name": "preact-scroller",
-  "version": "1.0.20",
+  "name": "@ruiyun/preact-m-scroller",
+  "version": "1.0.0",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -12,12 +12,10 @@
   "keywords": [
     "preact"
   ],
-  "compileDependencies": [
-    "preact-layoutview",
-    "preact-loading",
-    "preact-text"
-  ],
   "peerDependencies": {
     "preact": "^8.2.6"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

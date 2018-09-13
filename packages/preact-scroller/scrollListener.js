@@ -53,9 +53,10 @@ export default class ScrollListener extends Component {
       // scrollHeight是滚动内容的总高度
       // scrollTop 是已经滚动上去的高度
       // scrollEventTarget是window时，在e.target.scrollingElement上取值
-      this.props.onScroll && this.props.onScroll()
       const { offsetHeight, scrollHeight, scrollTop } =
         e.target.scrollingElement || e.target
+      this.props.onScroll &&
+        this.props.onScroll({ offsetHeight, scrollHeight, scrollTop })
       this.updatePosition(offsetHeight, scrollHeight, scrollTop)
     })
   }

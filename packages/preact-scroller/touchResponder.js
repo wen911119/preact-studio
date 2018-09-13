@@ -6,9 +6,11 @@ export default class TouchResponder extends Component {
     }
   }
   onTouchMove (e) {
-    const { position } = this.props
-
-    if (position !== 'middle' && this.lastMoved) {
+    const { position, freeze } = this.props
+    if (freeze) {
+      return
+    }
+    if (position !== 'middle') {
       const angle =
         (this.touchStartPoint.clientY - e.touches[0].clientY) /
         (this.touchStartPoint.clientX - e.touches[0].clientX)
@@ -48,7 +50,7 @@ export default class TouchResponder extends Component {
     this.onTouchMove = this.onTouchMove.bind(this)
     this.onTouchStart = this.onTouchStart.bind(this)
     this.onTouchEnd = this.onTouchEnd.bind(this)
-    this.lastMoved = true
+    // this.lastMoved = true
     this.state = {
       action: 'none', // pulldown,pullup
       distance: 0
