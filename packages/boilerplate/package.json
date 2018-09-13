@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
-    "build": "preact build --template src/index.html",
+    "build": "preact build --template src/index.html --no-prerender",
     "serve": "preact build --template src/index.html && preact serve",
     "dev": "preact watch --template src/index.html",
     "lint": "eslint src",

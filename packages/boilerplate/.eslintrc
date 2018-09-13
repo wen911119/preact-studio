@@ -2,7 +2,6 @@
   "extends": "eslint-config-synacor",
   "rules":{
     "semi": ["error", "never"],
-    "space-before-function-paren": ["error", "always"],
     "indent": ["error", 2]
   }
 }

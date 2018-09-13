@@ -74,12 +74,12 @@ export default class Home extends Component {
         <TouchableInline onPress={() => this.setState({ open: true })}>
           <Text>打开modal</Text>
         </TouchableInline>
-        <Scroller
+        {/* <Scroller
           loadmore={this.loadMore}
           refresh={this.refresh}
         >
           <List list={list} />
-        </Scroller>
+        </Scroller> */}
         <Dialog
           open={open}
           title="无法访问照片"
