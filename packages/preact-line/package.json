@@ -1,6 +1,6 @@
 {
-  "name": "preact-line",
-  "version": "1.0.13",
+  "name": "@ruiyun/preact-line",
+  "version": "1.0.0",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -12,6 +12,9 @@
   "keywords": [
     "preact"
   ],
+  "dependencies": {
+    "p-to-r": "^1.0.0"
+  },
   "peerDependencies": {
     "preact": "^8.2.6"
   }
