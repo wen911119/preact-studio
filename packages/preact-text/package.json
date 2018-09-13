@@ -1,6 +1,6 @@
 {
-  "name": "preact-text",
-  "version": "1.0.13",
+  "name": "@ruiyun/preact-text",
+  "version": "1.0.0",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -17,5 +17,8 @@
   },
   "peerDependencies": {
     "preact": "^8.2.6"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
