@@ -4,6 +4,7 @@ import Header from './header'
 import Home from '../routes/home'
 import Profile from '../routes/profile'
 import ScrollerDemo from '../routes/scrollerDemo'
+import AutoListDemo from '../routes/autolistDemo'
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 
@@ -25,6 +26,7 @@ export default class App extends Component {
           <Profile path="/profile/" user="me" />
           <Profile path="/profile/:user" />
           <ScrollerDemo path="/scroller/" />
+          <AutoListDemo path="/autolist/" />
         </Router>
       </div>
     )

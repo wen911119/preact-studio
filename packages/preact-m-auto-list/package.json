@@ -1,0 +1,27 @@
+{
+  "name": "@ruiyun/preact-m-auto-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "raw": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ruiyun/preact-m-scroller": "^1.0.0",
+    "lodash.isequal": "^4.5.0",
+    "p-to-r": "^1.0.0"
+  },
+  "compileDependencies": [
+    "@ruiyun/preact-m-scroller"
+  ],
+  "peerDependencies": {
+    "preact": "^8.2.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
