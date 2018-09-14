@@ -14,6 +14,11 @@ const Home = () => (
         autolist
       </Link>
     </div>
+    <div>
+      <Link activeClassName={style.active} href="/swiper">
+        swiper
+      </Link>
+    </div>
   </div>
 )
 export default Home
