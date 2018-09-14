@@ -14,6 +14,12 @@ export default class Swiper extends Component {
       isSwiping: false
     }
   }
+  shouldComponentUpdate (nextProps) {
+    if (this.props.activeIndex !== nextProps.activeIndex) {
+      return true
+    }
+    return false
+  }
   render() {
     const { fill, children, ...otherProps } = this.props
     const itemsNum = children.length

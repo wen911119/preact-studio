@@ -1,10 +1,18 @@
 import { h, Component, cloneElement } from 'preact'
 
 export default class SwipeManager extends Component {
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const containerWidth = this.containerWidth
     const itemsNum = nextProps.itemsNum || 2
-    if (nextProps.stage === 'swipe-moving') {
+    if (nextProps.activeIndex !== this.props.activeIndex) {
+      this.setState({
+        swipeDistance: -nextProps.activeIndex * containerWidth,
+        animation: true,
+        freeze: false,
+        index: nextProps.activeIndex
+      })
+    }
+    else if (nextProps.stage === 'swipe-moving') {
       if (
         (nextProps.swipeDistance > 0 && this.state.index === 0) ||
         (nextProps.swipeDistance < 0 && this.state.index === itemsNum - 1)
@@ -13,11 +21,13 @@ export default class SwipeManager extends Component {
         return
       }
       this.setState({
-        swipeDistance: -this.state.index * containerWidth + nextProps.swipeDistance,
+        swipeDistance:
+          -this.state.index * containerWidth + nextProps.swipeDistance,
         animation: false,
         freeze: true
       })
-    } else if (nextProps.stage === 'swipe-end') {
+    }
+    else if (nextProps.stage === 'swipe-end') {
       if (
         (nextProps.swipeDistance > 0 && this.state.index === 0) ||
         (nextProps.swipeDistance < 0 && this.state.index === itemsNum - 1)
@@ -26,6 +36,7 @@ export default class SwipeManager extends Component {
         return
       }
       let newIndex = this.state.index
+      let changed = false
       if (
         Math.abs(nextProps.swipeDistance) > containerWidth / itemsNum ||
         nextProps.speed > 0.6
@@ -33,14 +44,18 @@ export default class SwipeManager extends Component {
         // 滑动成功
         const increment = nextProps.swipeDistance > 0 ? -1 : 1
         newIndex += increment
+        changed = true
       }
       this.setState({
         swipeDistance: -containerWidth * newIndex,
         animation: true,
         freeze: false,
         index: newIndex
+      }, () => {
+        changed && this.props.onChange && this.props.onChange(newIndex)
       })
-    } else if (nextProps.stage === 'swipe-start') {
+    }
+    else if (nextProps.stage === 'swipe-start') {
       this.setState({
         swipeDistance: -containerWidth * this.state.index,
         animation: false,
@@ -48,17 +63,17 @@ export default class SwipeManager extends Component {
       })
     }
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.containerWidth = document.body.clientWidth
     this.state = {
       swipeDistance: props.swipeDistance,
       animation: false,
       freeze: false,
-      index: 0
+      index: props.activeIndex || 0
     }
   }
-  render () {
+  render() {
     const { children, ...otherProps } = this.props
     const { animation, freeze, swipeDistance } = this.state
     return cloneElement(children[0], {

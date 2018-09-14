@@ -14,13 +14,18 @@ const innerStyle = {
 
 class SwiperItem extends Component {
   shouldComponentUpdate(nextProps) {
-    if (this.props.freeze !== nextProps.freeze) {
+    if (
+      this.props.freeze !== nextProps.freeze &&
+      this.props.freezingOnSwiping
+    ) {
       return true
     }
     return false
   }
   render() {
-    return cloneElement(this.props.children[0])
+    return cloneElement(this.props.children[0], {
+      freeze: this.props.freezingOnSwiping ? this.props.freeze : false
+    })
   }
 }
 
@@ -40,7 +45,8 @@ export default class Swipeable extends Component {
       offset,
       animation,
       style = {},
-      freeze
+      freeze,
+      freezingOnSwiping
     } = this.props
     const _style = Object.assign({}, style, innerStyle, {
       transform: `translate3d(${offset}px,0,0)`,
@@ -50,7 +56,9 @@ export default class Swipeable extends Component {
       <div style={_style}>
         {children.map((child, i) => (
           <div key={i} style={itemStyle}>
-            <SwiperItem freeze={freeze}>{child}</SwiperItem>
+            <SwiperItem freeze={freeze} freezingOnSwiping={freezingOnSwiping}>
+              {child}
+            </SwiperItem>
           </div>
         ))}
       </div>
