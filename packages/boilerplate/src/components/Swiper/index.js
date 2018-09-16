@@ -4,16 +4,6 @@ import Swipeable from './swipeable'
 import SwipeManager from './swipeManager'
 
 export default class Swiper extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      activeIndex: props.current || 0,
-      animation: false,
-      distance: 0,
-      prevIndex: props.current,
-      isSwiping: false
-    }
-  }
   shouldComponentUpdate (nextProps) {
     if (this.props.activeIndex !== nextProps.activeIndex) {
       return true

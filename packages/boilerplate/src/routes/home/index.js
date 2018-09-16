@@ -19,6 +19,11 @@ const Home = () => (
         swiper
       </Link>
     </div>
+    <div>
+      <Link activeClassName={style.active} href="/tabs">
+        tabs
+      </Link>
+    </div>
   </div>
 )
 export default Home
