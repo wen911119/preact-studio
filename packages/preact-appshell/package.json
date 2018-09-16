@@ -1,6 +1,6 @@
 {
-  "name": "preact-appshell",
-  "version": "1.0.2",
+  "name": "@ruiyun/preact-m-appshell",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,5 +11,8 @@
     "appshell"
   ],
   "author": "wen911119@gmail.com",
-  "license": "ISC"
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
 }

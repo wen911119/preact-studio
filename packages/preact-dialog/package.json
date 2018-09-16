@@ -1,6 +1,6 @@
 {
-  "name": "preact-dialog",
-  "version": "1.0.13",
+  "name": "@ruiyun/preact-m-dialog",
+  "version": "1.0.0",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,18 +13,18 @@
     "preact"
   ],
   "dependencies": {
-    "preact-layoutview": "^1.0.13",
-    "preact-line": "^1.0.13",
-    "preact-modal": "^1.0.13",
-    "preact-text": "^1.0.13",
-    "preact-touchable": "^1.0.13"
+    "@ruiyun/preact-layout-suite": "^1.0.0",
+    "@ruiyun/preact-line": "^1.0.0",
+    "@ruiyun/preact-modal": "^1.0.0",
+    "@ruiyun/preact-text": "^1.0.0",
+    "@ruiyun/preact-m-touchable": "^1.0.0"
   },
   "compileDependencies": [
-    "preact-layoutview",
-    "preact-line",
-    "preact-modal",
-    "preact-text",
-    "preact-touchable"
+    "@ruiyun/preact-layout-suite",
+    "@ruiyun/preact-line",
+    "@ruiyun/preact-modal",
+    "@ruiyun/preact-text",
+    "@ruiyun/preact-m-touchable"
   ],
   "peerDependencies": {
     "preact": "^8.2.6"
