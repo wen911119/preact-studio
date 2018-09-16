@@ -9,7 +9,8 @@ const itemStyle = {
 }
 const innerStyle = {
   display: 'inline-block',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  height: '100%'
 }
 
 class SwiperItem extends Component {
