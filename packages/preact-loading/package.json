@@ -17,5 +17,8 @@
   },
   "peerDependencies": {
     "preact": "^8.2.6"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
