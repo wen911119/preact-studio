@@ -1,7 +1,7 @@
 import { h, Component } from 'preact'
 import { XCenterView } from '@ruiyun/preact-layout-suite'
 import AutoList from '@ruiyun/preact-m-auto-list'
-import Tabs from '../../components/Tabs'
+import Tabs from '@ruiyun/preact-m-tabs'
 import ListItem from '../autolistDemo/listitem'
 import { fetchFreeTasks } from '../../services/task'
 
