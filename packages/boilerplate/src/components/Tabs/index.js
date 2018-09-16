@@ -8,18 +8,16 @@ const renderTabHeaderItem = ({
   titleColor,
   titleSize,
   activeTitleColor
-}) => {
-  return (
-    <span
-      style={{
-        fontSize: px2rem(titleSize),
-        color: isActive ? activeTitleColor : titleColor
-      }}
-    >
-      {title}
-    </span>
-  )
-}
+}) => (
+  <span
+    style={{
+      fontSize: px2rem(titleSize),
+      color: isActive ? activeTitleColor : titleColor
+    }}
+  >
+    {title}
+  </span>
+)
 
 const TabIndicator = ({
   index,
@@ -89,7 +87,7 @@ const TabHeader = ({
   )
 }
 export default class Tabs extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.onChange = this.onChange.bind(this)
     this.onTabHeaderClick = this.onTabHeaderClick.bind(this)
@@ -97,17 +95,17 @@ export default class Tabs extends Component {
       activeIndex: 0
     }
   }
-  onChange (index) {
+  onChange(index) {
     this.setState({
       activeIndex: index
     })
   }
-  onTabHeaderClick (index) {
+  onTabHeaderClick(index) {
     this.setState({
       activeIndex: index
     })
   }
-  render () {
+  render() {
     const {
       children,
       titles,
@@ -120,7 +118,8 @@ export default class Tabs extends Component {
       titleSize,
       activeTitleColor,
       renderHeaderItem,
-      headerHeight
+      headerHeight,
+      freezingOnSwiping
     } = this.props
     const { activeIndex } = this.state
     let _style = {}
@@ -156,7 +155,12 @@ export default class Tabs extends Component {
             indicatorWidth={indicatorWidth}
           />
         </div>
-        <Swiper onChange={this.onChange} activeIndex={activeIndex} fill>
+        <Swiper
+          onChange={this.onChange}
+          activeIndex={activeIndex}
+          fill
+          freezingOnSwiping={freezingOnSwiping}
+        >
           {children}
         </Swiper>
       </div>

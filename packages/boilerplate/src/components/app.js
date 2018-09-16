@@ -7,6 +7,7 @@ import ScrollerDemo from '../routes/scrollerDemo'
 import AutoListDemo from '../routes/autolistDemo'
 import SwiperDemo from '../routes/swiperDemo'
 import TabsDemo from '../routes/tabsDemo'
+import TabsAndAutoListDemo from '../routes/tabsAndAutoListDemo'
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 
@@ -31,6 +32,7 @@ export default class App extends Component {
           <AutoListDemo path="/autolist/" />
           <SwiperDemo path="/swiper/" />
           <TabsDemo path="/tabs/" />
+          <TabsAndAutoListDemo path="/tabsAndAutoList/" />
         </Router>
       </div>
     )

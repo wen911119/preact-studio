@@ -12,7 +12,7 @@ const SwiperItem = () => {
   )
 }
 
-export default class ScrollerDemo extends Component {
+export default class TabsDemo extends Component {
  
   render() {
     return (

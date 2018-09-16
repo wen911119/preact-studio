@@ -46,21 +46,26 @@ export default class SwipeManager extends Component {
         newIndex += increment
         changed = true
       }
-      this.setState({
-        swipeDistance: -containerWidth * newIndex,
-        animation: true,
-        freeze: false,
-        index: newIndex
-      }, () => {
-        changed && this.props.onChange && this.props.onChange(newIndex)
-      })
+      this.setState(
+        {
+          swipeDistance: -containerWidth * newIndex,
+          animation: true,
+          freeze: false,
+          index: newIndex
+        },
+        () => {
+          changed && this.props.onChange && this.props.onChange(newIndex)
+        }
+      )
     }
     else if (nextProps.stage === 'swipe-start') {
-      this.setState({
-        swipeDistance: -containerWidth * this.state.index,
-        animation: false,
-        freeze: true
-      })
+      const swipeDistance = -containerWidth * this.state.index
+      if (swipeDistance !== this.state.swipeDistance) {
+        this.setState({
+          swipeDistance: -containerWidth * this.state.index,
+          animation: false
+        })
+      }
     }
   }
   constructor(props) {

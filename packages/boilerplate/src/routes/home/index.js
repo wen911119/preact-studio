@@ -24,6 +24,11 @@ const Home = () => (
         tabs
       </Link>
     </div>
+    <div>
+      <Link activeClassName={style.active} href="/tabsAndAutoList">
+        tabsAndAutoList
+      </Link>
+    </div>
   </div>
 )
 export default Home
