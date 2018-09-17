@@ -8,6 +8,7 @@ import AutoListDemo from '../routes/autolistDemo'
 import SwiperDemo from '../routes/swiperDemo'
 import TabsDemo from '../routes/tabsDemo'
 import TabsAndAutoListDemo from '../routes/tabsAndAutoListDemo'
+import ModalDemo from '../routes/modalDemo'
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 
@@ -33,6 +34,7 @@ export default class App extends Component {
           <SwiperDemo path="/swiper/" />
           <TabsDemo path="/tabs/" />
           <TabsAndAutoListDemo path="/tabsAndAutoList/" />
+          <ModalDemo path="/modal/" />
         </Router>
       </div>
     )

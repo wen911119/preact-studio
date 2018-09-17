@@ -29,6 +29,11 @@ const Home = () => (
         tabsAndAutoList
       </Link>
     </div>
+    <div>
+      <Link activeClassName={style.active} href="/modal">
+        modal
+      </Link>
+    </div>
   </div>
 )
 export default Home
