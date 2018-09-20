@@ -1,5 +1,7 @@
 import { h } from 'preact'
-import px2rem from 'p-to-r'
+import _px2rem from 'p-to-r'
+
+const px2rem = px => typeof px === 'number' ? _px2rem(px) : px
 
 function alternateInsert (arr, item) {
   let insertedArr = arr.reduce((all, current) => all.concat(current, item), [])

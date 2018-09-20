@@ -10,25 +10,25 @@ const renderModalContent = () => (
 )
 
 const renderLeftModalContent = () => (
-  <XCenterView style={{ height: '100vh' }} bgColor="#fff" width={600}>
+  <XCenterView height='100vh' bgColor="#fff" width={600}>
     <Text>left-modal</Text>
   </XCenterView>
 )
 
 const renderRightModalContent = () => (
-  <XCenterView style={{ height: '100vh' }} bgColor="#fff" width={600}>
+  <XCenterView height='100vh' bgColor="#fff" width={600}>
     <Text>right-modal</Text>
   </XCenterView>
 )
 
 const renderTopModalContent = () => (
-  <XCenterView style={{ width: '100vw' }} bgColor="#fff" height={400}>
+  <XCenterView width='100vw' bgColor="#fff" height={400}>
     <Text>top-modal</Text>
   </XCenterView>
 )
 
 const renderBottomModalContent = () => (
-  <XCenterView style={{ width: '100vw', height: '80vh' }} bgColor="#fff">
+  <XCenterView width='100vw' height='80vh' bgColor="#fff">
     <Text>bottom-modal</Text>
   </XCenterView>
 )
