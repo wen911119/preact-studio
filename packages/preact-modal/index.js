@@ -1,4 +1,4 @@
-import { h, Component } from 'preact'
+import { h, Component, cloneElement } from 'preact'
 import Portal from 'preact-portal'
 
 const baseStyle = {
@@ -10,11 +10,7 @@ const baseStyle = {
   top: 0,
   bottom: 0,
   backgroundColor: 'rgba(0,0,0,0.2)',
-  justifyContent: 'center',
-  alignItems: 'center',
-  animationDuration: '.3s',
-  transition: 'opacity .3s',
-  opacity: 1
+  animationDuration: '.3s'
 }
 let styleSheet = document.styleSheets[0]
 const keyframesFadein = `
@@ -30,6 +26,30 @@ const keyframesZoom = `
       100%{transform: scale(1)}
     }`
 styleSheet.insertRule(keyframesZoom, styleSheet.cssRules.length)
+const keyframesLeftIn = `
+    @keyframes modal-content-left-in {
+      0%{transform: translate3d(-100%, 0px, 0px)}
+      100%{transform: translate3d(0px, 0px, 0px)}
+    }`
+styleSheet.insertRule(keyframesLeftIn, styleSheet.cssRules.length)
+const keyframesRightIn = `
+    @keyframes modal-content-right-in {
+      0%{transform: translate3d(100%, 0px, 0px)}
+      100%{transform: translate3d(0px, 0px, 0px)}
+    }`
+styleSheet.insertRule(keyframesRightIn, styleSheet.cssRules.length)
+const keyframesTopIn = `
+    @keyframes modal-content-top-in {
+      0%{transform: translate3d(0px, -100%, 0px)}
+      100%{transform: translate3d(0px, 0px, 0px)}
+    }`
+styleSheet.insertRule(keyframesTopIn, styleSheet.cssRules.length)
+const keyframesBottomIn = `
+    @keyframes modal-content-bottom-in {
+      0%{transform: translate3d(0px, 100%, 0px)}
+      100%{transform: translate3d(0px, 0px, 0px)}
+    }`
+styleSheet.insertRule(keyframesBottomIn, styleSheet.cssRules.length)
 function hack (maskClickHander) {
   return function (e) {
     e.target.className.indexOf('_modal_mask_') > -1 &&
@@ -42,7 +62,7 @@ function noMove (e) {
   e.preventDefault()
 }
 
-export default class Modal extends Component {
+export default class ModalStateless extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -50,11 +70,7 @@ export default class Modal extends Component {
     }
     this.modalContentStyle = {
       animationDuration: '.3s',
-      transition: 'transform .3s',
-      animationName: 'modal-content-zoom'
-    }
-    if (!props.position || props.position === 'center') {
-      this.modalContentStyle.animationName = 'modal-content-zoom'
+      transition: 'transform .3s'
     }
   }
   componentWillReceiveProps (nextProps) {
@@ -65,21 +81,75 @@ export default class Modal extends Component {
     }
   }
   render = (
-    {
-      open,
-      into = 'body',
-      children,
-      onMaskClick,
-      style = {}
-    },
+    { open, into = 'body', children, onMaskClick, position, style = {} },
     { close }
   ) => {
-    let mergedStyle = Object.assign({}, baseStyle, style)
+    let maskStyle = Object.assign({}, baseStyle, style)
     if (open) {
-      mergedStyle.animationName = 'modal-mask-fadein'
+      maskStyle.animationName = 'modal-mask-fadein'
     }
     else {
-      mergedStyle.opacity = 0
+      maskStyle.backgroundColor = 'rgba(0,0,0,0)'
+    }
+    let modalContentStyle = Object.assign({}, this.modalContentStyle)
+    if (position === 'center') {
+      modalContentStyle.animationName = 'modal-content-zoom'
+      maskStyle.transition = 'background-color .3s linear'
+      maskStyle.justifyContent = 'center'
+      maskStyle.alignItems = 'center'
+      if (open) {
+        modalContentStyle.transform = 'scale(1)'
+      }
+      else {
+        modalContentStyle.transform = 'scale(0)'
+      }
+    }
+    else if (position === 'left') {
+      maskStyle.alignItems = 'center'
+      maskStyle.transition = 'background-color .3s easy-out'
+      if (open) {
+        modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
+        modalContentStyle.animationName = 'modal-content-left-in'
+      }
+      else {
+        modalContentStyle.transform = 'translate3d(-100%, 0px, 0px)'
+      }
+    }
+    else if (position === 'right') {
+      maskStyle.alignItems = 'center'
+      maskStyle.justifyContent = 'flex-end'
+      maskStyle.transition = 'background-color .3s easy-in'
+      if (open) {
+        modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
+        modalContentStyle.animationName = 'modal-content-right-in'
+      }
+      else {
+        modalContentStyle.transform = 'translate3d(100%, 0px, 0px)'
+      }
+    }
+    else if (position === 'top') {
+      maskStyle.alignItems = 'flex-start'
+      maskStyle.justifyContent = 'center'
+      maskStyle.transition = 'background-color .3s easy-in-out'
+      if (open) {
+        modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
+        modalContentStyle.animationName = 'modal-content-top-in'
+      }
+      else {
+        modalContentStyle.transform = 'translate3d(0, -100%, 0px)'
+      }
+    }
+    else if (position === 'bottom') {
+      maskStyle.alignItems = 'flex-end'
+      maskStyle.justifyContent = 'center'
+      maskStyle.transition = 'background-color .3s easy-in-out'
+      if (open) {
+        modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
+        modalContentStyle.animationName = 'modal-content-bottom-in'
+      }
+      else {
+        modalContentStyle.transform = 'translate3d(0, 100%, 0px)'
+      }
     }
     return open || !close ? (
       <Portal into={into}>
@@ -87,11 +157,68 @@ export default class Modal extends Component {
           className="_modal_mask_"
           onClick={hack(onMaskClick)}
           onTouchMove={noMove}
-          style={mergedStyle}
+          style={maskStyle}
         >
-          <div style={this.modalContentStyle}>{children}</div>
+          <div style={modalContentStyle}>{children}</div>
         </div>
       </Portal>
     ) : null
   }
+}
+
+export class Modal extends Component {
+  show ({ renderContent = () => null, autoClose = true, position = 'center' }) {
+    this.setState({ open: true, renderContent, autoClose, position })
+  }
+  hide () {
+    this.setState({ open: false })
+  }
+  onMaskClick () {
+    if (this.state.autoClose) {
+      this.hide()
+    }
+  }
+  constructor (props) {
+    super(props)
+    this.show = this.show.bind(this)
+    this.hide = this.hide.bind(this)
+    this.onMaskClick = this.onMaskClick.bind(this)
+    this.$modal = {
+      show: this.show,
+      hide: this.hide
+    }
+    this.state = {
+      open: false,
+      autoClose: true,
+      position: 'center',
+      renderContent: () => null
+    }
+  }
+  render ({ children }, { open, renderContent, position }) {
+    return (
+      <div>
+        {cloneElement(children[0], { $modal: this.$modal })}
+        <ModalStateless
+          onMaskClick={this.onMaskClick}
+          open={open}
+          position={position}
+        >
+          {renderContent()}
+        </ModalStateless>
+      </div>
+    )
+  }
+}
+
+export const WithModal = BaseComponent => {
+  class ComponentWithModal extends Component {
+    render () {
+      return (
+        <Modal>
+          <BaseComponent {...this.props} />
+        </Modal>
+      )
+    }
+  }
+  return ComponentWithModal
 }
