@@ -1,90 +1,93 @@
-import { h } from 'preact'
+import { h, Component, cloneElement } from 'preact'
+import Text from '@ruiyun/preact-text'
 import {
   ColumnView,
-  RowView,
-  SlotColumnView,
-  XCenterView
-} from 'preact-layoutview'
-import Text from 'preact-text'
-import { TouchableBlock } from 'preact-touchable'
-import Modal from 'preact-modal'
-import Line from 'preact-line'
-let styleSheet = document.styleSheets[0]
-const keyframesShow = `
-    @keyframes dialog-zoom {
-      0%{transform: scale(0)}
-      50%{transform: scale(1.1)}
-      100%{transform: scale(1)}
-    }`
-styleSheet.insertRule(keyframesShow, styleSheet.cssRules.length)
+  SlotRowView,
+  XCenterView,
+  SlotColumnView
+} from '@ruiyun/preact-layout-suite'
+import { WithModal } from '@ruiyun/preact-modal'
+import Line from '@ruiyun/preact-line'
+import { TouchableBlock } from '@ruiyun/preact-m-touchable'
 
-const baseStyle = {
-  borderRadius: '0.32rem',
-  animationDuration: '0.3s',
-  animationName: 'dialog-zoom',
-  minHeight: '3.4rem'
-}
-
-const Dialog = ({
-  type = 'confirm',
-  style = {},
-  title,
-  content,
-  open,
-  onConfirm,
-  onCancel
-}) => (
-  <Modal open={open}>
-    <ColumnView
-      width={489}
-      bgColor="#f8f8f8"
-      style={Object.assign({}, baseStyle, style)}
-    >
-      <SlotColumnView hAlign="center" padding={[36, 69, 36, 69]} slot={10}>
-        <Text size={31} color="#000" style={{ fontWeight: 'bold' }}>
-          {title}
-        </Text>
-        <Text size={23} color="#000" style={{ textAlign: 'center' }}>
-          {content}
-        </Text>
-      </SlotColumnView>
-      <Line color="#dad9de" />
-      {type === 'alert' ? (
-        <RowView>
-          <TouchableBlock onPress={onConfirm}>
-            <Text>确定</Text>
-          </TouchableBlock>
-        </RowView>
-      ) : (
-        <RowView height={81}>
-          <TouchableBlock
-            onPress={onConfirm}
-            style={{
-              flex: 1,
-              height: '100%'
-            }}
-          >
-            <XCenterView style={{ height: '100%' }}>
-              <Text size={28} color="#007afa" style={{ fontWeight: 'bold' }}>
-                知道了
-              </Text>
-            </XCenterView>
-          </TouchableBlock>
-          <Line color="#dad9de" v />
-          <TouchableBlock
-            onPress={onCancel}
-            style={{ flex: 1, height: '100%' }}
-          >
-            <XCenterView style={{ height: '100%' }}>
-              <Text size={28} color="#007afa">
-                去设置
-              </Text>
-            </XCenterView>
-          </TouchableBlock>
-        </RowView>
-      )}
-    </ColumnView>
-  </Modal>
+// eslint-disable-next-line
+const renderModalContent = (title, content, btns, cb) => () => (
+  <ColumnView bgColor="#fff" width={540} style={{ borderRadius: '0.08rem' }}>
+    <SlotColumnView hAlign="center" padding={[40, 32, 32, 32]} slot={20}>
+      <Text size={32} color="#333">
+        {title}
+      </Text>
+      <Text size={28} color="#666">
+        {content}
+      </Text>
+    </SlotColumnView>
+    <Line color="#ebebeb" />
+    <SlotRowView height={100} slot={<Line v />}>
+      {btns.map((btn, i) => (
+        <TouchableBlock
+          // eslint-disable-next-line
+          onPress={() => cb(i)}
+          key={i}
+          style={{ flex: 1, height: '100%' }}
+        >
+          <XCenterView height={100}>
+            <Text size={32} color="#fc9153">
+              {btn}
+            </Text>
+          </XCenterView>
+        </TouchableBlock>
+      ))}
+    </SlotRowView>
+  </ColumnView>
 )
 
-export default Dialog
+@WithModal
+export class Dialog extends Component {
+  alert ({ title, content, btn, cb }) {
+    const callback = btnIndex => {
+      this.props.$modal.hide()
+      cb && cb(btnIndex)
+    }
+    const c = renderModalContent(title, content, [btn], callback)
+    this.props.$modal.show({
+      renderContent: c,
+      autoClose: false
+    })
+  }
+  confirm ({ title, content, btns, cb }) {
+    const callback = btnIndex => {
+      this.props.$modal.hide()
+      cb && cb(btnIndex)
+    }
+    const c = renderModalContent(title, content, btns, callback)
+    this.props.$modal.show({
+      renderContent: c,
+      autoClose: false
+    })
+  }
+  constructor (props) {
+    super(props)
+    this.alert = this.alert.bind(this)
+    this.confirm = this.confirm.bind(this)
+  }
+
+  render ({ children }) {
+    return cloneElement(children[0], {
+      $alert: this.alert,
+      $confirm: this.confirm
+    })
+  }
+}
+
+export const WithDialog = BaseComponent => {
+  class ComponentWithDialog extends Component {
+    render () {
+      return (
+        <Dialog>
+          <BaseComponent {...this.props} />
+        </Dialog>
+      )
+    }
+  }
+  return ComponentWithDialog
+}

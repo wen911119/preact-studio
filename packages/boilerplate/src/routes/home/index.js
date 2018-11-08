@@ -34,6 +34,11 @@ const Home = () => (
         modal
       </Link>
     </div>
+    <div>
+      <Link activeClassName={style.active} href="/dialog">
+        dialog
+      </Link>
+    </div>
   </div>
 )
 export default Home
