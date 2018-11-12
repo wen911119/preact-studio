@@ -31,6 +31,7 @@
     "@ruiyun/preact-modal": "^1.1.0",
     "@ruiyun/preact-m-touchable": "^1.1.1",
     "@ruiyun/preact-m-dialog": "^1.1.1",
+    "@ruiyun/preact-loading": "^1.1.2",
     "axios": "^0.18.0",
     "p-to-r": "^1.0.0",
     "preact": "^8.2.6",

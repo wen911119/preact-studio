@@ -2,6 +2,8 @@ import { h, Component } from 'preact'
 import { XCenterView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import { WithModal } from '@ruiyun/preact-modal'
+import { WithToast } from '../../components/Toast'
+import { WithLoading } from '../../components/Loading'
 
 const renderModalContent = () => (
   <XCenterView height={300} bgColor="#fff" width={600}>
@@ -33,7 +35,8 @@ const renderBottomModalContent = () => (
   </XCenterView>
 )
 
-
+@WithLoading
+@WithToast
 @WithModal
 export default class TabsDemo extends Component {
   constructor(props) {
@@ -45,7 +48,7 @@ export default class TabsDemo extends Component {
     this.openBottomModal = this.openBottomModal.bind(this)
   }
   openCenterModal() {
-    this.props.$modal.show({ renderContent: renderModalContent })
+    this.props.$modal.show({ renderContent: renderModalContent, mask: 0.5 })
   }
   openLeftModal() {
     this.props.$modal.show({
@@ -58,6 +61,7 @@ export default class TabsDemo extends Component {
       renderContent: renderRightModalContent,
       position: 'right'
     })
+    this.props.$loading.show('请填写姓名')
   }
   openTopModal() {
     this.props.$modal.show({

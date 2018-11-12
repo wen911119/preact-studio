@@ -9,7 +9,6 @@ const baseStyle = {
   right: 0,
   top: 0,
   bottom: 0,
-  backgroundColor: 'rgba(0,0,0,0.2)',
   animationDuration: '.3s'
 }
 let styleSheet = document.styleSheets[0]
@@ -81,9 +80,10 @@ export default class ModalStateless extends Component {
     }
   }
   render = (
-    { open, into = 'body', children, onMaskClick, position, style = {} },
+    { open, into = 'body', children, onMaskClick, position, mask },
     { close }
   ) => {
+    const style = { backgroundColor: `rgba(0,0,0,${mask})` }
     let maskStyle = Object.assign({}, baseStyle, style)
     if (open) {
       maskStyle.animationName = 'modal-mask-fadein'
@@ -167,8 +167,13 @@ export default class ModalStateless extends Component {
 }
 
 export class Modal extends Component {
-  show ({ renderContent = () => null, autoClose = true, position = 'center' }) {
-    this.setState({ open: true, renderContent, autoClose, position })
+  show ({
+    renderContent = () => null,
+    autoClose = true,
+    position = 'center',
+    mask = 0.2
+  }) {
+    this.setState({ open: true, renderContent, autoClose, position, mask })
   }
   hide () {
     this.setState({ open: false })
@@ -191,10 +196,11 @@ export class Modal extends Component {
       open: false,
       autoClose: true,
       position: 'center',
-      renderContent: () => null
+      renderContent: () => null,
+      mask: 0.2
     }
   }
-  render ({ children }, { open, renderContent, position }) {
+  render ({ children }, { open, renderContent, position, mask }) {
     return (
       <div>
         {cloneElement(children[0], { $modal: this.$modal })}
@@ -202,6 +208,7 @@ export class Modal extends Component {
           onMaskClick={this.onMaskClick}
           open={open}
           position={position}
+          mask={mask}
         >
           {renderContent()}
         </ModalStateless>
