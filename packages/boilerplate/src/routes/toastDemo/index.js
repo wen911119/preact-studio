@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
-import { WithToast } from '../../components/Toast'
-import { WithLoading } from '../../components/Loading'
+import { WithToast } from '@ruiyun/preact-m-toast'
+import { WithLoading } from '@ruiyun/preact-m-loading'
 
 @WithLoading
 @WithToast

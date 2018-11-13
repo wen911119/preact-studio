@@ -2,8 +2,8 @@ import { h, Component } from 'preact'
 import { XCenterView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import { WithModal } from '@ruiyun/preact-modal'
-import { WithToast } from '../../components/Toast'
-import { WithLoading } from '../../components/Loading'
+import { WithToast } from '@ruiyun/preact-m-toast'
+import { WithLoading } from '@ruiyun/preact-m-loading'
 
 const renderModalContent = () => (
   <XCenterView height={300} bgColor="#fff" width={600}>

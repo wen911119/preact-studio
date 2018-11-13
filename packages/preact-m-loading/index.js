@@ -4,6 +4,7 @@ import Text from '@ruiyun/preact-text'
 import LoadingIcon from '@ruiyun/preact-loading'
 import { SlotRowView } from '@ruiyun/preact-layout-suite'
 
+// eslint-disable-next-line
 const renderModalContent = txt => () => {
   const slot = txt ? 15 : 0
   return (
@@ -27,16 +28,7 @@ const renderModalContent = txt => () => {
 
 @WithModal
 export class Loading extends Component {
-  constructor(props) {
-    super(props)
-    this.loading = {
-      show: this.show.bind(this),
-      hide: this.hide.bind(this),
-      count: 0,
-      timeoutTimers: []
-    }
-  }
-  show(config) {
+  show (config) {
     const { text = 'loading...', timeout = 6000, mask = 0.15 } = config || {}
     this.loading.count++
     const c = renderModalContent(text)
@@ -52,7 +44,7 @@ export class Loading extends Component {
       }, timeout)
     )
   }
-  hide() {
+  hide () {
     this.loading.count--
     clearTimeout(this.loading.timeoutTimers.pop())
     if (this.loading.count <= 0) {
@@ -61,7 +53,16 @@ export class Loading extends Component {
       this.loading.timeoutTimers = []
     }
   }
-  render({ children }) {
+  constructor (props) {
+    super(props)
+    this.loading = {
+      show: this.show.bind(this),
+      hide: this.hide.bind(this),
+      count: 0,
+      timeoutTimers: []
+    }
+  }
+  render ({ children }) {
     return cloneElement(children[0], {
       $loading: this.loading
     })
@@ -70,7 +71,7 @@ export class Loading extends Component {
 
 export const WithLoading = BaseComponent => {
   class ComponentWithLoading extends Component {
-    render() {
+    render () {
       return (
         <Loading>
           <BaseComponent {...this.props} />
