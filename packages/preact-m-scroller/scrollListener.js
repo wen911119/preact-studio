@@ -68,24 +68,33 @@ export default class ScrollListener extends Component {
     let _style = {
       overflow: 'hidden'
     }
+    let _wrapStyle = {}
     if (height) {
+      _wrapStyle = {
+        overflow: 'hidden'
+      }
       _style = {
         height,
-        overflowY: 'auto'
+        overflowY: 'auto',
+        paddingRight: '30px',
+        marginLeft: '-30px',
+        transform: 'translateX(30px)'
       }
     }
     return (
-      <div
-        style={Object.assign(_style, style)}
-        ref={s => (this.scrollWrap = s)}
-      >
-        {cloneElement(children[0], {
-          position,
-          contentHeight,
-          containerHeight,
-          recomputeLayout: this.recomputeLayout,
-          ...otherProps
-        })}
+      <div style={_wrapStyle}>
+        <div
+          style={Object.assign(_style, style)}
+          ref={s => (this.scrollWrap = s)}
+        >
+          {cloneElement(children[0], {
+            position,
+            contentHeight,
+            containerHeight,
+            recomputeLayout: this.recomputeLayout,
+            ...otherProps
+          })}
+        </div>
       </div>
     )
   }

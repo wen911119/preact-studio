@@ -57,21 +57,29 @@ function hack (maskClickHander) {
   }
 }
 
-function noMove (e) {
-  e.preventDefault()
-}
-
 export default class ModalStateless extends Component {
+  noMove (e) {
+    if (
+      !(
+        this.props.allowContentTouchMove &&
+        e.target.className !== '_modal_mask_'
+      )
+    ) {
+      e.preventDefault()
+    }
+  }
   constructor (props) {
     super(props)
     this.state = {
       close: !props.open
     }
+    this.noMove = this.noMove.bind(this)
     this.modalContentStyle = {
       animationDuration: '.3s',
       transition: 'transform .3s'
     }
   }
+
   componentWillReceiveProps (nextProps) {
     if (this.props.open !== nextProps.open) {
       if (!(this.state.close = nextProps.open)) {
@@ -156,7 +164,7 @@ export default class ModalStateless extends Component {
         <div
           className="_modal_mask_"
           onClick={hack(onMaskClick)}
-          onTouchMove={noMove}
+          onTouchMove={this.noMove}
           style={maskStyle}
         >
           <div style={modalContentStyle}>{children}</div>
@@ -171,9 +179,17 @@ export class Modal extends Component {
     renderContent = () => null,
     autoClose = true,
     position = 'center',
-    mask = 0.2
+    mask = 0.2,
+    allowContentTouchMove = false
   }) {
-    this.setState({ open: true, renderContent, autoClose, position, mask })
+    this.setState({
+      open: true,
+      renderContent,
+      autoClose,
+      position,
+      mask,
+      allowContentTouchMove
+    })
   }
   hide () {
     this.setState({ open: false })
@@ -197,10 +213,14 @@ export class Modal extends Component {
       autoClose: true,
       position: 'center',
       renderContent: () => null,
-      mask: 0.2
+      mask: 0.2,
+      allowContentTouchMove: false
     }
   }
-  render ({ children }, { open, renderContent, position, mask }) {
+  render (
+    { children },
+    { open, renderContent, position, mask, allowContentTouchMove }
+  ) {
     return (
       <div>
         {cloneElement(children[0], { $modal: this.$modal })}
@@ -209,6 +229,7 @@ export class Modal extends Component {
           open={open}
           position={position}
           mask={mask}
+          allowContentTouchMove={allowContentTouchMove}
         >
           {renderContent()}
         </ModalStateless>

@@ -32,7 +32,7 @@ class Content extends Component {
 export default class ScrollerDemo extends Component {
   render() {
     return (
-      <ScrollerWithRefreshAndLoadMore height="100%">
+      <ScrollerWithRefreshAndLoadMore>
         <Content />
       </ScrollerWithRefreshAndLoadMore>
     )

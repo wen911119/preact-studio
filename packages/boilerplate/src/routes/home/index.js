@@ -44,6 +44,11 @@ const Home = () => (
         toast
       </Link>
     </div>
+    <div>
+      <Link activeClassName={style.active} href="/picker">
+        picker
+      </Link>
+    </div>
   </div>
 )
 export default Home
