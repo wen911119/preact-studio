@@ -8,6 +8,9 @@ export class Scroller extends Component {
   recomputeLayout () {
     this.scrollListener.recomputeLayout()
   }
+  scrollTo (position) {
+    this.scrollListener.scrollTo(position)
+  }
   constructor (props) {
     super(props)
     this.recomputeLayout = this.recomputeLayout.bind(this)

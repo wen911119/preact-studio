@@ -36,10 +36,14 @@ export default class ScrollListener extends Component {
     const { scrollHeight, scrollTop, clientHeight } = this.scrollEventTarget
     this.updatePosition(clientHeight, scrollHeight, scrollTop)
   }
+  scrollTo (position) {
+    this.scrollEventTarget.scrollTop = position
+  }
   constructor (props) {
     super(props)
     this.updatePosition = this.updatePosition.bind(this)
     this.recomputeLayout = this.recomputeLayout.bind(this)
+    this.scrollTo = this.scrollTo.bind(this)
     this.state = {
       position: 'top',
       contentHeight: 0,
