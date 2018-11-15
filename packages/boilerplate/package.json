@@ -34,6 +34,7 @@
     "@ruiyun/preact-loading": "^1.1.2",
     "@ruiyun/preact-m-toast": "^1.1.2",
     "@ruiyun/preact-m-loading": "^1.1.2",
+    "@ruiyun/preact-m-actionsheet": "^1.1.2",
     "axios": "^0.18.0",
     "p-to-r": "^1.0.0",
     "preact": "^8.2.6",

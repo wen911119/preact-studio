@@ -45,8 +45,8 @@ const Home = () => (
       </Link>
     </div>
     <div>
-      <Link activeClassName={style.active} href="/picker">
-        picker
+      <Link activeClassName={style.active} href="/actionsheet">
+        actionsheet
       </Link>
     </div>
   </div>

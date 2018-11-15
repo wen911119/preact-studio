@@ -33,7 +33,7 @@ export class Loading extends Component {
     this.loading.count++
     const c = renderModalContent(text)
     this.props.$modal.show({
-      renderContent: c,
+      content: c,
       autoClose: false,
       mask
     })

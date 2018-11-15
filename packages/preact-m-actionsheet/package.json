@@ -1,0 +1,35 @@
+{
+  "name": "@ruiyun/preact-m-actionsheet",
+  "version": "1.1.2",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "dependencies": {
+    "@ruiyun/preact-layout-suite": "^1.1.0",
+    "@ruiyun/preact-line": "^1.1.0",
+    "@ruiyun/preact-m-touchable": "^1.1.1",
+    "@ruiyun/preact-modal": "^1.1.2",
+    "@ruiyun/preact-text": "^1.1.0"
+  },
+  "compileDependencies": [
+    "@ruiyun/preact-layout-suite",
+    "@ruiyun/preact-line",
+    "@ruiyun/preact-modal",
+    "@ruiyun/preact-text",
+    "@ruiyun/preact-m-touchable"
+  ],
+  "peerDependencies": {
+    "preact": "^8.2.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

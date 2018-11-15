@@ -176,7 +176,7 @@ export default class ModalStateless extends Component {
 
 export class Modal extends Component {
   show ({
-    renderContent = () => null,
+    content = () => null,
     autoClose = true,
     position = 'center',
     mask = 0.2,
@@ -184,7 +184,7 @@ export class Modal extends Component {
   }) {
     this.setState({
       open: true,
-      renderContent,
+      content,
       autoClose,
       position,
       mask,
@@ -212,15 +212,16 @@ export class Modal extends Component {
       open: false,
       autoClose: true,
       position: 'center',
-      renderContent: () => null,
+      content: () => null,
       mask: 0.2,
       allowContentTouchMove: false
     }
   }
   render (
     { children },
-    { open, renderContent, position, mask, allowContentTouchMove }
+    { open, content, position, mask, allowContentTouchMove }
   ) {
+    const Content = content
     return (
       <div>
         {cloneElement(children[0], { $modal: this.$modal })}
@@ -231,7 +232,7 @@ export class Modal extends Component {
           mask={mask}
           allowContentTouchMove={allowContentTouchMove}
         >
-          {renderContent()}
+          <Content />
         </ModalStateless>
       </div>
     )

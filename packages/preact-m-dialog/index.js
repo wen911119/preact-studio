@@ -50,7 +50,7 @@ export class Dialog extends Component {
     }
     const c = renderModalContent(title, content, [btn], callback)
     this.props.$modal.show({
-      renderContent: c,
+      content: c,
       autoClose: false
     })
   }
@@ -61,7 +61,7 @@ export class Dialog extends Component {
     }
     const c = renderModalContent(title, content, btns, callback)
     this.props.$modal.show({
-      renderContent: c,
+      content: c,
       autoClose: false
     })
   }

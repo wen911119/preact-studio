@@ -48,30 +48,30 @@ export default class TabsDemo extends Component {
     this.openBottomModal = this.openBottomModal.bind(this)
   }
   openCenterModal() {
-    this.props.$modal.show({ renderContent: renderModalContent, mask: 0.5 })
+    this.props.$modal.show({ content: renderModalContent, mask: 0.5 })
   }
   openLeftModal() {
     this.props.$modal.show({
-      renderContent: renderLeftModalContent,
+      content: renderLeftModalContent,
       position: 'left'
     })
   }
   openRightModal() {
     this.props.$modal.show({
-      renderContent: renderRightModalContent,
+      content: renderRightModalContent,
       position: 'right'
     })
     this.props.$loading.show('请填写姓名')
   }
   openTopModal() {
     this.props.$modal.show({
-      renderContent: renderTopModalContent,
+      content: renderTopModalContent,
       position: 'top'
     })
   }
   openBottomModal () {
     this.props.$modal.show({
-      renderContent: renderBottomModalContent,
+      content: renderBottomModalContent,
       position: 'bottom'
     })
   }

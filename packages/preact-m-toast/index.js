@@ -26,7 +26,7 @@ export class Toast extends Component {
     }
     const c = renderModalContent(txt)
     this.props.$modal.show({
-      renderContent: c,
+      content: c,
       autoClose: false,
       mask: 0
     })
