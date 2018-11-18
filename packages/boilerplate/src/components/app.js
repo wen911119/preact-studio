@@ -12,6 +12,7 @@ import ModalDemo from '../routes/modalDemo'
 import DialogDemo from '../routes/dialogDemo'
 import ToastDemo from '../routes/toastDemo'
 import ActionSheetDemo from '../routes/actionsheetDemo'
+import PickerDemo from '../routes/pickerDemo'
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 
@@ -41,6 +42,7 @@ export default class App extends Component {
           <DialogDemo path="/dialog/" />
           <ToastDemo path="/toast/" />
           <ActionSheetDemo path="/actionsheet/" />
+          <PickerDemo path="/picker/" />
         </Router>
       </div>
     )
