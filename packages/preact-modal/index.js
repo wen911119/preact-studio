@@ -180,7 +180,8 @@ export class Modal extends Component {
     autoClose = true,
     position = 'center',
     mask = 0.2,
-    allowContentTouchMove = false
+    allowContentTouchMove = false,
+    onMaskClick
   }) {
     this.setState({
       open: true,
@@ -188,7 +189,8 @@ export class Modal extends Component {
       autoClose,
       position,
       mask,
-      allowContentTouchMove
+      allowContentTouchMove,
+      onMaskClick
     })
   }
   hide () {
@@ -198,6 +200,7 @@ export class Modal extends Component {
     if (this.state.autoClose) {
       this.hide()
     }
+    this.state.onMaskClick && this.state.onMaskClick()
   }
   constructor (props) {
     super(props)
@@ -214,7 +217,8 @@ export class Modal extends Component {
       position: 'center',
       content: () => null,
       mask: 0.2,
-      allowContentTouchMove: false
+      allowContentTouchMove: false,
+      onMaskClick: null
     }
   }
   render (
