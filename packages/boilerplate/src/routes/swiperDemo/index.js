@@ -1,7 +1,7 @@
 import { h, Component } from 'preact'
 import { XCenterView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
-import Swiper from '../../components/Swiper'
+import Swiper from '@ruiyun/preact-m-swiper'
 
 const SwiperItem = () => {
   console.log('SwiperItem===>render')
