@@ -1,7 +1,7 @@
 import { h, Component } from 'preact'
 import style from './style'
 import { Link } from 'preact-router/match'
-import Image from '../../components/Image'
+import Image from '@ruiyun/preact-image'
 export default class Home extends Component {
   state = {
     images: []
