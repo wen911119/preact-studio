@@ -1,0 +1,24 @@
+{
+  "name": "@ruiyun/preact-image",
+  "version": "1.0.0",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "dependencies": {
+    "@ruiyun/preact-layout-suite": "^1.1.3"
+  },
+  "peerDependencies": {
+    "preact": "^8.2.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
