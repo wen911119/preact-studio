@@ -2,6 +2,10 @@ import { h, Component } from 'preact'
 import style from './style'
 import { Link } from 'preact-router/match'
 import Image from '@ruiyun/preact-image'
+import { TouchableInline } from '@ruiyun/preact-m-touchable'
+import { WithImagePreview } from '@ruiyun/preact-m-image-preview'
+
+@WithImagePreview
 export default class Home extends Component {
   state = {
     images: []
@@ -23,8 +27,11 @@ export default class Home extends Component {
       })
     )
     this.setState({
-      images: base64Urls
+      images: this.state.images.concat(base64Urls)
     })
+  }
+  onPreview = currentIndex => {
+    this.props.$preview(this.state.images, currentIndex)
   }
   render() {
     return (
@@ -81,7 +88,11 @@ export default class Home extends Component {
           </Link>
         </div>
         <div>
-          {this.state.images.map((image, i) => <Image mode='fit' width={200} height={200} key={i} src={image} />)}
+          {this.state.images.map((image, i) => (
+            <TouchableInline onPress={this.onPreview.bind(this, i)}>
+              <Image mode="fit" width={200} height={200} key={i} src={image} />
+            </TouchableInline>
+          ))}
           <label for="uploader">
             <i style={{ fontSize: '40px' }}>+</i>
           </label>

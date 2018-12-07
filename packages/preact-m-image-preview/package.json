@@ -1,0 +1,31 @@
+{
+  "name": "@ruiyun/preact-m-image-preview",
+  "version": "1.0.0",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "dependencies": {
+    "@ruiyun/preact-m-swiper": "^1.1.0",
+    "@ruiyun/preact-modal": "^1.1.5",
+    "@ruiyun/preact-image": "^1.1.6"
+  },
+  "compileDependencies": [
+    "@ruiyun/preact-m-swiper",
+    "@ruiyun/preact-modal",
+    "@ruiyun/preact-image"
+  ],
+  "peerDependencies": {
+    "preact": "^8.2.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
