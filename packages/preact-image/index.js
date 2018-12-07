@@ -7,39 +7,41 @@ import { XCenterView } from '@ruiyun/preact-layout-suite'
 
 export default class Image extends Component {
   state = {
-    naturalWidth: null,
-    naturalHeight: null
+    imageStyleWidth: '100%',
+    imageStyleHeight: '100%'
   }
   imgOnLoad = e => {
-    if (this.props.mode === 'fit' || this.props.mode === 'fill') {
-      this.setState({
-        naturalWidth: e.target.naturalWidth,
-        naturalHeight: e.target.naturalHeight
+    if (
+      (this.props.mode === 'fit' || this.props.mode === 'fill') &&
+      !this.adjusted
+    ) {
+      this.adjustImageStyle(e.target)
+    }
+  }
+  adjustImageStyle = target => {
+    const { clientWidth, clientHeight, naturalWidth, naturalHeight } = target
+    if (naturalWidth && naturalHeight) {
+      let newStyleObj = {}
+      if (clientHeight / clientWidth >= naturalHeight / naturalWidth) {
+        newStyleObj.imageStyleHeight = 'auto'
+      }
+      else {
+        newStyleObj.imageStyleWidth = 'auto'
+      }
+      this.setState(newStyleObj, () => {
+        this.adjusted = true
       })
     }
   }
-  render ({ src, width, height, mode, style }, { naturalWidth, naturalHeight }) {
-    let imgStyle = {
-      width: '100%',
-      height: '100%'
-    }
-    if (naturalWidth && naturalHeight) {
-      if (mode === 'fit') {
-        if (naturalWidth > naturalHeight) {
-          delete imgStyle.height
-        }
-        else {
-          delete imgStyle.width
-        }
-      }
-      else if (mode === 'fill') {
-        if (naturalWidth > naturalHeight) {
-          delete imgStyle.width
-        }
-        else {
-          delete imgStyle.height
-        }
-      }
+  componentDidMount () {
+    // 有时候加载同一张图不会多次触发onload
+    // 所以在componentDidMount里就可以调整图片了
+    this.adjustImageStyle(this.image)
+  }
+  render ({ width, height, style, src }, { imageStyleWidth, imageStyleHeight }) {
+    const imgStyle = {
+      width: imageStyleWidth,
+      height: imageStyleHeight
     }
     return (
       <XCenterView
@@ -47,7 +49,12 @@ export default class Image extends Component {
         height={height}
         style={Object.assign({ overflow: 'hidden' }, style)}
       >
-        <img style={imgStyle} src={src} onLoad={this.imgOnLoad} />
+        <img
+          ref={s => (this.image = s)}
+          style={imgStyle}
+          src={src}
+          onLoad={this.imgOnLoad}
+        />
       </XCenterView>
     )
   }
