@@ -5,7 +5,7 @@ export default class SwipeManager extends Component {
     super(props)
     this.containerWidth = document.body.clientWidth
     this.state = {
-      swipeDistance: props.swipeDistance,
+      swipeDistance: - this.containerWidth * (props.activeIndex || 0),
       animation: false,
       freeze: false,
       index: props.activeIndex || 0
