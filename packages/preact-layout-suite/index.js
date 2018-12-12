@@ -13,13 +13,13 @@ export const RowView = ({
   children,
   vAlign = 'center',
   hAlign = 'flex-start',
-  height,
-  width,
+  height = 'initial',
+  width = 'initial',
   bgColor = 'transparent',
   padding = [0, 0, 0, 0],
   margin = [0, 0, 0, 0],
   style = {},
-  className
+  className = ''
 }) => (
   <div
     className={className}
@@ -51,16 +51,15 @@ export const RowView = ({
 
 export const ColumnView = ({
   children,
-  flexDirection = 'column',
   vAlign = 'initial',
   hAlign = 'initial',
   padding = [0, 0, 0, 0],
   margin = [0, 0, 0, 0],
   bgColor = 'transparent',
-  width,
-  height,
+  width = 'initial',
+  height = 'initial',
   style = {},
-  className
+  className = ''
 }) => {
   let mergedStyle = Object.assign(
     {
@@ -77,16 +76,12 @@ export const ColumnView = ({
       marginTop: px2rem(margin[0]),
       marginRight: px2rem(margin[1]),
       marginBottom: px2rem(margin[2]),
-      marginLeft: px2rem(margin[3])
+      marginLeft: px2rem(margin[3]),
+      height: px2rem(height),
+      width: px2rem(width)
     },
     style
   )
-  if (height) {
-    mergedStyle.height = px2rem(height)
-  }
-  if (width) {
-    mergedStyle.width = px2rem(width)
-  }
   return (
     <div className={className} style={mergedStyle}>
       {children}
@@ -95,11 +90,11 @@ export const ColumnView = ({
 }
 
 export const XCenterView = ({
-  className,
+  className = '',
   children,
   style = {},
-  height,
-  width,
+  height = 'initial',
+  width = 'initial',
   bgColor = 'transparent'
 }) => (
   <div
