@@ -23,10 +23,18 @@ export default class Image extends Component {
     if (naturalWidth && naturalHeight) {
       let newStyleObj = {}
       if (clientHeight / clientWidth >= naturalHeight / naturalWidth) {
-        newStyleObj.imageStyleHeight = 'auto'
+        if (this.props.mode === 'fit') {
+          newStyleObj.imageStyleHeight = 'auto'
+        }
+        else if (this.props.mode === 'fill') {
+          newStyleObj.imageStyleWidth = 'auto'
+        }
       }
-      else {
+      else if (this.props.mode === 'fit') {
         newStyleObj.imageStyleWidth = 'auto'
+      }
+      else if (this.props.mode === 'fill') {
+        newStyleObj.imageStyleHeight = 'auto'
       }
       this.setState(newStyleObj, () => {
         this.adjusted = true
