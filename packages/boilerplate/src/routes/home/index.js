@@ -1,41 +1,32 @@
 import { h, Component } from 'preact'
 import style from './style'
 import { Link } from 'preact-router/match'
-import Image from '@ruiyun/preact-image'
-import { TouchableInline } from '@ruiyun/preact-m-touchable'
-import { WithImagePreview } from '@ruiyun/preact-m-image-preview'
+import ImageUploader from '../../components/ImageUploader'
+import p2r from 'p-to-r'
+import WithOSS from '../../components/WithOSS'
 
-@WithImagePreview
+const ossConfig = {
+  region: 'oss-cn-shanghai',
+  accessKeyId: 'LTAIpnyXCaVMB88z',
+  accessKeySecret: 'y4tw2Qv8oHK91QVBwWyMg8rXkAFTvH',
+  bucket: 'hua-chao-shang-mao'
+}
+
+const ImageUploaderWithOSS = WithOSS(ossConfig)(ImageUploader)
 export default class Home extends Component {
-  state = {
-    images: []
+  onImageUploaderChange = urls => {
+    console.log(urls, 777)
   }
-  onChoose = async e => {
-    const files = Array.from(e.target.files)
-
-    const base64Urls = await Promise.all(
-      files.map(async file => {
-        const p = new Promise(resolve => {
-          const fileReader = new FileReader()
-          fileReader.onload = e2 => {
-            resolve(e2.target.result)
-          }
-          fileReader.readAsDataURL(file)
-        })
-        const base64Url = await p
-        return base64Url
-      })
-    )
-    this.setState({
-      images: this.state.images.concat(base64Urls)
-    })
+  submit = async () => {
+    const urls = await this.doUpload()
+    console.log(urls, 666666)
   }
-  onPreview = currentIndex => {
-    this.props.$preview(this.state.images, currentIndex)
+  hookUploadMethod = method => {
+    this.doUpload = method
   }
   render() {
     return (
-      <div class={style.home}>
+      <div class={style.home} style={{ padding: `0 ${p2r(30)}` }}>
         <div>
           <Link activeClassName={style.active} href="/scroller">
             scroller
@@ -87,24 +78,27 @@ export default class Home extends Component {
             picker
           </Link>
         </div>
-        <div>
-          {this.state.images.map((image, i) => (
-            <TouchableInline onPress={this.onPreview.bind(this, i)}>
-              <Image mode="fit" width={200} height={200} key={i} src={image} />
-            </TouchableInline>
-          ))}
-          <label for="uploader">
-            <i style={{ fontSize: '40px' }}>+</i>
-          </label>
-          <input
-            id="uploader"
-            type="file"
-            accept="image/*"
-            multiple
-            style={{ display: 'none' }}
-            onChange={this.onChoose}
-          />
+        <ImageUploaderWithOSS
+          onChange={this.onImageUploaderChange}
+          title="上传发票(自动上传)"
+          max={9}
+          urls={[
+            'https://img.banggo.com/sources/cms/banggo2017/APP/appdsx1206.jpg',
+            'https://img.banggo.com/sources/cms/banggo2017/APP/applj81206.jpg'
+          ]}
+        />
+        <div onClick={this.submit} style={{ clear: 'both' }}>
+          提交表单
         </div>
+        <ImageUploaderWithOSS
+          title="选择照片(手动上传)"
+          hookUploadMethod={this.hookUploadMethod}
+          max={9}
+          urls={[
+            'https://img.banggo.com/sources/cms/banggo2017/APP/appdsx1206.jpg',
+            'https://img.banggo.com/sources/cms/banggo2017/APP/applj81206.jpg'
+          ]}
+        />
       </div>
     )
   }
