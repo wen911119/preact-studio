@@ -23,7 +23,7 @@
     "@ruiyun/preact-image"
   ],
   "peerDependencies": {
-    "preact": "^8.2.6"
+    "preact": "^8.4.2"
   },
   "publishConfig": {
     "access": "public"

@@ -13,13 +13,13 @@
   "dependencies": {
     "@ruiyun/preact-m-scroller": "^1.1.3",
     "lodash.isequal": "^4.5.0",
-    "p-to-r": "^1.0.0"
+    "p-to-r": "^1.0.1"
   },
   "compileDependencies": [
     "@ruiyun/preact-m-scroller"
   ],
   "peerDependencies": {
-    "preact": "^8.2.6"
+    "preact": "^8.4.2"
   },
   "publishConfig": {
     "access": "public"

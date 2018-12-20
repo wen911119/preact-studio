@@ -40,7 +40,7 @@
     "@ruiyun/preact-text": "^1.1.5",
     "axios": "^0.18.0",
     "p-to-r": "^1.0.1",
-    "preact": "^8.2.6",
+    "preact": "^8.4.2",
     "preact-compat": "^3.17.0",
     "preact-router": "^2.5.7"
   },

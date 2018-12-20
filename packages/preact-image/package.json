@@ -16,7 +16,7 @@
     "@ruiyun/preact-layout-suite": "^1.1.10"
   },
   "peerDependencies": {
-    "preact": "^8.2.6"
+    "preact": "^8.4.2"
   },
   "publishConfig": {
     "access": "public"

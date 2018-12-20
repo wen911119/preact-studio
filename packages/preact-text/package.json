@@ -13,10 +13,10 @@
     "preact"
   ],
   "dependencies": {
-    "p-to-r": "^1.0.0"
+    "p-to-r": "^1.0.1"
   },
   "peerDependencies": {
-    "preact": "^8.2.6"
+    "preact": "^8.4.2"
   },
   "publishConfig": {
     "access": "public"
