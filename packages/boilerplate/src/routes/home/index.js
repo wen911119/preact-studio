@@ -12,6 +12,8 @@ const ossConfig = {
   bucket: 'hua-chao-shang-mao'
 }
 
+const genFileName = file => '/temp/' + file.name.replace('.', `-${Date.now()}.`)
+
 const ImageUploaderWithOSS = WithOSS(ossConfig)(ImageUploader)
 export default class Home extends Component {
   onImageUploaderChange = urls => {
@@ -80,6 +82,7 @@ export default class Home extends Component {
         </div>
         <ImageUploaderWithOSS
           onChange={this.onImageUploaderChange}
+          genFileName={genFileName}
           title="上传发票(自动上传)"
           max={9}
           urls={[
@@ -93,6 +96,7 @@ export default class Home extends Component {
         <ImageUploaderWithOSS
           title="选择照片(手动上传)"
           hookUploadMethod={this.hookUploadMethod}
+          genFileName={genFileName}
           max={9}
           urls={[
             'https://img.banggo.com/sources/cms/banggo2017/APP/appdsx1206.jpg',

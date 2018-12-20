@@ -63,7 +63,7 @@ export default class OSSImageUploader extends Component {
       if (this.props.$upload && files.length > 0) {
         const urls = await this.props.$upload(
           files,
-          file => '/temp/' + file.name.replace('.', `-${Date.now()}.`)
+          this.props.genFileName
         )
         this.setState(
           {
