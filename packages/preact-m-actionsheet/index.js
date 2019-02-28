@@ -13,7 +13,7 @@ import Line from '@ruiyun/preact-line'
 const renderModalContent = (title, options, cb) => () => (
   <div style={{ backgroundColor: '#fff', width: '100vw' }}>
     <XCenterView height={80}>
-      <Text color="000" size={30}>
+      <Text color="#000" size={30}>
         {title}
       </Text>
     </XCenterView>
