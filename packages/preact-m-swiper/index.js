@@ -5,7 +5,10 @@ import SwipeManager from './swipeManager'
 
 export default class Swiper extends Component {
   shouldComponentUpdate (nextProps) {
-    if (this.props.activeIndex !== nextProps.activeIndex) {
+    if (
+      this.props.activeIndex !== nextProps.activeIndex ||
+      this.props.children.length !== nextProps.children.length
+    ) {
       return true
     }
     return false
