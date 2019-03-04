@@ -8,6 +8,9 @@ const paramsStr = window.location.search.replace(
 let appInfo = {}
 let onPopListeners = []
 let onBackListeners = []
+let onRecorveryListeners = [] // 从缓存恢复事件，这个事件大于onPopListeners和onBackListeners, 拿不到参数
+let onWakeListeners = [] // 从后台回到前台
+let onSleepListeners = [] // 从前台退到后台
 try {
   appInfo = JSON.parse(decodeURI(paramsStr))
 }
@@ -84,17 +87,50 @@ const nav = {
   },
   onPop: listener => onPopListeners.push(listener),
   onBack: listener => onBackListeners.push(listener),
+  onRecorvery: listener => onRecorveryListeners.push(listener),
+  onWake: listener => onWakeListeners.push(listener),
+  onSleep: listener => onSleepListeners.push(listener),
   params: appInfo.params
 }
 // eslint-disable-next-line
-const WithNav = BaseComponent => ({ ...props }) => <BaseComponent {...props} $nav={nav} />
+const WithNav = BaseComponent => ({ ...props }) => (
+  <BaseComponent {...props} $nav={nav} />
+)
 
 export default WithNav
-if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-  // 在多webview时不会触发
+
+// 问题1
+// 部分安卓机不支持bfcache，只能用storage事件，而storage事件不能捕获用户自主返回
+// 问题2
+// 在小程序下，只能用storage事件，而storage事件不能捕获用户自主返回
+
+if (location.search.indexOf('_c=mp') > -1) {
+  // 小程序内webview
+  // 微信多webview只能靠这个
+  // todo: storage事件不能捕获用户自主返回
+  window.addEventListener('storage', event => {
+    if (event.key === 'on-pop-back-params') {
+      const msg = JSON.parse(event.newValue)
+      if (msg.target === current) {
+        // 目标正确
+        if (msg.type === 'onPop') {
+          // 触发onPop
+          onPopListeners.forEach(l => l(msg.params))
+        }
+        else if (msg.type === 'onBack') {
+          onBackListeners.forEach(l => l(msg.params))
+        }
+      }
+    }
+  })
+}
+else {
+  // 普通web
+  // 部分安卓机event.persisted永远为false
   window.addEventListener('pageshow', event => {
     if (event.persisted) {
-      // 从混存恢复的页面
+      // 从缓存恢复的页面
+      onRecorveryListeners.forEach(l => l())
       // 读取onPop参数
       let params = window.localStorage.getItem('on-pop-back-params')
       if (params) {
@@ -113,19 +149,12 @@ if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
     }
   })
 }
-
-window.addEventListener('storage', event => {
-  if (event.key === 'on-pop-back-params') {
-    const msg = JSON.parse(event.newValue)
-    if (msg.target === current) {
-      // 目标正确
-      if (msg.type === 'onPop') {
-        // 触发onPop
-        onPopListeners.forEach(l => l(msg.params))
-      }
-      else if (msg.type === 'onBack') {
-        onBackListeners.forEach(l => l(msg.params))
-      }
-    }
+// 页面唤醒，退后台事件监听
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    onSleepListeners.forEach(l => l())
+  }
+  else if (document.visibilityState === 'visible') {
+    onWakeListeners.forEach(l => l())
   }
 })
