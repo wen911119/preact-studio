@@ -8,9 +8,8 @@ const paramsStr = window.location.search.replace(
 let appInfo = {}
 let onPopListeners = []
 let onBackListeners = []
-let onRecorveryListeners = [] // 从缓存恢复事件，这个事件大于onPopListeners和onBackListeners, 拿不到参数
-let onWakeListeners = [] // 从后台回到前台
-let onSleepListeners = [] // 从前台退到后台
+let onWakeUpListeners = [] // 从后台回到前台,后退从缓存恢复,多webview模式当前webview激活时
+let onSleepListeners = [] // 从前台退到后台, 路由前进当前页被加入缓存，多webview模式当前webview失去焦点
 try {
   appInfo = JSON.parse(decodeURI(paramsStr))
 }
@@ -87,8 +86,7 @@ const nav = {
   },
   onPop: listener => onPopListeners.push(listener),
   onBack: listener => onBackListeners.push(listener),
-  onRecorvery: listener => onRecorveryListeners.push(listener),
-  onWake: listener => onWakeListeners.push(listener),
+  onWakeUp: listener => onWakeUpListeners.push(listener),
   onSleep: listener => onSleepListeners.push(listener),
   params: appInfo.params
 }
@@ -130,7 +128,7 @@ else {
   window.addEventListener('pageshow', event => {
     if (event.persisted) {
       // 从缓存恢复的页面
-      onRecorveryListeners.forEach(l => l())
+      onWakeUpListeners.forEach(l => l())
       // 读取onPop参数
       let params = window.localStorage.getItem('on-pop-back-params')
       if (params) {
@@ -148,13 +146,18 @@ else {
       }
     }
   })
+  window.addEventListener('pagehide', event => {
+    onSleepListeners.forEach(l => l())
+  })
 }
+
 // 页面唤醒，退后台事件监听
+// 在小程序内切换页面
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') {
     onSleepListeners.forEach(l => l())
   }
   else if (document.visibilityState === 'visible') {
-    onWakeListeners.forEach(l => l())
+    onWakeUpListeners.forEach(l => l())
   }
 })
