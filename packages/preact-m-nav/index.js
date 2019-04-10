@@ -33,6 +33,13 @@ const nav = {
         url: `/pages/${path}/${path}?_p=${newAppInfoStr}`
       })
     }
+    else if (typeof weex !== 'undefined') {
+      // eslint-disable-next-line
+      weex.push({
+        page: path,
+        paramsStr: newAppInfoStr
+      })
+    }
     else {
       window.location.href = `/${path}.html?_p=${newAppInfoStr}`
     }
@@ -52,6 +59,10 @@ const nav = {
     if (typeof wx !== 'undefined') {
       // eslint-disable-next-line
       wx.miniProgram.navigateBack()
+    }
+    else if (typeof weex !== 'undefined') {
+      // eslint-disable-next-line
+      weex.pop()
     }
     else {
       window.history.back()
