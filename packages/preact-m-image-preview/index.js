@@ -17,12 +17,26 @@ const renderBottomModalContent = (urls, currentIndex, clickHandler) => () => (
 @WithModal
 export class Preview extends Component {
   preview = (urls, current) => {
-    this.props.$modal.show({
-      content: renderBottomModalContent(urls, current, this.props.$modal.hide),
-      position: 'bottom',
-      mask: 1,
-      autoClose: false
-    })
+    if (typeof wx !== 'undefined') {
+      // 微信环境内用微信的图片预览api
+      // eslint-disable-next-line
+      wx.previewImage({
+        current: urls[current], // 当前显示图片的http链接
+        urls // 需要预览的图片http链接列表
+      })
+    }
+    else {
+      this.props.$modal.show({
+        content: renderBottomModalContent(
+          urls,
+          current,
+          this.props.$modal.hide
+        ),
+        position: 'bottom',
+        mask: 1,
+        autoClose: false
+      })
+    }
   }
   render ({ children }) {
     return cloneElement(children[0], {
@@ -31,7 +45,7 @@ export class Preview extends Component {
   }
 }
 
-export const WithImagePreview = BaseComponent => {
+const WithImagePreview = BaseComponent => {
   class ComponentWithImagePreview extends Component {
     render () {
       return (
@@ -43,3 +57,5 @@ export const WithImagePreview = BaseComponent => {
   }
   return ComponentWithImagePreview
 }
+
+export default WithImagePreview
