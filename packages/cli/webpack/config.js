@@ -10,30 +10,55 @@ const ip = require('ip')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const TARGET_PROJECT_PATH = process.cwd()
+const packageInfo = require(`${TARGET_PROJECT_PATH}/package.json`)
+
+const commonChunks = (packageInfo.commonChunks || []).concat([
+  'preact',
+  'style-loader'
+])
+const commonChunksReg = new RegExp(`[\\/](${commonChunks.join('|')})[\\/]`)
 
 const genEntry = (appJsPath, pageName) => {
-  const entryContent = `
-const { h, render } = require('preact')
-require('preact/debug')
-let App = require('${appJsPath}')
-  .default
-const hotLoader = require('react-hot-loader').default
-hotLoader.preact(require('preact').default)
-if (typeof App === 'function') {
-  let root = document.body.firstElementChild
-  let init = () => {
-    let _app = require('${appJsPath}')
+  let entryContent
+  if (
+    process.env.NODE_ENV === 'develop' ||
+    process.env.NODE_ENV === 'production'
+  ) {
+    entryContent = `
+    const { h, render } = require('preact')
+    let App = require('${appJsPath}')
       .default
-    root = render(h(_app), document.body, root)
+    if (typeof App === 'function') {
+      let root = document.body.firstElementChild
+      root = render(h(App), document.body, root)
+    }
+      `
   }
-  if (module.hot)
-    module.hot.accept(
-      '${appJsPath}',
-      init
-    )
-  init()
-}
-  `
+  else {
+    entryContent = `
+    const { h, render } = require('preact')
+    require('preact/debug')
+    let App = require('${appJsPath}')
+      .default
+    const hotLoader = require('react-hot-loader').default
+    hotLoader.preact(require('preact').default)
+    if (typeof App === 'function') {
+      let root = document.body.firstElementChild
+      let init = () => {
+        let _app = require('${appJsPath}')
+          .default
+        root = render(h(_app), document.body, root)
+      }
+      if (module.hot)
+        module.hot.accept(
+          '${appJsPath}',
+          init
+        )
+      init()
+    }
+      `
+  }
+
   const entryFilePath = path.resolve(__dirname, `./entries/${pageName}.js`)
   createFileSync(entryFilePath)
   writeFileSync(entryFilePath, entryContent)
@@ -66,9 +91,8 @@ const HtmlWebpackPlugins = Object.keys(entries).map(
       chunks: ['common', k]
     })
 )
-
 module.exports = {
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: entries,
   output: {
     path: path.resolve(process.cwd(), 'dist'),
@@ -145,13 +169,18 @@ module.exports = {
       }
     ]
   },
-  plugins: [...HtmlWebpackPlugins, new CleanWebpackPlugin(['dist'])],
+  plugins: [
+    ...HtmlWebpackPlugins,
+    new CleanWebpackPlugin(['dist'], {
+      root: process.cwd()
+    })
+  ],
   optimization: {
     splitChunks: {
       cacheGroups: {
         common: {
           chunks: 'all',
-          test: /[\\/]node_modules[\\/](preact|p-to-r|axios|@ruiyun\/preact-layout-suite|@ruiyun\/preact-m-nav|@ruiyun\/preact-text)[\\/]/,
+          test: commonChunksReg,
           name: 'common'
         }
       }

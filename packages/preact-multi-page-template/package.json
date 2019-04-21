@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "add-page": "h666 add-page",
-    "start": "h666 start --port=3000"
+    "start": "h666 start --port=3000",
+    "build:dev": "h666 build --env=develop",
+    "build:pro": "h666 build --env=production"
   },
   "author": "",
   "license": "ISC",
@@ -30,5 +32,6 @@
   ],
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "commonChunks": ["p-to-r", "preact-layout-suite", "preact-m-nav"]
 }

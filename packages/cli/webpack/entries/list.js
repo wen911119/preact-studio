@@ -1,22 +1,9 @@
 
-const { h, render } = require('preact')
-require('preact/debug')
-let App = require('/Users/wenjun/Documents/preact-toolkit/packages/preact-multi-page-template/src/pages/list/app.js')
-  .default
-const hotLoader = require('react-hot-loader').default
-hotLoader.preact(require('preact').default)
-if (typeof App === 'function') {
-  let root = document.body.firstElementChild
-  let init = () => {
-    let _app = require('/Users/wenjun/Documents/preact-toolkit/packages/preact-multi-page-template/src/pages/list/app.js')
+    const { h, render } = require('preact')
+    let App = require('/Users/wenjun/Documents/preact-toolkit/packages/preact-multi-page-template/src/pages/list/app.js')
       .default
-    root = render(h(_app), document.body, root)
-  }
-  if (module.hot)
-    module.hot.accept(
-      '/Users/wenjun/Documents/preact-toolkit/packages/preact-multi-page-template/src/pages/list/app.js',
-      init
-    )
-  init()
-}
-  
+    if (typeof App === 'function') {
+      let root = document.body.firstElementChild
+      root = render(h(App), document.body, root)
+    }
+      
