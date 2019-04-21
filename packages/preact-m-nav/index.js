@@ -30,7 +30,7 @@ const nav = {
     if (typeof wx !== 'undefined') {
       // eslint-disable-next-line
       wx.miniProgram.navigateTo({
-        url: `/pages/${path}/${path}?_p=${newAppInfoStr}`
+        url: `/pages/${path}/index?_p=${newAppInfoStr}`
       })
     }
     else if (typeof weex !== 'undefined') {

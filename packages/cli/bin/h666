@@ -28,9 +28,10 @@ program
 // start dev server
 program
   .command('start')
+  .option('-p, --port', 'dev server port, default 8080')
   .description('启动开发服务器')
-  .action(() => {
-    require('../libs/start')()
+  .action(port => {
+    require('../libs/start')(port || 8080)
   })
 
 // build command

@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "add-page": "h666 add-page"
+    "add-page": "h666 add-page",
+    "start": "h666 start --port=3000"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "preact": "^8.4.2"
+    "preact": "^8.4.2",
+    "@ruiyun/preact-m-nav": "^1.1.17"
   },
   "devDependencies": {
     "eslint": "^5.9.0",

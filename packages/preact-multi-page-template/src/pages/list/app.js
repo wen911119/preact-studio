@@ -3,19 +3,19 @@ import WithNav from '@ruiyun/preact-m-nav'
 import './app.css'
 
 @WithNav
-export default class Index extends Component {
+export default class List extends Component {
   state = {
-    name: 'wenjun1991'
+    name: 'wenjun'
   }
-  goto = () => {
-    this.props.$nav.push('list')
+  back = () => {
+    this.props.$nav.pop()
   }
   render () {
     return (
       <div>
-        Index
+        List
         <div className='test'>{this.state.name}</div>
-        <div onClick={this.goto}>go to list</div>
+        <div onClick={this.back}>back</div>
       </div>
     )
   }
