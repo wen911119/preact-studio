@@ -21,8 +21,8 @@ program
 program
   .command('create')
   .description('初始化一个新项目')
-  .action(() => {
-    require('../libs/create')()
+  .action(directory => {
+    require('../libs/create')(directory)
   })
 
 // start dev server

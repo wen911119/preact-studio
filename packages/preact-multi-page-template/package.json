@@ -7,7 +7,8 @@
     "add-page": "h666 add-page",
     "start": "h666 start --port=3000",
     "build:dev": "h666 build --env=develop",
-    "build:pro": "h666 build --env=production"
+    "build:pro": "h666 build --env=production",
+    "create": "h666 create"
   },
   "author": "",
   "license": "ISC",
