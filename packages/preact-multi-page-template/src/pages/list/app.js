@@ -10,11 +10,14 @@ export default class List extends Component {
   back = () => {
     this.props.$nav.pop()
   }
+  changeTitle = () => {
+    this.props.$nav.setTitle('123456')
+  }
   render () {
     return (
       <div>
         List
-        <div className='test'>{this.state.name}</div>
+        <div className='test' onClick={this.changeTitle}>{this.state.name}</div>
         <div onClick={this.back}>back</div>
       </div>
     )

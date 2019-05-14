@@ -33,5 +33,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "commonChunks": ["p-to-r", "preact-layout-suite", "preact-m-nav"]
+  "commonChunks": ["p-to-r", "preact-layout-suite", "preact-m-nav"],
+  "pages": {
+    "index": "主页",
+    "list": "列表页"
+  }
 }

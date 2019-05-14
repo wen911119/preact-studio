@@ -12,5 +12,6 @@
   "usingComponents": {
     "loading": "./components/loading/loading",
     "error": "./components/fail/fail"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

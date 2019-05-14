@@ -95,6 +95,9 @@ const nav = {
       }
     }
   },
+  setTitle: title => {
+    document.title = title
+  },
   onPop: listener => onPopListeners.push(listener),
   onBack: listener => onBackListeners.push(listener),
   onWakeUp: listener => onWakeUpListeners.push(listener),

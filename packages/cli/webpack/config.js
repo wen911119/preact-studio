@@ -82,10 +82,11 @@ const getEntries = dir => {
   return entry
 }
 const entries = getEntries('./src/pages')
+const pageTitlesMap = packageInfo.pages || {}
 const HtmlWebpackPlugins = Object.keys(entries).map(
   k =>
     new HtmlWebpackPlugin({
-      title: k,
+      title: pageTitlesMap[k] || k,
       filename: `${k}.html`,
       template: path.resolve(__dirname, './template.html'),
       chunks: ['common', k]
