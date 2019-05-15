@@ -20,9 +20,8 @@ const commonChunks = (packageInfo.commonChunks || []).concat([
 const commonChunksReg = new RegExp(`[\\/](${commonChunks.join('|')})[\\/]`)
 
 const genEntry = (appJsPath, pageName) => {
-  console.log(process.env.NODE_ENV, 33333333)
   let entryContent
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.BUILD_TARGET !== 'local') {
     entryContent = `
     const { h, render } = require('preact')
     let App = require('${appJsPath}')

@@ -6,6 +6,7 @@ const WebpackDevServer = require('webpack-dev-server')
 const ip = require('ip')
 module.exports = function (port) {
   webpackConfig.mode = 'development'
+  webpackConfig.devtool = 'cheap-module-eval-source-map'
   const compiler = webpack(webpackConfig)
   const devServerOptions = Object.assign({}, webpackConfig.devServer, {
     stats: {

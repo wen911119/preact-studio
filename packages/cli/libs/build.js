@@ -1,12 +1,12 @@
 // const fse = require('fs-extra')
 const webpack = require('webpack')
-let webpackConfig = require('../webpack/config')
 
 module.exports = function (buildTarget) {
   if (typeof buildTarget !== 'string') {
     buildTarget = 'production'
   }
   process.env.BUILD_TARGET = buildTarget
+  let webpackConfig = require('../webpack/config')
   webpackConfig.mode = 'production'
   webpack(webpackConfig, (err, stats) => {
     if (err || stats.hasErrors()) {
