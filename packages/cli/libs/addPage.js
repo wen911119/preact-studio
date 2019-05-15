@@ -27,6 +27,14 @@ module.exports = async function addPage () {
     }
   ])).pageName
 
+  const pageTitle = (await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'pageTitle',
+      message: '请输入页面标题'
+    }
+  ])).pageTitle
+
   const pageDistPath = resolve(pageDir, pageName)
   const pageDistJsFile = resolve(pageDistPath, 'app.js')
   const pageDistCssFile = resolve(pageDistPath, 'app.css')
@@ -63,6 +71,14 @@ module.exports = async function addPage () {
     await createFile(pageDistCssFile)
     await writeFile(pageDistCssFile, cssTemplate)
 
+    // 修改packageJson
+    const packageJsonPath = resolve(currentDir, './package.json')
+    let packageJson = await readJSON(packageJsonPath)
+    packageJson.pages[pageName] = pageTitle
+    await writeJSON(packageJsonPath, packageJson, {
+      spaces: 2
+    })
+
     // 小程序
     // js
     const wxjsTemplate = await readFile(
@@ -89,10 +105,13 @@ module.exports = async function addPage () {
     await createFile(pageDistWxssFile)
     await writeFile(pageDistWxssFile, wxssTemplate)
     // json
-    const jsonTemplate = await readFile(
+    let jsonTemplate = await readFile(
       resolve(__dirname, '../.template/wechat-page/index.json'),
       'utf8'
     )
+    if (pageTitle) {
+      jsonTemplate = jsonTemplate.replace('"navigationBarTitleText": "WeChat"', `"navigationBarTitleText": "${pageTitle}"`)
+    }
     await createFile(pageDistJsonFile)
     await writeFile(pageDistJsonFile, jsonTemplate)
     // 给小程序加一条路由

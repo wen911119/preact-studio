@@ -1,5 +1,6 @@
 const gittar = require('gittar')
 const inquirer = require('inquirer')
+const { readJSON, writeJSON } = require('fs-extra')
 
 const path = require('path')
 module.exports = async function (directory) {
@@ -12,7 +13,7 @@ module.exports = async function (directory) {
       }
     ])).directory
   }
-  
+
   const archive = await gittar.fetch('wen911119/preact-toolkit')
   await gittar.extract(archive, path.resolve(process.cwd(), directory), {
     strip: 3,
@@ -22,4 +23,18 @@ module.exports = async function (directory) {
       }
     }
   })
+  // 修改项目名称
+  const packageJsonPath = path.resolve(
+    process.cwd(),
+    directory,
+    './package.json'
+  )
+  let packageJson = await readJSON(packageJsonPath)
+  packageJson.name = directory
+  // eslint-disable-next-line
+  packageJson.version = "1.0.0"
+  await writeJSON(packageJsonPath, packageJson, {
+    spaces: 2
+  })
+  console.log('创建完成！')
 }
