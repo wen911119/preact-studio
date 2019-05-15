@@ -37,10 +37,10 @@ program
 // build command
 program
   .command('build')
-  .option('-e, --env', 'build for dev or production? default production')
+  .option('-t, --target', 'build for dev or production? default production')
   .description('打包最终代码')
-  .action(env => {
-    require('../libs/build')(env || 'production')
+  .action(target => {
+    require('../libs/build')(target)
   })
 program.parse(process.argv)
 

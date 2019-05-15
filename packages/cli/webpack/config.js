@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const {
   readdirSync,
   existsSync,
@@ -19,11 +20,9 @@ const commonChunks = (packageInfo.commonChunks || []).concat([
 const commonChunksReg = new RegExp(`[\\/](${commonChunks.join('|')})[\\/]`)
 
 const genEntry = (appJsPath, pageName) => {
+  console.log(process.env.NODE_ENV, 33333333)
   let entryContent
-  if (
-    process.env.NODE_ENV === 'develop' ||
-    process.env.NODE_ENV === 'production'
-  ) {
+  if (process.env.NODE_ENV === 'production') {
     entryContent = `
     const { h, render } = require('preact')
     let App = require('${appJsPath}')
@@ -93,7 +92,6 @@ const HtmlWebpackPlugins = Object.keys(entries).map(
     })
 )
 module.exports = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: entries,
   output: {
     path: path.resolve(process.cwd(), 'dist'),
@@ -127,39 +125,37 @@ module.exports = {
           options: {
             presets: [
               [
-                `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules/@babel/preset-env/lib/index.js`,
+                '@babel/preset-env',
                 {
                   exclude: ['@babel/plugin-transform-regenerator']
                 }
               ]
             ],
             plugins: [
+              ['@babel/plugin-transform-async-to-generator'],
+              '@babel/plugin-syntax-dynamic-import',
               [
-                `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules/@babel/plugin-transform-async-to-generator/lib/index.js`
-              ],
-              `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules/@babel/plugin-syntax-dynamic-import/lib/index.js`,
-              [
-                `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules/@babel/plugin-proposal-decorators/lib/index.js`,
+                '@babel/plugin-proposal-decorators',
                 {
                   legacy: true
                 }
               ],
               [
-                `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules/@babel/plugin-proposal-class-properties/lib/index.js`,
+                '@babel/plugin-proposal-class-properties',
                 {
                   loose: true
                 }
               ],
               [
-                `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules/babel-plugin-transform-object-rest-spread/lib/index.js`,
+                'babel-plugin-transform-object-rest-spread',
                 {
                   useBuiltIns: true
                 }
               ],
-              `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules/babel-plugin-transform-export-extensions/lib/index.js`,
-              `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules/@babel/plugin-transform-react-constant-elements/lib/index.js`,
+              'babel-plugin-transform-export-extensions',
+              '@babel/plugin-transform-react-constant-elements',
               [
-                `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules/babel-plugin-transform-react-jsx/lib/index.js`,
+                'babel-plugin-transform-react-jsx',
                 {
                   pragma: 'h'
                 }
@@ -172,6 +168,9 @@ module.exports = {
   },
   plugins: [
     ...HtmlWebpackPlugins,
+    new webpack.DefinePlugin({
+      $BUILD_TARGET$: JSON.stringify(process.env.BUILD_TARGET)
+    }),
     new CleanWebpackPlugin(['dist'], {
       root: process.cwd()
     })

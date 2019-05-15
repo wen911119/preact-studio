@@ -1,10 +1,11 @@
-process.env.NODE_ENV = 'local'
+process.env.BUILD_TARGET = 'local'
 const fse = require('fs-extra')
 const webpack = require('webpack')
-const webpackConfig = require('../webpack/config')
+let webpackConfig = require('../webpack/config')
 const WebpackDevServer = require('webpack-dev-server')
 const ip = require('ip')
 module.exports = function (port) {
+  webpackConfig.mode = 'development'
   const compiler = webpack(webpackConfig)
   const devServerOptions = Object.assign({}, webpackConfig.devServer, {
     stats: {
