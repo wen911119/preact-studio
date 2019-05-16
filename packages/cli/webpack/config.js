@@ -103,6 +103,14 @@ module.exports = {
         use: [
           'style-loader',
           {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[local]__[hash:base64:5]',
+              importLoaders: 1
+            }
+          },
+          {
             loader: 'postcss-loader',
             options: {
               plugins: [
