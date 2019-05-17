@@ -1,0 +1,60 @@
+.xcenter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.rowview {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-start;
+}
+.rowview-h-center {
+  justify-content: center;
+}
+
+.rowview-h-right {
+  justify-content: flex-end;
+}
+
+.rowview-h-around {
+  justify-content: space-around;
+}
+
+.rowview-h-between {
+  justify-content: space-between;
+}
+
+.rowview-v-top {
+  align-items: flex-start;
+}
+
+.rowview-v-bottom {
+  align-items: flex-end;
+}
+
+.columnview {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.columnview-h-center {
+  align-items: center;
+}
+
+.columnview-v-center {
+  justify-content: center;
+}
+
+.columnview-h-right {
+  align-items: flex-end;
+}
+
+.columnview-v-bottom {
+  justify-content: flex-end;
+}
