@@ -73,12 +73,17 @@ export const RowView = ({
   padding,
   margin,
   style = {},
-  className
+  className,
+  ...otherProps
 }) => {
   const classNames = classNameParser('rowview')({ vAlign, hAlign, className })
   const composeStyle = styleParser({ padding, margin, bgColor, width, height })
   return (
-    <div className={classNames} style={Object.assign(composeStyle, style)}>
+    <div
+      className={classNames}
+      style={Object.assign(composeStyle, style)}
+      {...otherProps}
+    >
       {children}
     </div>
   )
@@ -94,7 +99,8 @@ export const ColumnView = ({
   width,
   height,
   style = {},
-  className
+  className,
+  ...otherProps
 }) => {
   const classNames = classNameParser('columnview')({
     vAlign,
@@ -103,7 +109,11 @@ export const ColumnView = ({
   })
   const composeStyle = styleParser({ padding, margin, bgColor, width, height })
   return (
-    <div className={classNames} style={Object.assign(composeStyle, style)}>
+    <div
+      className={classNames}
+      style={Object.assign(composeStyle, style)}
+      {...otherProps}
+    >
       {children}
     </div>
   )
@@ -115,7 +125,8 @@ export const XCenterView = ({
   style = {},
   height,
   width,
-  bgColor
+  bgColor,
+  ...otherProps
 }) => {
   let classNames = layout.xcenter
   if (className) {
@@ -123,7 +134,11 @@ export const XCenterView = ({
   }
   const composeStyle = styleParser({ bgColor, width, height })
   return (
-    <div className={classNames} style={Object.assign(composeStyle, style)}>
+    <div
+      className={classNames}
+      style={Object.assign(composeStyle, style)}
+      {...otherProps}
+    >
       {children}
     </div>
   )

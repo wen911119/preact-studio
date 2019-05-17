@@ -58,3 +58,19 @@
 .columnview-v-bottom {
   justify-content: flex-end;
 }
+
+.columnview-v-around {
+  justify-content: space-around;
+}
+
+.columnview-v-between {
+  justify-content: space-between;
+}
+
+.slotrowview > *:last-child {
+  margin-right: 0px;
+}
+
+.slotcolumnview > *:last-child {
+  margin-bottom: 0px;
+}
