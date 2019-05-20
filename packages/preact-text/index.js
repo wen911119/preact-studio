@@ -1,11 +1,13 @@
 import { h } from 'preact'
 import px2rem from 'p-to-r'
-const Text = ({ children, size = 30, color = '#333', weight, style = {} }) => (
+const Text = ({ children, size = 30, color = '#333', weight, style = {}, ...otherProps }) => (
   <span
+    {...otherProps}
     style={Object.assign(
       { color, fontSize: px2rem(size), fontWeight: weight || 'initial' },
       style
     )}
+    
   >
     {children}
   </span>
