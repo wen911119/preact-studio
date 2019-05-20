@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-button",
-  "version": "1.1.31",
+  "version": "1.1.32",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -15,7 +15,7 @@
   "dependencies": {
     "@ruiyun/preact-layout-suite": "^1.1.31",
     "@ruiyun/preact-m-touchable": "^1.1.11",
-    "@ruiyun/preact-text": "^1.1.31",
+    "@ruiyun/preact-text": "^1.1.32",
     "p-to-r": "^1.0.3"
   },
   "peerDependencies": {
