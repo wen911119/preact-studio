@@ -13,7 +13,7 @@
     "preact"
   ],
   "dependencies": {
-    "p-to-r": "^1.0.2"
+    "p-to-r": "^1.0.3"
   },
   "peerDependencies": {
     "preact": "^8.4.2"
