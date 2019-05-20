@@ -17,6 +17,7 @@ const commonChunks = (packageInfo.commonChunks || []).concat([
   'preact',
   'style-loader'
 ])
+
 const commonChunksReg = new RegExp(`[\\/](${commonChunks.join('|')})[\\/]`)
 
 const genEntry = (appJsPath, pageName) => {
@@ -81,12 +82,15 @@ const getEntries = dir => {
 }
 const entries = getEntries('./src/pages')
 const pageTitlesMap = packageInfo.pages || {}
+const customTemplate = path.resolve(TARGET_PROJECT_PATH, './template.html')
 const HtmlWebpackPlugins = Object.keys(entries).map(
   k =>
     new HtmlWebpackPlugin({
       title: pageTitlesMap[k] || k,
       filename: `${k}.html`,
-      template: path.resolve(__dirname, './template.html'),
+      template: existsSync(customTemplate)
+        ? customTemplate
+        : path.resolve(__dirname, './template.html'),
       chunks: ['common', k]
     })
 )
@@ -180,7 +184,8 @@ module.exports = {
   plugins: [
     ...HtmlWebpackPlugins,
     new webpack.DefinePlugin({
-      $BUILD_TARGET$: JSON.stringify(process.env.BUILD_TARGET)
+      $BUILD_TARGET$: JSON.stringify(process.env.BUILD_TARGET),
+      $P_2_R_BASE$: JSON.stringify(packageInfo.p2rBase || 750)
     }),
     new CleanWebpackPlugin(['dist'], {
       root: process.cwd()
