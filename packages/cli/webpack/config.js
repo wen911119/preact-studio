@@ -126,6 +126,10 @@ module.exports = {
         ]
       },
       {
+        test: /\.(svg|woff2?|ttf|eot|jpe?g|png|webp|gif|mp4|mov|ogg|webm)(\?.*)?$/i,
+        loader: 'file-loader'
+      },
+      {
         test: /\.jsx?$/,
         use: {
           loader: 'babel-loader',
