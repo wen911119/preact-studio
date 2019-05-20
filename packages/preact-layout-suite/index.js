@@ -80,9 +80,9 @@ export const RowView = ({
   const composeStyle = styleParser({ padding, margin, bgColor, width, height })
   return (
     <div
+      {...otherProps}
       className={classNames}
       style={Object.assign(composeStyle, style)}
-      {...otherProps}
     >
       {children}
     </div>
@@ -110,9 +110,9 @@ export const ColumnView = ({
   const composeStyle = styleParser({ padding, margin, bgColor, width, height })
   return (
     <div
+      {...otherProps}
       className={classNames}
       style={Object.assign(composeStyle, style)}
-      {...otherProps}
     >
       {children}
     </div>
@@ -135,9 +135,9 @@ export const XCenterView = ({
   const composeStyle = styleParser({ bgColor, width, height })
   return (
     <div
+      {...otherProps}
       className={classNames}
       style={Object.assign(composeStyle, style)}
-      {...otherProps}
     >
       {children}
     </div>
@@ -172,7 +172,7 @@ export const SlotRowView = ({
     }
   }
   return (
-    <RowView className={className} {...otherProps}>
+    <RowView {...otherProps} className={className}>
       {allChildren}
     </RowView>
   )
@@ -202,7 +202,7 @@ export const SlotColumnView = ({
     }
   }
   return (
-    <ColumnView className={className} {...otherProps}>
+    <ColumnView {...otherProps} className={className}>
       {allChildren}
     </ColumnView>
   )
