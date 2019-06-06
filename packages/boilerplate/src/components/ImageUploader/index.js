@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { WithImagePreview } from '@ruiyun/preact-m-image-preview'
+import WithImagePreview from '@ruiyun/preact-m-image-preview'
 import { TouchableInline } from '@ruiyun/preact-m-touchable'
 import Image from '@ruiyun/preact-image'
 import { RowView } from '@ruiyun/preact-layout-suite'

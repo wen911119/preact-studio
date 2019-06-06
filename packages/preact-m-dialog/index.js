@@ -8,58 +8,128 @@ import {
 } from '@ruiyun/preact-layout-suite'
 import { WithModal } from '@ruiyun/preact-modal'
 import Line from '@ruiyun/preact-line'
-import { TouchableBlock } from '@ruiyun/preact-m-touchable'
+import style from './index.css'
 
-// eslint-disable-next-line
-const renderModalContent = (title, content, btns, cb) => () => (
-  <ColumnView bgColor="#fff" width={540} style={{ borderRadius: '0.08rem' }}>
-    <SlotColumnView hAlign="center" padding={[40, 32, 32, 32]} slot={20}>
-      <Text size={32} color="#333">
-        {title}
-      </Text>
-      <Text size={28} color="#666">
-        {content}
-      </Text>
+const defaultConfig = {
+  titleColor: '#333',
+  titleSize: 32,
+  contentColor: '#666',
+  contentSize: 28,
+  btnsColor: ['#fc9153', '#fc9153'],
+  btnSize: 32
+}
+
+/* eslint-disable react/display-name */
+const renderModalContent = ({
+  title,
+  content,
+  btns,
+  cb,
+  placeholder,
+  inputId,
+  value,
+  config,
+  slot
+}) => () => (
+  <ColumnView bgColor="#fff" width={490} style={{ borderRadius: '0.08rem' }}>
+    <SlotColumnView
+      hAlign="center"
+      vAlign="center"
+      padding={[40, 32, 32, 32]}
+      slot={20}
+    >
+      {title && (
+        <Text size={config.titleSize} color={config.titleColor}>
+          {title}
+        </Text>
+      )}
+      {content && (
+        <Text size={config.contentSize} color={config.contentColor}>
+          {content}
+        </Text>
+      )}
+      { slot && slot()}
+      {placeholder && (
+        <input
+          placeholder={placeholder}
+          className={style.promptInput}
+          id={inputId}
+          value={value}
+        />
+      )}
     </SlotColumnView>
     <Line color="#ebebeb" />
     <SlotRowView height={100} slot={<Line v />}>
       {btns.map((btn, i) => (
-        <TouchableBlock
+        <XCenterView
+          key={btn}
           // eslint-disable-next-line
-          onPress={() => cb(i)}
-          key={i}
-          style={{ flex: 1, height: '100%' }}
+          onClick={() => cb(i)}
+          height={100}
+          className={style.shadow}
+          style={{ flex: 1 }}
         >
-          <XCenterView height={100}>
-            <Text size={32} color="#fc9153">
-              {btn}
-            </Text>
-          </XCenterView>
-        </TouchableBlock>
+          <Text size={config.btnSize} color={config.btnsColor[i] || '#fc9153'}>
+            {btn}
+          </Text>
+        </XCenterView>
       ))}
     </SlotRowView>
   </ColumnView>
 )
+/* eslint-enable */
 
 @WithModal
 export class Dialog extends Component {
-  alert ({ title, content, btn, cb }) {
+  alert ({ title, content, btn, cb, config, slot }) {
     const callback = btnIndex => {
       this.props.$modal.hide()
       cb && cb(btnIndex)
     }
-    const c = renderModalContent(title, content, [btn], callback)
+    const mergedConfig = Object.assign({}, defaultConfig, config)
+    const c = renderModalContent({
+      title,
+      content,
+      btns: [btn],
+      cb: callback,
+      config: mergedConfig,
+      slot
+    })
     this.props.$modal.show({
       content: c,
       autoClose: false
     })
   }
-  confirm ({ title, content, btns, cb }) {
+  confirm ({ title, content, btns, cb, config, slot }) {
     const callback = btnIndex => {
       this.props.$modal.hide()
       cb && cb(btnIndex)
     }
-    const c = renderModalContent(title, content, btns, callback)
+    const mergedConfig = Object.assign({}, defaultConfig, config)
+    const c = renderModalContent({ title, content, btns, cb: callback, config: mergedConfig, slot })
+    this.props.$modal.show({
+      content: c,
+      autoClose: false
+    })
+  }
+  prompt ({ title, content, btns, cb, placeholder = '请输入', value, config, slot }) {
+    const inputId = `input_${Math.random()}`
+    const callback = btnIndex => {
+      this.props.$modal.hide()
+      cb && cb(btnIndex, document.getElementById(inputId).value)
+    }
+    const mergedConfig = Object.assign({}, defaultConfig, config)
+    const c = renderModalContent({
+      title,
+      content,
+      btns,
+      cb: callback,
+      placeholder,
+      inputId,
+      value,
+      config: mergedConfig,
+      slot
+    })
     this.props.$modal.show({
       content: c,
       autoClose: false
@@ -69,12 +139,14 @@ export class Dialog extends Component {
     super(props)
     this.alert = this.alert.bind(this)
     this.confirm = this.confirm.bind(this)
+    this.prompt = this.prompt.bind(this)
   }
 
   render ({ children }) {
     return cloneElement(children[0], {
       $alert: this.alert,
-      $confirm: this.confirm
+      $confirm: this.confirm,
+      $prompt: this.prompt
     })
   }
 }

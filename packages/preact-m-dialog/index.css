@@ -1,0 +1,27 @@
+.shadow:active {
+  background-color: rgba(0, 0, 0, 0.07);
+}
+.promptInput {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 1px solid #ebebeb;
+  border-width: 0.5px;
+  height: 0.9rem;
+  border-radius: 0.05rem;
+  width: 100%;
+  text-indent: 0.2rem;
+  outline: none;
+  text-shadow: none;
+  color: #666;
+  margin: 1px;
+  line-height: 1;
+}
+
+.promptInput:focus {
+  border-color: #fc9153;
+}
+
+.promptInput:active {
+  border-color: #fc9153;
+}

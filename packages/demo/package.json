@@ -1,0 +1,65 @@
+{
+  "private": true,
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "add-page": "h666 add-page",
+    "start": "h666 start --port=3000",
+    "build:dev": "h666 build --target=dev",
+    "build:pro": "h666 build --target=production"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ruiyun/preact-m-nav": "^1.1.18",
+    "@ruiyun/preact-button": "^1.0.0",
+    "@ruiyun/preact-image": "^1.1.31",
+    "@ruiyun/preact-layout-suite": "^1.1.31",
+    "@ruiyun/preact-line": "^1.1.31",
+    "@ruiyun/preact-loading": "^1.1.31",
+    "@ruiyun/preact-m-actionsheet": "^1.1.32",
+    "@ruiyun/preact-m-auto-list": "^1.1.31",
+    "@ruiyun/preact-m-dialog": "^1.1.32",
+    "@ruiyun/preact-m-image-preview": "^1.1.31",
+    "@ruiyun/preact-m-loading": "^1.1.32",
+    "@ruiyun/preact-m-scroller": "^1.1.11",
+    "@ruiyun/preact-m-swiper": "^1.1.13",
+    "@ruiyun/preact-m-tabs": "^1.1.31",
+    "@ruiyun/preact-m-toast": "^1.1.32",
+    "@ruiyun/preact-modal": "^1.1.11",
+    "@ruiyun/preact-text": "^1.1.32",
+    "preact": "^8.4.2"
+  },
+  "devDependencies": {
+    "@ruiyun/h666-cli": "^1.1.29",
+    "eslint": "^5.9.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-config-standard-react": "^7.0.2",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "pre-commit": "^1.2.2"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "commonChunks": [
+    "p-to-r",
+    "preact-layout-suite",
+    "preact-m-nav"
+  ],
+  "pages": {
+    "index": "主页",
+    "list": "列表页",
+    "buttonDemo": "button示例",
+    "actionsheetDemo": "actionsheet演示",
+    "dialogDemo": "dialog示例"
+  }
+}

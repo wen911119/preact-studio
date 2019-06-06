@@ -1,0 +1,121 @@
+.opacity800:active {
+  opacity: 0.8;
+}
+
+.opacity750:active {
+  opacity: 0.75;
+}
+
+.opacity700:active {
+  opacity: 0.7;
+}
+
+.opacity650:active {
+  opacity: 0.65;
+}
+
+.opacity600:active {
+  opacity: 0.6;
+}
+
+.opacity550:active {
+  opacity: 0.55;
+}
+
+.opacity500:active {
+  opacity: 0.5;
+}
+
+.opacity450:active {
+  opacity: 0.45;
+}
+
+.opacity400:active {
+  opacity: 0.4;
+}
+
+.opacity350:active {
+  opacity: 0.35;
+}
+
+.opacity300:active {
+  opacity: 0.3;
+}
+
+.scale985:active {
+  transform: scale(0.985);
+}
+
+.scale950:active {
+  transform: scale(0.95);
+}
+
+.scale900:active {
+  transform: scale(0.9);
+}
+
+.scale850:active {
+  transform: scale(0.85);
+}
+
+.scale800:active {
+  transform: scale(0.8);
+}
+
+.scale750:active {
+  transform: scale(0.75);
+}
+
+.scale700:active {
+  transform: scale(0.7);
+}
+
+.shadow50:active {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 0 !important;
+}
+
+.shadow100:active {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 0 !important;
+}
+
+.shadow150:active {
+  background-color: rgba(0, 0, 0, 0.15);
+  border: 0 !important;
+}
+
+.shadow200:active {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 0 !important;
+}
+
+.shadow250:active {
+  background-color: rgba(0, 0, 0, 0.25);
+  border: 0 !important;
+}
+
+.shadow300:active {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0 !important;
+}
+
+.shadow350:active {
+  background-color: rgba(0, 0, 0, 0.35);
+  border: 0 !important;
+}
+
+.shadow400:active {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 0 !important;
+}
+
+.shadow450:active {
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 0 !important;
+}
+
+.shadow500:active {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 0 !important;
+}

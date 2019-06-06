@@ -167,7 +167,7 @@ export const SlotRowView = ({
         className = className + `child-mgr-${slot} ${layout.slotrowview}`
       }
     }
-    else {
+    else if (children.length > 1) {
       allChildren = alternateInsert(children, slot)
     }
   }

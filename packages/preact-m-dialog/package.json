@@ -15,7 +15,6 @@
   "dependencies": {
     "@ruiyun/preact-layout-suite": "^1.1.31",
     "@ruiyun/preact-line": "^1.1.31",
-    "@ruiyun/preact-m-touchable": "^1.1.11",
     "@ruiyun/preact-modal": "^1.1.11",
     "@ruiyun/preact-text": "^1.1.32"
   },
@@ -23,8 +22,7 @@
     "@ruiyun/preact-layout-suite",
     "@ruiyun/preact-line",
     "@ruiyun/preact-modal",
-    "@ruiyun/preact-text",
-    "@ruiyun/preact-m-touchable"
+    "@ruiyun/preact-text"
   ],
   "peerDependencies": {
     "preact": "^8.4.2"

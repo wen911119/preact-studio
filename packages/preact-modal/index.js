@@ -1,6 +1,18 @@
 import { h, Component, cloneElement } from 'preact'
 import Portal from 'preact-portal'
 
+let animation = true
+const us = navigator.userAgent.toLowerCase()
+if (us.indexOf('android') > -1) {
+  const androidVersion = navigator.userAgent
+    .toLowerCase()
+    .replace(/.+android\s(\d).+/, '$1')
+  if (parseInt(androidVersion, 10) < 6) {
+    // 在老旧安卓机器上禁用动画
+    animation = false
+  }
+}
+
 const baseStyle = {
   display: 'flex',
   position: 'fixed',
@@ -18,6 +30,12 @@ const keyframesFadein = `
         100%{opacity: 1}
     }`
 styleSheet.insertRule(keyframesFadein, styleSheet.cssRules.length)
+const keyframesFadeout = `
+    @keyframes modal-content-fadeout {
+        0%{opacity: 1} 
+        100%{opacity: 0}
+    }`
+styleSheet.insertRule(keyframesFadeout, styleSheet.cssRules.length)
 const keyframesZoom = `
     @keyframes modal-content-zoom {
       0%{transform: scale(0)}
@@ -101,15 +119,16 @@ export default class ModalStateless extends Component {
     }
     let modalContentStyle = Object.assign({}, this.modalContentStyle)
     if (position === 'center') {
-      modalContentStyle.animationName = 'modal-content-zoom'
-      maskStyle.transition = 'background-color .3s linear'
+      if (animation) {
+        modalContentStyle.animationName = 'modal-content-zoom'
+        maskStyle.transition = 'background-color 0.3s linear'
+      }
+      
       maskStyle.justifyContent = 'center'
       maskStyle.alignItems = 'center'
-      if (open) {
-        modalContentStyle.transform = 'scale(1)'
-      }
-      else {
-        modalContentStyle.transform = 'scale(0)'
+      if (!open) {
+        maskStyle.transition = 'background-color 0s linear'
+        modalContentStyle.display = 'none'
       }
     }
     else if (position === 'left') {
