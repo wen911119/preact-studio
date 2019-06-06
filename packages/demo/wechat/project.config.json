@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.4.0",
+	"libVersion": "2.7.1",
 	"appid": "wx149c8c92f798107e",
 	"projectname": "miniprogram-hybird",
 	"debugOptions": {
