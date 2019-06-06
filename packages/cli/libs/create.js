@@ -14,7 +14,7 @@ module.exports = async function (directory) {
     ])).directory
   }
 
-  const archive = await gittar.fetch('wen911119/preact-toolkit')
+  const archive = await gittar.fetch('wen911119/preact-studio')
   await gittar.extract(archive, path.resolve(process.cwd(), directory), {
     strip: 3,
     filter (path, obj) {
