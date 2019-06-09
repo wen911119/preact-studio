@@ -60,6 +60,7 @@
     "list": "列表页",
     "buttonDemo": "button示例",
     "actionsheetDemo": "actionsheet演示",
-    "dialogDemo": "dialog示例"
+    "dialogDemo": "dialog示例",
+    "modalDemo": "模态框演示"
   }
 }
