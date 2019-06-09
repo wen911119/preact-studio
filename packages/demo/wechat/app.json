@@ -5,7 +5,8 @@
     "pages/buttonDemo/index",
     "pages/actionsheetDemo/index",
     "pages/dialogDemo/index",
-    "pages/modalDemo/index"
+    "pages/modalDemo/index",
+    "pages/swiperDemo/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
