@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-image-preview",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,9 +13,9 @@
     "preact"
   ],
   "dependencies": {
-    "@ruiyun/preact-image": "^1.2.0",
-    "@ruiyun/preact-m-swiper": "^1.2.0",
-    "@ruiyun/preact-modal": "^1.2.0"
+    "@ruiyun/preact-image": "^1.2.1",
+    "@ruiyun/preact-m-swiper": "^1.2.1",
+    "@ruiyun/preact-modal": "^1.2.1"
   },
   "compileDependencies": [
     "@ruiyun/preact-m-swiper",

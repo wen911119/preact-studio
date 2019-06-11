@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-tabs",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,7 +13,7 @@
     "preact"
   ],
   "dependencies": {
-    "@ruiyun/preact-m-swiper": "^1.2.0",
+    "@ruiyun/preact-m-swiper": "^1.2.1",
     "p-to-r": "^1.0.3"
   },
   "compileDependencies": [
