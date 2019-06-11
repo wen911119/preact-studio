@@ -62,6 +62,7 @@
     "actionsheetDemo": "actionsheet演示",
     "dialogDemo": "dialog示例",
     "modalDemo": "模态框演示",
-    "swiperDemo": "轮播图演示"
+    "swiperDemo": "轮播图演示",
+    "tabsDemo": "tabs演示"
   }
 }
