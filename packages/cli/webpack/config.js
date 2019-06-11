@@ -27,9 +27,9 @@ const genEntry = (appJsPath, pageName) => {
     const { h, render } = require('preact')
     let App = require('${appJsPath}')
       .default
+    let root = document.getElementById('app')
     if (typeof App === 'function') {
-      let root = document.body.firstElementChild
-      root = render(h(App), document.body, root)
+      render(h(App), root || document.body)
     }
       `
   }
@@ -40,13 +40,13 @@ const genEntry = (appJsPath, pageName) => {
     let App = require('${appJsPath}')
       .default
     const hotLoader = require('react-hot-loader').default
-    hotLoader.preact(require('preact').default)
+    hotLoader.preact(require('preact'))
     if (typeof App === 'function') {
-      let root = document.body.firstElementChild
       let init = () => {
         let _app = require('${appJsPath}')
           .default
-        root = render(h(_app), document.body, root)
+        let root = document.getElementById('app')
+        render(h(_app), root || document.body)
       }
       if (module.hot)
         module.hot.accept(

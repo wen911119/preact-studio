@@ -123,7 +123,7 @@ export default class ModalStateless extends Component {
         modalContentStyle.animationName = 'modal-content-zoom'
         maskStyle.transition = 'background-color 0.3s linear'
       }
-      
+
       maskStyle.justifyContent = 'center'
       maskStyle.alignItems = 'center'
       if (!open) {
@@ -178,6 +178,8 @@ export default class ModalStateless extends Component {
         modalContentStyle.transform = 'translate3d(0, 100%, 0px)'
       }
     }
+    // preact-portal 没有适配 Preact X 目前只能多加一个空div来解决
+    // https://github.com/developit/preact-portal/issues/19
     return open || !close ? (
       <Portal into={into}>
         <div
@@ -188,6 +190,7 @@ export default class ModalStateless extends Component {
         >
           <div style={modalContentStyle}>{children}</div>
         </div>
+        <div />
       </Portal>
     ) : null
   }
@@ -247,8 +250,10 @@ export class Modal extends Component {
     const Content = content
     return (
       <div>
-        {cloneElement(children[0], { $modal: this.$modal })}
+        {cloneElement(children, { $modal: this.$modal })}
+        <div id="_modal_placeholder_" />
         <ModalStateless
+          into="#_modal_placeholder_"
           onMaskClick={this.onMaskClick}
           open={open}
           position={position}

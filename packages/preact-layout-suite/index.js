@@ -156,23 +156,24 @@ export const SlotRowView = ({
   ...otherProps
 }) => {
   let allChildren = children
-  if (slot) {
+  let _className = className
+  if (children && children.length && slot) {
     if (typeof slot === 'number') {
       if (legacy) {
         // 保留旧的插div占空间的模式
         allChildren = alternateInsert(children, <SpaceHolder width={slot} />)
       }
       else {
-        className = className ? className + ' ' : ''
-        className = className + `child-mgr-${slot} ${layout.slotrowview}`
+        _className = className ? className + ' ' : ''
+        _className = _className + `child-mgr-${slot} ${layout.slotrowview}`
       }
     }
-    else if (children.length > 1) {
+    else {
       allChildren = alternateInsert(children, slot)
     }
   }
   return (
-    <RowView {...otherProps} className={className}>
+    <RowView {...otherProps} className={_className}>
       {allChildren}
     </RowView>
   )
@@ -186,15 +187,16 @@ export const SlotColumnView = ({
   ...otherProps
 }) => {
   let allChildren = children
-  if (slot) {
+  let _className = className
+  if (children && children.length && slot) {
     if (typeof slot === 'number') {
       if (legacy) {
         // 保留旧的插div占空间的模式
         allChildren = alternateInsert(children, <SpaceHolder height={slot} />)
       }
       else {
-        className = className ? className + ' ' : ''
-        className = className + `child-mgb-${slot} ${layout.slotcolumnview}`
+        _className = className ? className + ' ' : ''
+        _className = _className + `child-mgb-${slot} ${layout.slotcolumnview}`
       }
     }
     else {
@@ -202,7 +204,7 @@ export const SlotColumnView = ({
     }
   }
   return (
-    <ColumnView {...otherProps} className={className}>
+    <ColumnView {...otherProps} className={_className}>
       {allChildren}
     </ColumnView>
   )

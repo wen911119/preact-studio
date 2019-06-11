@@ -73,7 +73,7 @@ export default class ListDataProvider extends Component {
   }
   render () {
     const { children, ...otherProps } = this.props
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       ...otherProps,
       data: this.state.data,
       onRefresh: this.onRefresh,

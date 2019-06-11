@@ -51,7 +51,7 @@ export default class SwipeResponder extends Component {
         onTouchEnd={this.onTouchEnd}
         style={Object.assign(style, wrapStyle)}
       >
-        {cloneElement(children[0], {
+        {cloneElement(children, {
           ...otherProps,
           swipeDistance: distance,
           speed,

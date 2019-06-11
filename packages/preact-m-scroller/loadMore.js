@@ -54,7 +54,7 @@ export default class LoadMore extends Component {
     { children, contentHeight, containerHeight, ...otherProps },
     { nomore }
   ) {
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       ...otherProps,
       resetLoadMore: this.resetLoadMore,
       footer: contentHeight > containerHeight && this.renderFooter(nomore) // 内容大于一屏才显示footer

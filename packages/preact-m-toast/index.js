@@ -41,7 +41,7 @@ export class Toast extends Component {
     this.toastTimer = null
   }
   render ({ children }) {
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       $toast: this.toast
     })
   }

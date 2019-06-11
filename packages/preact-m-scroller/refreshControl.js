@@ -102,7 +102,7 @@ export default class RefreshControl extends Component {
     { children, action, distance, position, ...otherProps },
     { stage, pullDownDistance }
   ) {
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       ...otherProps,
       distance: distance < 0 ? distance : pullDownDistance,
       action,

@@ -73,7 +73,7 @@ export class ActionSheet extends Component {
     this.actionsheet = this.actionsheet.bind(this)
   }
   render ({ children }) {
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       $actionsheet: this.actionsheet
     })
   }

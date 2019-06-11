@@ -71,7 +71,7 @@ export class Picker extends Component {
     this.picker = this.picker.bind(this)
   }
   render({ children }) {
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       $picker: this.picker
     })
   }

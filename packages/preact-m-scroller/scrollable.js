@@ -22,11 +22,12 @@ export default class Scrollable extends Component {
     return (
       <div style={_style}>
         {header && header()}
-        {children.length > 1
-          ? children
-          : cloneElement(children[0], {
-            ...otherProps
-          })}
+        {children &&
+          (children.length
+            ? children
+            : cloneElement(children, {
+              ...otherProps
+            }))}
         {footer && footer()}
       </div>
     )

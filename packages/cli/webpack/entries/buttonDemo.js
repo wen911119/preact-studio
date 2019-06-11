@@ -1,20 +1,20 @@
 
     const { h, render } = require('preact')
     require('preact/debug')
-    let App = require('/Users/user/Documents/preact-toolkit/packages/demo/src/pages/buttonDemo/app.js')
+    let App = require('/Users/user/Documents/preact-studio/packages/demo/src/pages/buttonDemo/app.js')
       .default
     const hotLoader = require('react-hot-loader').default
-    hotLoader.preact(require('preact').default)
+    hotLoader.preact(require('preact'))
     if (typeof App === 'function') {
-      let root = document.body.firstElementChild
       let init = () => {
-        let _app = require('/Users/user/Documents/preact-toolkit/packages/demo/src/pages/buttonDemo/app.js')
+        let _app = require('/Users/user/Documents/preact-studio/packages/demo/src/pages/buttonDemo/app.js')
           .default
-        root = render(h(_app), document.body, root)
+        let root = document.getElementById('app')
+        render(h(_app), root || document.body)
       }
       if (module.hot)
         module.hot.accept(
-          '/Users/user/Documents/preact-toolkit/packages/demo/src/pages/buttonDemo/app.js',
+          '/Users/user/Documents/preact-studio/packages/demo/src/pages/buttonDemo/app.js',
           init
         )
       init()

@@ -24,7 +24,7 @@ class SwiperItem extends Component {
     return false
   }
   render () {
-    return cloneElement(this.props.children[0], {
+    return cloneElement(this.props.children, {
       freeze: this.props.freezingOnSwiping ? this.props.freeze : false
     })
   }
@@ -53,9 +53,10 @@ export default class Swipeable extends Component {
       transform: `translate3d(${offset}px,0,0)`,
       transition: animation ? '330ms' : 'none'
     })
+    const childrenArr = children ? (children.map ? children : [children]) : []
     return (
       <div style={_style}>
-        {children.map((child, i) => (
+        {childrenArr.map((child, i) => (
           <div key={i} style={itemStyle}>
             <SwiperItem freeze={freeze} freezingOnSwiping={freezingOnSwiping}>
               {child}

@@ -42,7 +42,7 @@ export default class Pagination extends Component {
   }
   render () {
     const { children, ...otherProps } = this.props
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       ...otherProps,
       _onRefresh: this._onRefresh,
       _onLoadMore: this._onLoadMore,

@@ -143,7 +143,7 @@ export class Dialog extends Component {
   }
 
   render ({ children }) {
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       $alert: this.alert,
       $confirm: this.confirm,
       $prompt: this.prompt

@@ -63,7 +63,7 @@ export class Loading extends Component {
     }
   }
   render ({ children }) {
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       $loading: this.loading
     })
   }

@@ -91,7 +91,7 @@ export default class ScrollListener extends Component {
           style={Object.assign(_style, style)}
           ref={s => (this.scrollWrap = s)}
         >
-          {cloneElement(children[0], {
+          {cloneElement(children, {
             position,
             contentHeight,
             containerHeight,

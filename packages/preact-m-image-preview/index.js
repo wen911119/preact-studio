@@ -39,7 +39,7 @@ export class Preview extends Component {
     }
   }
   render ({ children }) {
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       $preview: this.preview
     })
   }

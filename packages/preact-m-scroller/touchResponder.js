@@ -64,7 +64,7 @@ export default class TouchResponder extends Component {
         onTouchEnd={this.onTouchEnd}
         style={{ minHeight: '100%' }}
       >
-        {cloneElement(children[0], { distance, action, ...otherProps })}
+        {cloneElement(children, { distance, action, ...otherProps })}
       </div>
     )
   }

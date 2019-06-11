@@ -82,7 +82,7 @@ export default class SwipeManager extends Component {
   render () {
     const { children, ...otherProps } = this.props
     const { animation, freeze, swipeDistance } = this.state
-    return cloneElement(children[0], {
+    return cloneElement(children, {
       freeze,
       animation,
       offset: swipeDistance,

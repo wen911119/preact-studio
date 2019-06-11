@@ -3,11 +3,14 @@ import SwipeResponder from './swipeResponder'
 import Swipeable from './swipeable'
 import SwipeManager from './swipeManager'
 
+const getChildrenLength = children => (children ? children.length || 1 : 0)
+
 export default class Swiper extends Component {
   shouldComponentUpdate (nextProps) {
     if (
       this.props.activeIndex !== nextProps.activeIndex ||
-      this.props.children.length !== nextProps.children.length
+      getChildrenLength(this.props.children) !==
+        getChildrenLength(nextProps.children)
     ) {
       return true
     }
@@ -15,7 +18,7 @@ export default class Swiper extends Component {
   }
   render () {
     const { children, ...otherProps } = this.props
-    const itemsNum = children.length
+    const itemsNum = getChildrenLength(children)
     return (
       <SwipeResponder {...otherProps}>
         <SwipeManager itemsNum={itemsNum}>
