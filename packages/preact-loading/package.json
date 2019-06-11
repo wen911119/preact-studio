@@ -16,7 +16,7 @@
     "p-to-r": "^1.0.3"
   },
   "peerDependencies": {
-    "preact": "^8.4.2"
+    "preact": "^10.0.0-beta.2"
   },
   "publishConfig": {
     "access": "public"

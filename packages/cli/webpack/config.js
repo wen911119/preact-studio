@@ -209,12 +209,12 @@ module.exports = {
   resolve: {
     modules: [
       'node_modules',
+      `${TARGET_PROJECT_PATH}/node_modules`,
       `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules`
     ],
     alias: {
-      react: 'preact-compat',
-      'react-dom': 'preact-compat',
-      'create-react-class': 'preact-compat/lib/create-react-class',
+      react: 'preact/compat',
+      'react-dom': 'preact/compat',
       'react-addons-css-transition-group': 'preact-css-transition-group'
     }
   },

@@ -30,7 +30,7 @@
     "@ruiyun/preact-m-toast": "^1.1.33",
     "@ruiyun/preact-modal": "^1.1.33",
     "@ruiyun/preact-text": "^1.1.32",
-    "preact": "^8.4.2"
+    "preact": "^10.0.0-beta.2"
   },
   "devDependencies": {
     "@ruiyun/h666-cli": "^1.1.34",

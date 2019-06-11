@@ -13,7 +13,7 @@
     "preact"
   ],
   "peerDependencies": {
-    "preact": "^8.4.2"
+    "preact": "^10.0.0-beta.2"
   },
   "publishConfig": {
     "access": "public"
