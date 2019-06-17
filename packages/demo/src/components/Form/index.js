@@ -1,15 +1,20 @@
 import { h, Component, createContext, cloneElement } from 'preact'
 
-const merge = require('lodash.mergewith')
-const cloneDeep = require('lodash.clonedeep')
+// const merge = require('lodash.mergewith')
+// const cloneDeep = require('lodash.clonedeep')
 const FormContext = createContext({
   subscribeSubmit: () => {},
   subscribeChange: () => {},
   update: () => {},
   onChange: () => {},
-  getFormData: () => {},
   parentData: {}
 })
+
+const withFormContext = Component => props => (
+  <FormContext.Consumer>
+    {context => <Component {...props} {...context} />}
+  </FormContext.Consumer>
+)
 
 @withFormContext
 export class FormField extends Component {
@@ -20,18 +25,26 @@ export class FormField extends Component {
     const { field, update } = this.props
     update(field, value)
     if (this.state.err) {
+      // 用户修改了，如果之前有错误提示的话，需要清空错误提示
       this.setState({ err: '' })
     }
   }
   componentDidMount () {
-    const { validate, subscribeSubmit, label, field } = this.props
+    const {
+      validate,
+      subscribeSubmit,
+      label,
+      field,
+      parentData,
+      getFormData
+    } = this.props
     if (validate.length > 0) {
       subscribeSubmit(
         () =>
           new Promise((resolve, reject) => {
             let err
             for (let rule of validate) {
-              err = rule(this.props.parentData[field], this.props.parentData)
+              err = rule(parentData[field], getFormData)
               if (err) {
                 break
               }
@@ -49,28 +62,15 @@ export class FormField extends Component {
   }
 
   render () {
-    const { children, disable, label, field, parentData } = this.props
-    return (
-      <div>
-        {cloneElement(children, {
-          value: parentData && parentData[field],
-          label,
-          err: this.state.err,
-          sync: this.update
-        })}
-        {disable && (
-          <div
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              opacity: 0.1,
-              backgroundColor: '#000'
-            }}
-          />
-        )}
-      </div>
-    )
+    const { children, label, field, parentData } = this.props
+    return cloneElement(children, {
+      formField: {
+        value: parentData[field],
+        label,
+        err: this.state.err,
+        sync: this.update
+      }
+    })
   }
 }
 @withFormContext
@@ -83,16 +83,29 @@ export class FormComputed extends Component {
 @withFormContext
 export class FormFragment extends Component {
   update = (key, value) => {
-    this.props.update(this.props.namespace, { [key]: value })
+    const { namespace, parentData, update } = this.props
+    update(
+      namespace,
+      Object.assign({}, parentData[namespace], {
+        [key]: value
+      })
+    )
   }
   render () {
-    const { children, namespace, parentData } = this.props
+    const {
+      children,
+      namespace,
+      parentData,
+      subscribeSubmit,
+      getFormData
+    } = this.props
     return (
       <FormContext.Provider
         value={{
-          parentData: parentData && parentData[namespace],
+          parentData: parentData[namespace] || {},
           update: this.update,
-          subscribeSubmit: this.props.subscribeSubmit
+          subscribeSubmit,
+          getFormData
         }}
       >
         {children}
@@ -105,6 +118,11 @@ export class Form extends Component {
   static Fragment = FormFragment
   static Field = FormField
   static Computed = FormComputed
+  init = initFormData => {
+    this.setState({
+      formData: initFormData || {}
+    })
+  }
   submit = callback => {
     Promise.all(this.submitListeners.map(func => func()))
       .then(results => {
@@ -119,42 +137,36 @@ export class Form extends Component {
         // 校验代码执行出错
       })
   }
+  getFormData = () => this.state.formData
   subscribeChange = callback => {
     this.changeListeners.push(callback)
   }
   subscribeSubmit = callback => {
     this.submitListeners.push(callback)
   }
-  getFormData = () => this.state.formData
   update = (key, value) => {
-    let newFormData = cloneDeep(this.state.formData)
-    merge(newFormData, { [key]: value }, (objValue, srcValue) => {
-      if (objValue && objValue.length !== undefined) {
-        return srcValue
-      }
-    })
-    this.setState(Object.assign({}, this.state, { formData: newFormData }))
-    this.changeListeners.forEach(listener => listener(newFormData))
+    // let newFormData = cloneDeep(this.state.formData)
+    // merge(newFormData, { [key]: value }, (objValue, srcValue) => {
+    //   if (objValue && objValue.length !== undefined) {
+    //     return srcValue
+    //   }
+    // })
+    // this.setState(Object.assign({}, this.state, { formData: newFormData }))
+    // this.changeListeners.forEach(listener => listener(newFormData))
+    let newFormData = { ...this.state.formData }
+    newFormData[key] = value
+    this.setState({ formData: newFormData })
   }
   constructor (props) {
     super(props)
     this.changeListeners = []
     this.submitListeners = []
     this.state = {
-      formData: {},
-      lastPropsFormData: {}
+      formData: {}
     }
   }
-  static getDerivedStateFromProps (props, state) {
-    if (props.formData === state.lastPropsFormData) {
-      // 如果传入的formData没变，则不强刷form状态
-      return null
-    }
-    // 强刷form状态,已经做的修改都会被覆盖
-    return {
-      formData: props.formData,
-      lastPropsFormData: props.formData
-    }
+  shouldComponentUpdate () {
+    return false
   }
 
   render () {
@@ -163,24 +175,14 @@ export class Form extends Component {
       <FormContext.Provider
         value={{
           parentData: this.state.formData,
-          getFormData: this.getFormData,
           update: this.update,
           subscribeSubmit: this.subscribeSubmit,
-          subscribeChange: this.subscribeChange
+          subscribeChange: this.subscribeChange,
+          getFormData: this.getFormData
         }}
       >
         {children}
       </FormContext.Provider>
-    )
-  }
-}
-
-function withFormContext (Component) {
-  return function (props) {
-    return (
-      <FormContext.Consumer>
-        {context => <Component {...props} {...context} />}
-      </FormContext.Consumer>
     )
   }
 }
