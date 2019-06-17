@@ -1,5 +1,6 @@
 import { h, Component, cloneElement } from 'preact'
 import Portal from 'preact-portal'
+import animationClass from './index.css'
 
 let animation = true
 const us = navigator.userAgent.toLowerCase()
@@ -23,50 +24,7 @@ const baseStyle = {
   bottom: 0,
   animationDuration: '.3s'
 }
-let styleSheet = document.styleSheets[0]
-const keyframesFadein = `
-    @keyframes modal-mask-fadein {
-        0%{opacity: 0} 
-        100%{opacity: 1}
-    }`
-styleSheet.insertRule(keyframesFadein, styleSheet.cssRules.length)
-const keyframesFadeout = `
-    @keyframes modal-content-fadeout {
-        0%{opacity: 1} 
-        100%{opacity: 0}
-    }`
-styleSheet.insertRule(keyframesFadeout, styleSheet.cssRules.length)
-const keyframesZoom = `
-    @keyframes modal-content-zoom {
-      0%{transform: scale(0)}
-      50%{transform: scale(1.1)}
-      100%{transform: scale(1)}
-    }`
-styleSheet.insertRule(keyframesZoom, styleSheet.cssRules.length)
-const keyframesLeftIn = `
-    @keyframes modal-content-left-in {
-      0%{transform: translate3d(-100%, 0px, 0px)}
-      100%{transform: translate3d(0px, 0px, 0px)}
-    }`
-styleSheet.insertRule(keyframesLeftIn, styleSheet.cssRules.length)
-const keyframesRightIn = `
-    @keyframes modal-content-right-in {
-      0%{transform: translate3d(100%, 0px, 0px)}
-      100%{transform: translate3d(0px, 0px, 0px)}
-    }`
-styleSheet.insertRule(keyframesRightIn, styleSheet.cssRules.length)
-const keyframesTopIn = `
-    @keyframes modal-content-top-in {
-      0%{transform: translate3d(0px, -100%, 0px)}
-      100%{transform: translate3d(0px, 0px, 0px)}
-    }`
-styleSheet.insertRule(keyframesTopIn, styleSheet.cssRules.length)
-const keyframesBottomIn = `
-    @keyframes modal-content-bottom-in {
-      0%{transform: translate3d(0px, 100%, 0px)}
-      100%{transform: translate3d(0px, 0px, 0px)}
-    }`
-styleSheet.insertRule(keyframesBottomIn, styleSheet.cssRules.length)
+
 function hack (maskClickHander) {
   return function (e) {
     e.target.className.indexOf('_modal_mask_') > -1 &&
@@ -112,7 +70,7 @@ export default class ModalStateless extends Component {
     const style = { backgroundColor: `rgba(0,0,0,${mask})` }
     let maskStyle = Object.assign({}, baseStyle, style)
     if (open) {
-      maskStyle.animationName = 'modal-mask-fadein'
+      maskStyle.animationName = animationClass['modal-mask-fadein']
     }
     else {
       maskStyle.backgroundColor = 'rgba(0,0,0,0)'
@@ -120,7 +78,7 @@ export default class ModalStateless extends Component {
     let modalContentStyle = Object.assign({}, this.modalContentStyle)
     if (position === 'center') {
       if (animation) {
-        modalContentStyle.animationName = 'modal-content-zoom'
+        modalContentStyle.animationName = animationClass['modal-content-zoom']
         maskStyle.transition = 'background-color 0.3s linear'
       }
 
@@ -136,7 +94,7 @@ export default class ModalStateless extends Component {
       maskStyle.transition = 'background-color .3s easy-out'
       if (open) {
         modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
-        modalContentStyle.animationName = 'modal-content-left-in'
+        modalContentStyle.animationName = animationClass['modal-content-left-in']
       }
       else {
         modalContentStyle.transform = 'translate3d(-100%, 0px, 0px)'
@@ -148,7 +106,7 @@ export default class ModalStateless extends Component {
       maskStyle.transition = 'background-color .3s easy-in'
       if (open) {
         modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
-        modalContentStyle.animationName = 'modal-content-right-in'
+        modalContentStyle.animationName = animationClass['modal-content-right-in']
       }
       else {
         modalContentStyle.transform = 'translate3d(100%, 0px, 0px)'
@@ -160,7 +118,7 @@ export default class ModalStateless extends Component {
       maskStyle.transition = 'background-color .3s easy-in-out'
       if (open) {
         modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
-        modalContentStyle.animationName = 'modal-content-top-in'
+        modalContentStyle.animationName = animationClass['modal-content-top-in']
       }
       else {
         modalContentStyle.transform = 'translate3d(0, -100%, 0px)'
@@ -172,7 +130,7 @@ export default class ModalStateless extends Component {
       maskStyle.transition = 'background-color .3s easy-in-out'
       if (open) {
         modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
-        modalContentStyle.animationName = 'modal-content-bottom-in'
+        modalContentStyle.animationName = animationClass['modal-content-bottom-in']
       }
       else {
         modalContentStyle.transform = 'translate3d(0, 100%, 0px)'
