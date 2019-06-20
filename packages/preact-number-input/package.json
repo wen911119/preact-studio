@@ -1,0 +1,21 @@
+{
+  "name": "@ruiyun/preact-number-input",
+  "version": "1.0.0",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "peerDependencies": {
+    "preact": "^10.0.0-beta.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
