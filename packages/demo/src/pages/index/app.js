@@ -31,6 +31,10 @@ export default class Index extends Component {
     this.props.$nav.push('tabsDemo')
   }
 
+  goto7 = () => {
+    this.props.$nav.push('formDemo')
+  }
+
   render () {
     return (
       <div>
@@ -42,6 +46,7 @@ export default class Index extends Component {
         <div onClick={this.goto4}>go to modalDemo</div>
         <div onClick={this.goto5}>go to swiperDemo</div>
         <div onClick={this.goto6}>go to tabsDemo</div>
+        <div onClick={this.goto7}>go to formDemo</div>
       </div>
     )
   }

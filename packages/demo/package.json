@@ -30,6 +30,8 @@
     "@ruiyun/preact-m-toast": "^1.2.2",
     "@ruiyun/preact-modal": "^1.2.2",
     "@ruiyun/preact-text": "^1.2.0",
+    "@ruiyun/preact-number-input": "^1.0.0",
+    "@ruiyun/preact-form": "^1.0.0",
     "preact": "^10.0.0-beta.2"
   },
   "devDependencies": {
@@ -63,6 +65,7 @@
     "dialogDemo": "dialog示例",
     "modalDemo": "模态框演示",
     "swiperDemo": "轮播图演示",
-    "tabsDemo": "tabs演示"
+    "tabsDemo": "tabs演示",
+    "formDemo": "表单演示页面"
   }
 }
