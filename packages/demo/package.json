@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "demo",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@ruiyun/preact-button": "^1.2.1",
+    "@ruiyun/preact-form": "^1.2.4",
     "@ruiyun/preact-image": "^1.2.1",
     "@ruiyun/preact-layout-suite": "^1.2.1",
     "@ruiyun/preact-line": "^1.2.0",
@@ -29,9 +30,8 @@
     "@ruiyun/preact-m-tabs": "^1.2.1",
     "@ruiyun/preact-m-toast": "^1.2.2",
     "@ruiyun/preact-modal": "^1.2.2",
+    "@ruiyun/preact-number-input": "^1.2.4",
     "@ruiyun/preact-text": "^1.2.0",
-    "@ruiyun/preact-number-input": "^1.0.0",
-    "@ruiyun/preact-form": "^1.0.0",
     "preact": "^10.0.0-beta.2"
   },
   "devDependencies": {
