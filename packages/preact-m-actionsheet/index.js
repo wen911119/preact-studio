@@ -44,7 +44,7 @@ const renderModalContent = (title, options, config, cb) => () => (
 
 @WithModal
 export class ActionSheet extends Component {
-  actionsheet (title, options, config = {}) {
+  actionsheet (title = '', options = [], config = {}) {
     const styleConfig = Object.assign(
       {
         titleColor: '#000',
