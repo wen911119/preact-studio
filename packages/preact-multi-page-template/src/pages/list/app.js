@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
 import WithNav from '@ruiyun/preact-m-nav'
-import './app.css'
+import style from './app.css'
 
 @WithNav
 export default class List extends Component {
@@ -17,7 +17,7 @@ export default class List extends Component {
     return (
       <div>
         List
-        <div className='test' onClick={this.changeTitle}>{this.state.name}</div>
+        <div className={style.test} onClick={this.changeTitle}>{this.state.name}</div>
         <div onClick={this.back}>back</div>
       </div>
     )

@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import './app.css'
+import style from './app.css'
 
 export default class ###_page-name_### extends Component {
   state = {
@@ -9,7 +9,7 @@ export default class ###_page-name_### extends Component {
     return (
       <div>
         ###_page-name_###
-        <div className='test'>{this.state.name}</div>
+        <div className={style.test}>{this.state.name}</div>
       </div>
     )
   }

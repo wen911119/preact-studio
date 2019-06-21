@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
 import WithNav from '@ruiyun/preact-m-nav'
-import './app.css'
+import style from './app.css'
 
 @WithNav
 export default class Index extends Component {
@@ -14,7 +14,7 @@ export default class Index extends Component {
     return (
       <div>
         Index
-        <div className='test'>{this.state.name}</div>
+        <div className={style.test}>{this.state.name}</div>
         <div onClick={this.goto}>go to list</div>
       </div>
     )
