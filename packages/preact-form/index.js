@@ -71,7 +71,10 @@ export class FormField extends Component {
     if (!shouldUpdate && nextProps.link) {
       for (let key in nextProps.link) {
         if (nextProps.link.hasOwnProperty(key)) {
-          if (nextProps.link[key] === nextProps.lastUpdate) {
+          if (
+            nextProps.link[key] === nextProps.lastUpdate ||
+            nextProps.lastUpdate === 'all'
+          ) {
             shouldUpdate = true
             break
           }
@@ -144,7 +147,7 @@ export default class Form extends Component {
   init = initFormData => {
     this.setState({
       formData: initFormData || {},
-      lastUpdate: ''
+      lastUpdate: 'all'
     })
   }
   validate = (successCallback, failCallback) => {
