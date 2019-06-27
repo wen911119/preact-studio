@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-
+import Input from '@ruiyun/preact-input'
 // 只能输入数字
 // 只能输入整数
 // 数字小数点后只能{2}位
@@ -72,7 +72,7 @@ export default class NumberInput extends Component {
     }
     return rawValue
   }
-  onComplete = () => {
+  onComplete = event => {
     const { value } = this.state
     if (value && /\d+\.$/.test(value)) {
       // 需要纠错
@@ -86,6 +86,7 @@ export default class NumberInput extends Component {
         }
       )
     }
+    this.props.onBlur && this.props.onBlur(event)
   }
   constructor (props) {
     super(props)
@@ -105,9 +106,9 @@ export default class NumberInput extends Component {
     // eslint-disable-next-line
     const { onChange, value, type, float = false, ...otherProps } = this.props
     return (
-      <input
-        onBlur={this.onComplete}
+      <Input
         {...otherProps}
+        onBlur={this.onComplete}
         onChange={this.onInput}
         value={this.format(this.state.value)}
         type={float ? 'text' : 'tel'} // 为什么用text不用number？因为在ios上number有解决不了的bug啊！

@@ -2,10 +2,13 @@ import { h, Component } from 'preact'
 import { XCenterView } from '@ruiyun/preact-layout-suite'
 import Button from '@ruiyun/preact-button'
 import Form from '@ruiyun/preact-form'
+import Line from '@ruiyun/preact-line'
+import {
+  FormTextInput,
+  FormActionSheetInput,
+  FormNumberInput
+} from '@ruiyun/preact-m-form-component'
 
-import FormInput from '../../components/FormInput'
-import FormNumberInput from '../../components/FormNumberInput'
-import FormActionSheet from '../../components/FormActionSheet'
 import { required, range } from '../../components/Validate'
 import SalaryInput from './components/salaryInput'
 
@@ -39,21 +42,29 @@ export default class FormDemo extends Component {
       <div>
         <Form ref={form => (this.form = form)}>
           <Form.Field label='姓名' field='name' validate={[required]}>
-            <FormInput placeholder='请输入姓名' />
+            <FormTextInput required maxLength={3} placeholder='请输入姓名' />
           </Form.Field>
+          <Line />
           <Form.Field label='年龄' field='age' validate={[range(0, 150)]}>
             <FormNumberInput limit={3} placeholder='请输入年龄' />
           </Form.Field>
-          <Form.Field label='手机号' field='phone' validate={[required, phoneCheck]}>
-            <FormNumberInput limit={11} placeholder='请输入手机号' />
+          <Line />
+          <Form.Field
+            label='手机号'
+            field='phone'
+            validate={[required, phoneCheck]}
+          >
+            <FormNumberInput required limit={11} placeholder='请输入手机号' />
           </Form.Field>
+          <Line />
           <Form.Fragment namespace='apply'>
             <Form.Field label='申请的职位' field='role'>
-              <FormActionSheet
+              <FormActionSheetInput
                 placeholder='请输入你期望的职位'
                 options={['开发工程师', '测试工程师', '运营专员', '产品经理']}
               />
             </Form.Field>
+            <Line />
             <Form.Field
               label='期望的薪资'
               field='salary'
@@ -62,6 +73,7 @@ export default class FormDemo extends Component {
             >
               <SalaryInput placeholder='请输入期望的薪资' />
             </Form.Field>
+            <Line />
           </Form.Fragment>
           <XCenterView height={200}>
             <Button

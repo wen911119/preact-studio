@@ -1,0 +1,8 @@
+.input {
+  outline: none;
+  border: 0;
+}
+.input::-webkit-input-placeholder {
+  color: #ccc;
+  text-overflow: ellipsis;
+}

@@ -32,6 +32,8 @@
     "@ruiyun/preact-modal": "^1.2.2",
     "@ruiyun/preact-number-input": "^1.2.4",
     "@ruiyun/preact-text": "^1.2.0",
+    "@ruiyun/preact-input": "^1.0.0",
+    "@ruiyun/preact-m-form-component": "^1.0.0",
     "preact": "^10.0.0-beta.2"
   },
   "devDependencies": {

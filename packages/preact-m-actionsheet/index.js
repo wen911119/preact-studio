@@ -12,12 +12,14 @@ import style from './index.css'
 // eslint-disable-next-line
 const renderModalContent = (title, options, config, cb) => () => (
   <div style={{ backgroundColor: '#fff', width: '100vw' }}>
-    <XCenterView height={80}>
-      <Text color={config.titleColor} size={config.titleSize}>
-        {title}
-      </Text>
-    </XCenterView>
-    <Line />
+    {title && (
+      <XCenterView height={80}>
+        <Text color={config.titleColor} size={config.titleSize}>
+          {title}
+        </Text>
+      </XCenterView>
+    )}
+    {title && <Line />}
     <SlotColumnView slot={<Line />}>
       {options.map((item, i) => (
         <XCenterView
@@ -44,7 +46,7 @@ const renderModalContent = (title, options, config, cb) => () => (
 
 @WithModal
 export class ActionSheet extends Component {
-  actionsheet (title = '', options = [], config = {}) {
+  actionsheet (title, options = [], config = {}) {
     const styleConfig = Object.assign(
       {
         titleColor: '#000',
