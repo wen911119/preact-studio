@@ -1,6 +1,9 @@
 .input {
   outline: none;
   border: 0;
+  text-indent: 0;
+  padding: 0;
+  margin: 0;
 }
 .input::-webkit-input-placeholder {
   color: #ccc;

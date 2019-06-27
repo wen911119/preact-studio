@@ -14,15 +14,42 @@ export default class FormNumberInput extends Component {
   }
   render () {
     console.log('render-form-number-input')
-    const { label, err, style, required, height, ...otherProps } = this.props
+    const {
+      label,
+      err,
+      style,
+      required,
+      padding,
+      direction,
+      labelSize,
+      labelColor,
+      errorSize,
+      errorColor,
+      slot,
+      ...otherProps
+    } = this.props
     return (
-      <FormRow label={label} err={err} required={required} height={height}>
+      <FormRow
+        label={label}
+        err={err}
+        direction={direction}
+        required={required}
+        padding={padding}
+        labelSize={labelSize}
+        labelColor={labelColor}
+        errorSize={errorSize}
+        errorColor={errorColor}
+        slot={slot}
+      >
         <NumberInput
           {...otherProps}
           height="100%"
           width="100%"
           onChange={this.onChange}
-          style={Object.assign({ textAlign: 'right' }, style)}
+          style={Object.assign(
+            { textAlign: direction === 'v' ? 'left' : 'right' },
+            style
+          )}
         />
       </FormRow>
     )

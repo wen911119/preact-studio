@@ -21,11 +21,29 @@ export default class FormActionSheet extends Component {
       textSize = 30,
       value,
       required,
-      height,
+      padding,
+      labelSize,
+      labelColor,
+      errorSize,
+      errorColor,
+      direction,
+      slot,
       ...otherProps
     } = this.props
     return (
-      <FormRow label={label} err={err} required={required} height={height}>
+      <FormRow
+        label={label}
+        err={err}
+        direction={direction}
+        required={required}
+        padding={padding}
+        labelSize={labelSize}
+        labelColor={labelColor}
+        errorSize={errorSize}
+        errorColor={errorColor}
+        slot={slot}
+        arrow
+      >
         <Text
           {...otherProps}
           color={value ? textColor : '#ccc'}

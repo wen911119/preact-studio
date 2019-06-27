@@ -60,7 +60,7 @@ export default class FormDemo extends Component {
           <Form.Fragment namespace='apply'>
             <Form.Field label='申请的职位' field='role'>
               <FormActionSheetInput
-                placeholder='请输入你期望的职位'
+                placeholder='请选择你期望的职位'
                 options={['开发工程师', '测试工程师', '运营专员', '产品经理']}
               />
             </Form.Field>

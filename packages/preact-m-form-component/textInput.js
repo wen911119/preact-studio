@@ -8,9 +8,33 @@ export default class FormTextInput extends Component {
   }
   render () {
     console.log('render-form-text-input')
-    const { label, err, style, required, height, ...otherProps } = this.props
+    const {
+      label,
+      err,
+      style,
+      required,
+      padding,
+      labelSize,
+      labelColor,
+      errorSize,
+      errorColor,
+      direction,
+      slot,
+      ...otherProps
+    } = this.props
     return (
-      <FormRow label={label} err={err} required={required} height={height}>
+      <FormRow
+        label={label}
+        err={err}
+        direction={direction}
+        required={required}
+        padding={padding}
+        labelSize={labelSize}
+        labelColor={labelColor}
+        errorSize={errorSize}
+        errorColor={errorColor}
+        slot={slot}
+      >
         <Input
           {...otherProps}
           onChange={this.onChange}
@@ -18,7 +42,7 @@ export default class FormTextInput extends Component {
           width="100%"
           style={Object.assign(
             {
-              textAlign: 'right'
+              textAlign: direction === 'v' ? 'left' : 'right'
             },
             style
           )}
