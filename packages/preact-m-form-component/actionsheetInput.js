@@ -28,6 +28,8 @@ export default class FormActionSheet extends Component {
       errorColor,
       direction,
       slot,
+      arrowSize,
+      arrowColor,
       ...otherProps
     } = this.props
     return (
@@ -42,6 +44,8 @@ export default class FormActionSheet extends Component {
         errorSize={errorSize}
         errorColor={errorColor}
         slot={slot}
+        arrowSize={arrowSize}
+        arrowColor={arrowColor}
         arrow
       >
         <Text
