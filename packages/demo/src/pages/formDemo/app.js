@@ -7,7 +7,8 @@ import {
   FormTextInput,
   FormActionSheetInput,
   FormNumberInput,
-  FormPickerInput
+  FormPickerInput,
+  FormSwitchInput
 } from '@ruiyun/preact-m-form-component'
 
 import { required, range } from '../../components/Validate'
@@ -18,6 +19,9 @@ const phoneCheck = async phoneNum => {
     setTimeout(resolve, 3000)
   })
   await p
+  if (phoneNum === '13020271611') {
+    return null
+  }
   return '手机号不存在'
 }
 
@@ -118,7 +122,9 @@ export default class FormDemo extends Component {
     name: 'wenjun'
   }
   onReset = () => {
-    this.form.init()
+    this.form.init({
+      ad: true
+    })
   }
   onSubmit = () => {
     this.form.validate(
@@ -129,6 +135,11 @@ export default class FormDemo extends Component {
         console.log('error', errors)
       }
     )
+  }
+  componentDidMount () {
+    this.form.init({
+      ad: true
+    })
   }
   render () {
     return (
@@ -159,6 +170,11 @@ export default class FormDemo extends Component {
             <FormNumberInput required limit={11} placeholder='请输入手机号' />
           </Form.Field>
           <Line />
+          <Form.Field label='接受职位信息推送' field='ad'>
+            <FormSwitchInput />
+          </Form.Field>
+          <Line />
+
           <Form.Fragment namespace='apply'>
             <Form.Field label='申请的职位' field='role'>
               <FormActionSheetInput
