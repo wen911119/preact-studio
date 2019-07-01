@@ -8,7 +8,8 @@
     "pages/modalDemo/index",
     "pages/swiperDemo/index",
     "pages/tabsDemo/index",
-    "pages/formDemo/index"
+    "pages/formDemo/index",
+    "pages/switchDemo/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
