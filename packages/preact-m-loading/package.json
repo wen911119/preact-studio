@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-loading",
-  "version": "1.2.2",
+  "version": "1.2.7",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,10 +13,10 @@
     "preact"
   ],
   "dependencies": {
-    "@ruiyun/preact-layout-suite": "^1.2.1",
-    "@ruiyun/preact-loading": "^1.2.0",
-    "@ruiyun/preact-modal": "^1.2.2",
-    "@ruiyun/preact-text": "^1.2.0"
+    "@ruiyun/preact-layout-suite": "^1.2.7",
+    "@ruiyun/preact-loading": "^1.2.7",
+    "@ruiyun/preact-modal": "^1.2.7",
+    "@ruiyun/preact-text": "^1.2.7"
   },
   "compileDependencies": [
     "@ruiyun/preact-layout-suite",
