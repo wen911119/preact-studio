@@ -39,7 +39,7 @@ const genEntry = (appJsPath, pageName) => {
     require('preact/debug')
     let App = require('${appJsPath}')
       .default
-    const hotLoader = require('ppreact-hot-loader').default
+    const hotLoader = require('preact-hot-loader').default
     hotLoader.preact(require('preact'))
     if (typeof App === 'function') {
       let init = () => {
