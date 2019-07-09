@@ -7,7 +7,8 @@
     "add-page": "h666 add-page",
     "start": "h666 start --port=3000",
     "build:dev": "h666 build --target=dev",
-    "build:pro": "h666 build --target=production"
+    "build:pro": "h666 build --target=production",
+    "lint": "eslint ./ --cache --ignore-pattern .gitignore"
   },
   "author": "",
   "license": "ISC",
