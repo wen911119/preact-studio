@@ -9,7 +9,8 @@
     "pages/swiperDemo/index",
     "pages/tabsDemo/index",
     "pages/formDemo/index",
-    "pages/switchDemo/index"
+    "pages/switchDemo/index",
+    "pages/treepickerDemo/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

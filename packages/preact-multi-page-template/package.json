@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@ruiyun/preact-m-nav": "^1.2.0",
-    "preact": "^10.0.0-beta.2"
+    "preact": "^10.0.0-beta.3"
   },
   "devDependencies": {
     "@ruiyun/h666-cli": "^1.2.5",

@@ -35,7 +35,7 @@
     "@ruiyun/preact-number-input": "^1.2.5",
     "@ruiyun/preact-switch": "^1.2.6",
     "@ruiyun/preact-text": "^1.2.0",
-    "preact": "^10.0.0-beta.2"
+    "preact": "^10.0.0-beta.3"
   },
   "devDependencies": {
     "@ruiyun/h666-cli": "^1.2.5",
@@ -70,6 +70,7 @@
     "swiperDemo": "轮播图演示",
     "tabsDemo": "tabs演示",
     "formDemo": "表单演示页面",
-    "switchDemo": "开关组件演示"
+    "switchDemo": "开关组件演示",
+    "treepickerDemo": "多级选择器演示"
   }
 }

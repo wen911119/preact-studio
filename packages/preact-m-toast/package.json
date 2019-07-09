@@ -23,7 +23,7 @@
     "@ruiyun/preact-text"
   ],
   "peerDependencies": {
-    "preact": "^10.0.0-beta.2"
+    "preact": "^10.0.0-beta.3"
   },
   "publishConfig": {
     "access": "public"

@@ -46,7 +46,7 @@ export default class Image extends Component {
     // 所以在componentDidMount里就可以调整图片了
     this.adjustImageStyle(this.image)
   }
-  render ({ width, height, style, src }, { imageStyleWidth, imageStyleHeight }) {
+  render ({ width, height, style, src, ...otherProps }, { imageStyleWidth, imageStyleHeight }) {
     const imgStyle = {
       width: imageStyleWidth,
       height: imageStyleHeight
@@ -58,6 +58,7 @@ export default class Image extends Component {
         style={Object.assign({ overflow: 'hidden' }, style)}
       >
         <img
+          {...otherProps}
           ref={s => (this.image = s)}
           style={imgStyle}
           src={src}
