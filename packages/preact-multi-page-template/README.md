@@ -13,12 +13,12 @@ yarn add-page
 同时会在package.json中增加pages属性记下页面名和标题的对应关系。
 
 ### 构建目标全局变量
-`javascript
+```javascript
 console.log($BUILD_TARGET$)
 // 本地开发(yarn start) ==> local
 // 测试环境(yarn build:dev) ==> dev
 // 生产环境(yarn build:pro) ==> production
-`
+```
 可以根据不同值来走不同api的endpoint
 
 ### 修改响应式基础
