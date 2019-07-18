@@ -11,7 +11,7 @@ const ip = require('ip')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const TARGET_PROJECT_PATH = process.cwd()
-const packageInfo = require(`${TARGET_PROJECT_PATH}/package.json`)
+const packageInfo = require(path.resolve(TARGET_PROJECT_PATH, './package.json'))
 
 const commonChunks = (packageInfo.commonChunks || []).concat([
   'preact',
@@ -24,38 +24,52 @@ const genEntry = (appJsPath, pageName) => {
   let entryContent
   if (process.env.BUILD_TARGET !== 'local') {
     entryContent = `
-    const { h, render } = require('preact')
+    const { h, render } = require('preact');
     let App = require('${appJsPath}')
-      .default
-    let root = document.getElementById('app')
+      .default;
+    let root = document.getElementById('app');
     if (typeof App === 'function') {
-      render(h(App), root || document.body)
-    }
+      render(h(App), root || document.body);
+    };
       `
   }
   else {
     entryContent = `
-    const { h, render } = require('preact')
-    require('preact/debug')
+    const { h, render } = require('preact');
+    require('preact/debug');
     let App = require('${appJsPath}')
-      .default
-    const hotLoader = require('preact-hot-loader').default
-    hotLoader.preact(require('preact'))
+      .default;
+    const hotLoader = require('preact-hot-loader').default;
+    hotLoader.preact(require('preact'));
     if (typeof App === 'function') {
       let init = () => {
         let _app = require('${appJsPath}')
-          .default
-        let root = document.getElementById('app')
-        render(h(_app), root || document.body)
-      }
+          .default;
+        let root = document.getElementById('app');
+        render(h(_app), root || document.body);
+      };
       if (module.hot)
         module.hot.accept(
           '${appJsPath}',
           init
-        )
-      init()
-    }
+        );
+      init();
+    };
       `
+  }
+  const pageOnEntryHandlerPath = path.resolve(appJsPath, '../entry.js')
+  if (existsSync(pageOnEntryHandlerPath)) {
+    // 提供了页面级的OnEntryHandler
+    entryContent += `const onEntryHandler = require('${pageOnEntryHandlerPath}').default;onEntryHandler();`
+  }
+  else {
+    const commonOnEntryHandlerPath = path.resolve(
+      TARGET_PROJECT_PATH,
+      './src/entry.js'
+    )
+    if (existsSync(commonOnEntryHandlerPath)) {
+      entryContent += `const onEntryHandler = require('${commonOnEntryHandlerPath}').default;onEntryHandler();`
+    }
   }
 
   const entryFilePath = path.resolve(__dirname, `./entries/${pageName}.js`)
@@ -67,16 +81,7 @@ const getEntries = dir => {
   const pagesDir = path.resolve(process.cwd(), dir)
   let entry = {}
   readdirSync(pagesDir).forEach(file => {
-    const fullpath = path.join(pagesDir, file, 'entry.js')
-    // 判断是不是存在
-    if (existsSync(fullpath)) {
-      // 提供了自定义entry
-      entry[file] = fullpath
-    }
-    else {
-      // 使用公共entry
-      entry[file] = genEntry(path.join(pagesDir, file, 'app.js'), file)
-    }
+    entry[file] = genEntry(path.join(pagesDir, file, 'app.js'), file)
   })
   return entry
 }
@@ -209,8 +214,11 @@ module.exports = {
   resolve: {
     modules: [
       'node_modules',
-      `${TARGET_PROJECT_PATH}/node_modules`,
-      `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules`
+      path.resolve(TARGET_PROJECT_PATH, './node_modules'),
+      path.resolve(
+        TARGET_PROJECT_PATH,
+        './node_modules/@ruiyun/h666-cli/node_modules'
+      )
     ],
     alias: {
       react: 'preact/compat',
@@ -220,8 +228,11 @@ module.exports = {
   },
   resolveLoader: {
     modules: [
-      `${TARGET_PROJECT_PATH}/node_modules/@ruiyun/h666-cli/node_modules`,
-      `${TARGET_PROJECT_PATH}/node_modules`
+      path.resolve(TARGET_PROJECT_PATH, './node_modules'),
+      path.resolve(
+        TARGET_PROJECT_PATH,
+        './node_modules/@ruiyun/h666-cli/node_modules'
+      )
     ]
   }
 }

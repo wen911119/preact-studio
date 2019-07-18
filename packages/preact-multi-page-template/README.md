@@ -29,3 +29,24 @@ console.log($BUILD_TARGET$)
 
 ### 提取公文js库进common.js
 package.json中有一个commonChunks属性，里面记录了要进common.js的包名。
+
+### 自定义entry
+#### 方式一:
+在/src/下建立一个entry.js,写入
+```javascript
+export default function onEntry () {
+  // 下面的代码每个页面初始化时都会执行
+  console.log('hhh')
+}
+```
+这个onEntry函数每个页面初始化都会执行。
+#### 方式二:
+在 src/pages/{页面名}/ 下建立entry.js,写入
+```javascript
+export default function onEntry () {
+  // 下面的代码只有该页面初始化时会执行
+  console.log('dddd')
+}
+```
+这个onEntry函数只有这个页面初始化时才会执行。
+方式二的entry会覆盖方式一。
