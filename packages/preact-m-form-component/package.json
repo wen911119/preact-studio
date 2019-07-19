@@ -18,6 +18,7 @@
     "@ruiyun/preact-m-actionsheet": "^1.2.7",
     "@ruiyun/preact-m-picker": "^1.2.7",
     "@ruiyun/preact-number-input": "^1.2.7",
+    "@ruiyun/preact-switch": "^1.2.7",
     "@ruiyun/preact-text": "^1.2.7",
     "p-to-r": "^1.0.3"
   },
