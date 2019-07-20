@@ -21,8 +21,9 @@ export default class FlatList extends Component {
       nextProps.extraData !== this.props.extraData
     )
   }
-  render ({ data, keyExtractor, renderItem, extraData, itemClickHandler }) {
-    return (
+  render ({ data, keyExtractor, renderItem, extraData, itemClickHandler, afterFirstRequest, EmptyView }) {
+    const isEmpty = afterFirstRequest && data.length===0 && EmptyView
+    return isEmpty ? <EmptyView /> : (
       <div onClick={itemClickHandler && this.clickHandler}>
         {data.map((item, index) => (
           <div
