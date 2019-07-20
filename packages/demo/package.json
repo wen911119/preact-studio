@@ -71,6 +71,7 @@
     "tabsDemo": "tabs演示",
     "formDemo": "表单演示页面",
     "switchDemo": "开关组件演示",
-    "treepickerDemo": "多级选择器演示"
+    "treepickerDemo": "多级选择器演示",
+    "scrollerDemo": "滚动组件演示"
   }
 }

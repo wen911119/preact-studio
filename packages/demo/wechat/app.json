@@ -10,7 +10,8 @@
     "pages/tabsDemo/index",
     "pages/formDemo/index",
     "pages/switchDemo/index",
-    "pages/treepickerDemo/index"
+    "pages/treepickerDemo/index",
+    "pages/scrollerDemo/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
