@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "demo",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "@ruiyun/preact-line": "^1.2.7",
     "@ruiyun/preact-loading": "^1.2.7",
     "@ruiyun/preact-m-actionsheet": "^1.2.7",
-    "@ruiyun/preact-m-auto-list": "^1.2.7",
+    "@ruiyun/preact-m-auto-list": "^1.2.10",
     "@ruiyun/preact-m-dialog": "^1.2.7",
     "@ruiyun/preact-m-form-component": "^1.2.9",
     "@ruiyun/preact-m-image-preview": "^1.2.7",
