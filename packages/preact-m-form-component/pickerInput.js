@@ -5,62 +5,86 @@ import FormRow from './formRow'
 
 @WithPicker
 export default class FormPickerSheet extends Component {
-  defaultMapIndexsToValues = (indexs = [], options = []) => {
-    const split = this.props.split || ','
-    return indexs.map(index => options[index]).join(split)
-  }
-  defaultMapValuesToIndexs = (values, options = []) => {
-    const split = this.props.split || ','
-    return (
-      values &&
-      values
-        .split(split)
-        .map(value => options.findIndex(item => item === value))
-    )
-  }
-
   onClick = () => {
-    const {
-      title = '请选择',
-      options = [],
-      config,
-      sync,
-      mode,
-      value,
-      mapIndexsToValues,
-      mapValuesToIndexs
-    } = this.props
-    if (
-      (mapIndexsToValues && !mapValuesToIndexs) ||
-      (mapValuesToIndexs && !mapIndexsToValues)
-    ) {
-      throw new Error(
-        'mapIndexsToValues 和 mapValuesToIndexs必须同时传或者同时不传'
-      )
-    }
-    const deFormat = mapValuesToIndexs || this.defaultMapValuesToIndexs
+    const { title = '请选择', config, sync, mode } = this.props
+    const { options, selectedIndexs } = this.state
+
     this.props
       .$picker({
         title,
-        options,
+        options: options.map(this.labelExtractor),
         config,
         mode,
-        values: deFormat(value, options)
+        values: selectedIndexs
       })
       .then(indexs => {
-        const format = mapIndexsToValues || this.defaultMapIndexsToValues
-        sync(format(indexs, options))
+        this.setState(
+          {
+            selectedIndexs: indexs
+          },
+          () => {
+            sync(indexs.map(index => options[index]))
+          }
+        )
       })
   }
+  updateOptions = options => {
+    let selectedIndexs = this.state.selectedIndexs
+    if (
+      this.props.value &&
+      this.props.value.length &&
+      options &&
+      options.length
+    ) {
+      // 需要将value转化为selectedIndexs
+      selectedIndexs = this.props.value.map(v =>
+        options.findIndex(
+          option => this.labelExtractor(v) === this.labelExtractor(option)
+        )
+      )
+    }
+    this.setState({
+      options,
+      selectedIndexs
+    })
+  }
+  constructor (props) {
+    super(props)
+    this.labelExtractor = props.labelExtractor || (v => v)
+    let selectedIndexs = []
+    if (
+      props.value &&
+      props.value.length &&
+      props.options &&
+      props.options.length
+    ) {
+      // 有初始值并且有初始options
+      // 需要将value转化为selectedIndexs
+      selectedIndexs = props.value.map(v =>
+        props.options.findIndex(
+          option => this.labelExtractor(v) === this.labelExtractor(option)
+        )
+      )
+    }
+    this.state = {
+      options: props.options || [],
+      selectedIndexs
+    }
+  }
+  componentDidMount () {
+    if (this.props.getOptions) {
+      this.props.getOptions().then(this.updateOptions)
+    }
+  }
   render () {
-    console.log('render-form-picker')
     const {
       label,
       err,
       placeholder,
       textColor = '#666',
       textSize = 30,
-      value,
+      value, // 是数组
+      split = ',',
       required,
       padding,
       labelSize,
@@ -73,6 +97,10 @@ export default class FormPickerSheet extends Component {
       arrowColor,
       ...otherProps
     } = this.props
+    let valueShow
+    if (value && value.length) {
+      valueShow = value.map(this.labelExtractor).join(split)
+    }
     return (
       <FormRow
         label={label}
@@ -91,11 +119,11 @@ export default class FormPickerSheet extends Component {
       >
         <Text
           {...otherProps}
-          color={value ? textColor : '#ccc'}
+          color={valueShow ? textColor : '#ccc'}
           size={textSize}
           onClick={this.onClick}
         >
-          {value || placeholder || '请选择'}
+          {valueShow || placeholder || '请选择'}
         </Text>
       </FormRow>
     )

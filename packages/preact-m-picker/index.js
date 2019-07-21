@@ -7,6 +7,10 @@ import Scroller from '@ruiyun/preact-m-scroller'
 import p2r from 'p-to-r'
 import style from './index.css'
 
+// 这个组件只接受扁平options,和options的index的值为value
+// 这个组件是无状态的
+// 复杂的options和状态交给调用者或者父级组件处理
+
 class PickerContent extends Component {
   onCancel = () => {
     this.props.cb && this.props.cb()
