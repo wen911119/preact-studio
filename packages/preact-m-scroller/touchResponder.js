@@ -1,16 +1,21 @@
 import { h, Component, cloneElement } from 'preact'
+
+// 这个组件在最顶部和最底部时候开始起作用
+// 需要父组件告知当前位置position
+// 这个组件的输出是告知子组件当前手势是什么(pulldown,pullup),距离是多少
 export default class TouchResponder extends Component {
   onTouchStart (e) {
-    if (this.props.position !== 'middle') {
+    if (this.props.position === 'top' || this.props.position === 'bottom') {
       this.touchStartPoint = e.targetTouches[0]
     }
   }
   onTouchMove (e) {
     const { position, freeze } = this.props
     if (freeze) {
+      // 有时候在左右滑动手势时候希望禁用这里的上下手势
       return
     }
-    if (position !== 'middle') {
+    if (position === 'top' || position === 'bottom') {
       const angle =
         (this.touchStartPoint.clientY - e.touches[0].clientY) /
         (this.touchStartPoint.clientX - e.touches[0].clientX)
@@ -38,7 +43,7 @@ export default class TouchResponder extends Component {
     }
   }
   onTouchEnd () {
-    if (this.props.position !== 'middle' && this.state.distance !== 0) {
+    if ((this.props.position === 'top' || this.props.position === 'bottom') && this.state.distance !== 0) {
       this.setState({ distance: 0, action: 'none' })
       // requestAnimationFrame(() => {
       //   this.setState({ distance: 0, action: "none" });
@@ -57,15 +62,13 @@ export default class TouchResponder extends Component {
     }
   }
   render ({ children, ...otherProps }, { distance, action }) {
-    return (
-      <div
-        onTouchMove={this.onTouchMove}
-        onTouchStart={this.onTouchStart}
-        onTouchEnd={this.onTouchEnd}
-        style={{ minHeight: '100%' }}
-      >
-        {cloneElement(children, { distance, action, ...otherProps })}
-      </div>
-    )
+    return cloneElement(children, {
+      onTouchMove: this.onTouchMove,
+      onTouchStart: this.onTouchStart,
+      onTouchEnd: this.onTouchEnd,
+      distance,
+      action,
+      ...otherProps
+    })
   }
 }

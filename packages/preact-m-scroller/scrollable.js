@@ -1,5 +1,6 @@
 import { h, Component, cloneElement } from 'preact'
 
+// eslint-disable-next-line
 export default class Scrollable extends Component {
   render ({
     children,
@@ -7,11 +8,11 @@ export default class Scrollable extends Component {
     action,
     header,
     footer,
-    recomputeLayout, // 过了掉以下属性，要不然这些属性加到dom上会报警告
-    onRefresh,
-    onLoadMore,
-    freeze,
-    resetLoadMore,
+    recomputeLayout, // 过滤掉以下属性，要不然这些属性加到dom上会报警告
+    onRefresh, // 过滤
+    onLoadMore, // 过滤
+    freeze, // 过滤
+    resetLoadMore, // 过滤
     ...otherProps
   }) {
     let _style = { transition: action === 'none' ? '330ms' : 'none' }
