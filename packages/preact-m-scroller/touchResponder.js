@@ -43,7 +43,10 @@ export default class TouchResponder extends Component {
     }
   }
   onTouchEnd () {
-    if ((this.props.position === 'top' || this.props.position === 'bottom') && this.state.distance !== 0) {
+    if (
+      (this.props.position === 'top' || this.props.position === 'bottom') &&
+      this.state.distance !== 0
+    ) {
       this.setState({ distance: 0, action: 'none' })
       // requestAnimationFrame(() => {
       //   this.setState({ distance: 0, action: "none" });
@@ -62,13 +65,19 @@ export default class TouchResponder extends Component {
     }
   }
   render ({ children, ...otherProps }, { distance, action }) {
-    return cloneElement(children, {
-      onTouchMove: this.onTouchMove,
-      onTouchStart: this.onTouchStart,
-      onTouchEnd: this.onTouchEnd,
-      distance,
-      action,
-      ...otherProps
-    })
+    return (
+      // 这个div少不了，这些事件加到子节点上不合适，职责边界就被打破了
+      <div
+        onTouchMove={this.onTouchMove}
+        onTouchStart={this.onTouchStart}
+        onTouchEnd={this.onTouchEnd}
+      >
+        {cloneElement(children, {
+          distance,
+          action,
+          ...otherProps
+        })}
+      </div>
+    )
   }
 }
