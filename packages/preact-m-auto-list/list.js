@@ -1,5 +1,8 @@
 import { h, Component } from 'preact'
 
+const DefaultEmptyView = () => <div>empty</div>
+const DefaultLoadingView = () => <div>loading...</div>
+
 export default class FlatList extends Component {
   clickHandler (event) {
     let current = event.target
@@ -14,16 +17,42 @@ export default class FlatList extends Component {
   constructor (props) {
     super(props)
     this.clickHandler = this.clickHandler.bind(this)
+    if (props.EmptyView) {
+      this.renderEmptyView = props.EmptyView
+    }
+    else {
+      this.renderEmptyView = DefaultEmptyView
+    }
+    if (props.LoadingView) {
+      this.renderLoadingView = props.LoadingView
+    }
+    else {
+      this.renderLoadingView = DefaultLoadingView
+    }
   }
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate (nextProps) {
     return (
       nextProps.data !== this.props.data ||
-      nextProps.extraData !== this.props.extraData
+      nextProps.extraData !== this.props.extraData ||
+      nextProps.loading !== this.props.loading
     )
   }
-  render ({ data, keyExtractor, renderItem, extraData, itemClickHandler, afterFirstRequest, EmptyView }) {
-    const isEmpty = afterFirstRequest && data.length===0 && EmptyView
-    return isEmpty ? <EmptyView /> : (
+  render ({
+    data,
+    keyExtractor,
+    renderItem,
+    extraData,
+    itemClickHandler,
+    loading,
+    FooterView
+  }) {
+    if (loading === true) {
+      return this.renderLoadingView()
+    }
+    else if (loading === false && data.length === 0) {
+      return this.renderEmptyView()
+    }
+    return (
       <div onClick={itemClickHandler && this.clickHandler}>
         {data.map((item, index) => (
           <div
@@ -33,6 +62,7 @@ export default class FlatList extends Component {
             {renderItem(item, index, extraData)}
           </div>
         ))}
+        {FooterView && <FooterView />}
       </div>
     )
   }

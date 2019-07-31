@@ -33,43 +33,38 @@ export default class ListDataProvider extends Component {
       newList = newList.concat(list)
       this.onLoadMoreDone && this.onLoadMoreDone(this.nomore)
     }
-    this.setState({ data: newList, afterFirstRequest: true })
+    this.setState({ data: newList, loading: false })
   }
 
   constructor (props) {
     super(props)
     this.onRefresh = this.onRefresh.bind(this)
     this.onLoadMore = this.onLoadMore.bind(this)
-    this.previousParmas = props.pramas || {}
-    this.previousPaginationInfo = props.paginationInfo
     this.nomore = false
     this.state = {
       data: [],
-      afterFirstRequest: false
+      loading: true // 可以同时代替afterFirstRequest
     }
   }
   componentDidMount () {
-    const { _onRefresh, loading } = this.props
-    loading && loading.show && loading.show()
-    _onRefresh()
+    // mounted之后立即加载
+    const { params, paginationInfo } = this.props
+    this._fecthListData(Object.assign({}, params, paginationInfo))
   }
-  componentDidUpdate () {
-    const { params = {}, paginationInfo, _onRefresh, loading } = this.props
-    if (!isEqual(this.previousParmas, params)) {
-      // 重新刷新
-      loading && loading.show && loading.show()
-      _onRefresh()
+  componentWillReceiveProps (nextProps) {
+    const { params = {}, paginationInfo, _onRefresh } = this.props
+    if (!isEqual(nextProps.params, params)) {
+      // params改变了需要重新刷新
+      this.setState({
+        loading: true
+      }, _onRefresh)
     }
-    else if (!isEqual(this.previousPaginationInfo, paginationInfo)) {
-      // 更新
-      this._fecthListData(Object.assign({}, params, paginationInfo)).then(
-        () => {
-          loading && loading.hide && loading.hide()
-        }
+    else if (!isEqual(nextProps.paginationInfo, paginationInfo)) {
+      // 下一页
+      this._fecthListData(
+        Object.assign({}, nextProps.params, nextProps.paginationInfo)
       )
     }
-    this.previousParmas = params
-    this.previousPaginationInfo = paginationInfo
   }
   render () {
     const { children, ...otherProps } = this.props
@@ -78,7 +73,7 @@ export default class ListDataProvider extends Component {
       data: this.state.data,
       onRefresh: this.onRefresh,
       onLoadMore: this.onLoadMore,
-      afterFirstRequest: this.state.afterFirstRequest
+      loading: this.state.loading
     })
   }
 }
