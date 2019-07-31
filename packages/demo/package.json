@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ruiyun/ajax": "^1.0.1",
     "@ruiyun/preact-button": "^1.2.7",
     "@ruiyun/preact-form": "^1.2.7",
     "@ruiyun/preact-image": "^1.2.7",
@@ -35,6 +36,7 @@
     "@ruiyun/preact-number-input": "^1.2.7",
     "@ruiyun/preact-switch": "^1.2.7",
     "@ruiyun/preact-text": "^1.2.7",
+    "lodash.debounce": "^4.0.8",
     "preact": "^10.0.0-beta.3"
   },
   "devDependencies": {
@@ -72,6 +74,7 @@
     "formDemo": "表单演示页面",
     "switchDemo": "开关组件演示",
     "treepickerDemo": "多级选择器演示",
-    "scrollerDemo": "滚动组件演示"
+    "scrollerDemo": "滚动组件演示",
+    "autolistDemo": "自动列表演示"
   }
 }

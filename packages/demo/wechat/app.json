@@ -11,7 +11,8 @@
     "pages/formDemo/index",
     "pages/switchDemo/index",
     "pages/treepickerDemo/index",
-    "pages/scrollerDemo/index"
+    "pages/scrollerDemo/index",
+    "pages/autolistDemo/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
