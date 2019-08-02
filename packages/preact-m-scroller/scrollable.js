@@ -8,7 +8,6 @@ export default class Scrollable extends Component {
     action,
     header,
     footer,
-    recomputeLayout, // 过滤掉以下属性，要不然这些属性加到dom上会报警告
     onRefresh, // 过滤
     onLoadMore, // 过滤
     freeze, // 过滤

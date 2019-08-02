@@ -24,8 +24,7 @@ export default class ScrollListener extends Component {
       this.scrollEventTarget
     )
     if (scrollTop === 0) {
-      this.state.position !== 'top' &&
-        this.setState({ position: 'top', contentHeight, containerHeight })
+      this.setState({ position: 'top', contentHeight, containerHeight })
     }
     else if (containerHeight + scrollTop === contentHeight) {
       this.state.position !== 'bottom' &&
@@ -82,10 +81,15 @@ export default class ScrollListener extends Component {
 
   componentDidMount () {
     this.scrollEventTarget = getScrollEventTarget(this.scrollWrap)
+    this.observer = new MutationObserver(this.updatePosition)
+    this.observer.observe(this.scrollWrap, { childList: true, subtree: true })
     // 需不需要debounce？
     this.scrollEventTarget.addEventListener('scroll', this.updatePosition)
   }
 
+  componentWillUnmount () {
+    this.observer && this.observer.disconnect()
+  }
   render (
     { children, height, style = {}, ...otherProps },
     { position, contentHeight, containerHeight }
@@ -115,7 +119,6 @@ export default class ScrollListener extends Component {
           position,
           contentHeight,
           containerHeight,
-          recomputeLayout: this.updatePosition,
           ...otherProps
         })}
       </div>

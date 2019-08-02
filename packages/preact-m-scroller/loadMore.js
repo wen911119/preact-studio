@@ -40,7 +40,6 @@ export default class LoadMore extends Component {
         })
         p.then(nomore => {
           // 动态插入元素增加高度后要重庆计算布局，获取新的高度
-          this.props.recomputeLayout && this.props.recomputeLayout()
           this.setState({ nomore: !!nomore }, () => {
             this.onLoading = false
           })
