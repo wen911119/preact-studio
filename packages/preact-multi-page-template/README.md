@@ -50,3 +50,28 @@ export default function onEntry () {
 ```
 这个onEntry函数只有这个页面初始化时才会执行。
 方式二的entry会覆盖方式一。
+
+### 自定义兼容性
+默认的js和css兼容性是“last 2 versions”。如果不满足你的需要，可以在package.json中加入
+```json
+{
+  "browsers": [
+    "android >= 4.4",
+    "ios >= 8"
+  ]
+}
+```
+可以参考[browserl.ist](https://browserl.ist/)来设置你想要的兼容性。
+
+### 自定义后编译的包
+默认只会编译src下面的js文件。但是有些npm包是需要编译后再使用的(个人推荐这种方式),比如@ruiyun/preact-m-nav,@ruiyun/preact-layout-suite等。可以在package.json中加入
+```json
+{
+  "include": [
+    "@ruiyun",
+    "p-to-r",
+    "h5-indicator"
+  ],
+}
+```
+来自定义加入需要后编译的包名。

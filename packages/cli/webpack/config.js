@@ -12,12 +12,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const TARGET_PROJECT_PATH = process.cwd()
 const packageInfo = require(path.resolve(TARGET_PROJECT_PATH, './package.json'))
-
+const customInclude = packageInfo.include || []
+const customBrowsers = packageInfo.browsers || []
 const commonChunks = (packageInfo.commonChunks || []).concat([
   'preact',
   'style-loader'
 ])
-
 const commonChunksReg = new RegExp(`[\\/](${commonChunks.join('|')})[\\/]`)
 
 const genEntry = (appJsPath, pageName) => {
@@ -124,7 +124,7 @@ module.exports = {
             options: {
               plugins: [
                 require('postcss-preset-env')({
-                  overrideBrowserslist: 'last 2 versions'
+                  browsers: ['last 2 versions'].concat(customBrowsers)
                 }),
                 require('cssnano')({
                   preset: 'default'
@@ -140,6 +140,11 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
+        include: [path.resolve(TARGET_PROJECT_PATH, './src')].concat(
+          customInclude.map(packageName =>
+            path.resolve(TARGET_PROJECT_PATH, `./node_modules/${packageName}`)
+          )
+        ),
         use: {
           loader: 'babel-loader',
           options: {
@@ -147,12 +152,16 @@ module.exports = {
               [
                 '@babel/preset-env',
                 {
-                  exclude: ['@babel/plugin-transform-regenerator']
+                  useBuiltIns: 'usage',
+                  corejs: 2,
+                  modules: false,
+                  targets: {
+                    browsers: ['last 2 versions'].concat(customBrowsers)
+                  }
                 }
               ]
             ],
             plugins: [
-              ['@babel/plugin-transform-async-to-generator'],
               '@babel/plugin-syntax-dynamic-import',
               [
                 '@babel/plugin-proposal-decorators',
