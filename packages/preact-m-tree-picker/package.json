@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-tree-picker",
-  "version": "1.2.15",
+  "version": "1.2.16",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -15,7 +15,7 @@
   "dependencies": {
     "@ruiyun/preact-layout-suite": "^1.2.7",
     "@ruiyun/preact-line": "^1.2.7",
-    "@ruiyun/preact-m-scroller": "^1.2.15",
+    "@ruiyun/preact-m-scroller": "^1.2.16",
     "@ruiyun/preact-m-swiper": "^1.2.7",
     "@ruiyun/preact-modal": "^1.2.7",
     "@ruiyun/preact-text": "^1.2.7",
