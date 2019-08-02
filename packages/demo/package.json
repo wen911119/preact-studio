@@ -76,5 +76,14 @@
     "treepickerDemo": "多级选择器演示",
     "scrollerDemo": "滚动组件演示",
     "autolistDemo": "自动列表演示"
-  }
+  },
+  "include": [
+    "@ruiyun",
+    "p-to-r",
+    "h5-indicator"
+  ],
+  "browsers": [
+    "android >= 4.4",
+    "ios >= 8"
+  ]
 }

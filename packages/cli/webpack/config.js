@@ -19,7 +19,6 @@ const commonChunks = (packageInfo.commonChunks || []).concat([
   'style-loader'
 ])
 const commonChunksReg = new RegExp(`[\\/](${commonChunks.join('|')})[\\/]`)
-
 const genEntry = (appJsPath, pageName) => {
   let entryContent
   if (process.env.BUILD_TARGET !== 'local') {
@@ -124,7 +123,7 @@ module.exports = {
             options: {
               plugins: [
                 require('postcss-preset-env')({
-                  browsers: ['last 2 versions'].concat(customBrowsers)
+                  Browserslist: ['last 2 versions'].concat(customBrowsers)
                 }),
                 require('cssnano')({
                   preset: 'default'
@@ -140,7 +139,9 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        include: [path.resolve(TARGET_PROJECT_PATH, './src')].concat(
+        include: [
+          path.resolve(TARGET_PROJECT_PATH, './src')
+        ].concat(
           customInclude.map(packageName =>
             path.resolve(TARGET_PROJECT_PATH, `./node_modules/${packageName}`)
           )
