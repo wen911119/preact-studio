@@ -89,19 +89,20 @@ const TabHeader = ({
 }
 export default class Tabs extends Component {
   onChange (index) {
-    this.setState({
-      activeIndex: index
-    })
-  }
-  onTabHeaderClick (index) {
-    this.setState({
-      activeIndex: index
-    })
+    this.setState(
+      {
+        activeIndex: index
+      },
+      () => {
+        if (this.props.onChange) {
+          this.props.onChange(index)
+        }
+      }
+    )
   }
   constructor (props) {
     super(props)
     this.onChange = this.onChange.bind(this)
-    this.onTabHeaderClick = this.onTabHeaderClick.bind(this)
     this.state = {
       activeIndex: 0
     }
@@ -142,7 +143,7 @@ export default class Tabs extends Component {
           <TabHeader
             titles={titles}
             current={activeIndex}
-            onItemClick={this.onTabHeaderClick}
+            onItemClick={this.onChange}
             titleColor={titleColor}
             titleSize={titleSize}
             activeTitleColor={activeTitleColor}
