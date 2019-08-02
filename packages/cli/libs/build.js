@@ -10,7 +10,7 @@ module.exports = function (buildTarget) {
   webpackConfig.mode = 'production'
   webpack(webpackConfig, (err, stats) => {
     if (err || stats.hasErrors()) {
-      console.log(err)
+      console.log(err || stats)
     }
     else {
       console.log('build success')
