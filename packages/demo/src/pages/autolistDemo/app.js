@@ -39,7 +39,7 @@ export default class AutolistDemo extends Component {
     let res = {
       list: ret.data,
       pageInfo: {
-        totalPage: ret.pageInfo.pageSize,
+        totalPage: Math.ceil(ret.pageInfo.total / ret.pageInfo.pageSize),
         currentPage: ret.pageInfo.currentPage
       }
     }
@@ -51,6 +51,11 @@ export default class AutolistDemo extends Component {
         keyword
       })
     })
+  }
+  componentDidMount () {
+    // setTimeout(() => {
+    //   this.list.scrollTo(0)
+    // }, 10000)
   }
   renderItem = item => (
     <div className={className.item}>
@@ -76,6 +81,7 @@ export default class AutolistDemo extends Component {
           renderItem={this.renderItem}
           keyExtractor={this.keyExtractor}
           format={this.format}
+          ref={s => (this.list = s)}
         />
       </div>
     )
