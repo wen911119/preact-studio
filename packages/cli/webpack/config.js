@@ -123,7 +123,7 @@ module.exports = {
             options: {
               plugins: [
                 require('postcss-preset-env')({
-                  Browserslist: ['last 2 versions'].concat(customBrowsers)
+                  browsers: ['last 2 versions'].concat(customBrowsers)
                 }),
                 require('cssnano')({
                   preset: 'default'
