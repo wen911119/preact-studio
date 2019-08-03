@@ -8,7 +8,7 @@ import {
 } from '@ruiyun/preact-layout-suite'
 import { WithModal } from '@ruiyun/preact-modal'
 import Line from '@ruiyun/preact-line'
-import style from './index.css'
+import className from './index.css'
 
 const defaultConfig = {
   titleColor: '#333',
@@ -52,7 +52,7 @@ const renderModalContent = ({
       {placeholder && (
         <input
           placeholder={placeholder}
-          className={style.promptInput}
+          className={className.promptInput}
           id={inputId}
           value={value}
         />
@@ -66,8 +66,7 @@ const renderModalContent = ({
           // eslint-disable-next-line
           onClick={() => cb(i)}
           height={100}
-          className={style.shadow}
-          style={{ flex: 1 }}
+          className={className.shadow}
         >
           <Text size={config.btnSize} color={config.btnsColor[i] || '#fc9153'}>
             {btn}

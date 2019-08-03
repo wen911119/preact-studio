@@ -51,6 +51,7 @@ export default class Swipeable extends Component {
     } = this.props
     const _style = Object.assign({}, style, innerStyle, {
       transform: `translate3d(${offset}px,0,0)`,
+      '-webkit-transform': `translate3d(${offset}px,0,0)`,
       transition: animation ? '330ms' : 'none'
     })
     const childrenArr = children ? (children.map ? children : [children]) : []

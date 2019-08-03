@@ -1,6 +1,6 @@
 import { h, Component, cloneElement } from 'preact'
 import Portal from 'preact-portal'
-import animationClass from './index.css'
+import className from './index.css'
 
 let animation = true
 const us = navigator.userAgent.toLowerCase()
@@ -14,33 +14,15 @@ if (us.indexOf('android') > -1) {
   }
 }
 
-const baseStyle = {
-  display: 'flex',
-  position: 'fixed',
-  zIndex: 100,
-  left: 0,
-  right: 0,
-  top: 0,
-  bottom: 0,
-  animationDuration: '.3s'
-}
-
 function hack (maskClickHander) {
   return function (e) {
-    e.target.className.indexOf('_modal_mask_') > -1 &&
-      maskClickHander &&
-      maskClickHander()
+    e.target.id === '_modal_mask_' && maskClickHander && maskClickHander()
   }
 }
 
 export default class ModalStateless extends Component {
   noMove (e) {
-    if (
-      !(
-        this.props.allowContentTouchMove &&
-        e.target.className !== '_modal_mask_'
-      )
-    ) {
+    if (!(this.props.allowContentTouchMove && e.target.id !== '_modal_mask_')) {
       e.preventDefault()
     }
   }
@@ -67,10 +49,9 @@ export default class ModalStateless extends Component {
     { open, into = 'body', children, onMaskClick, position, mask },
     { close }
   ) => {
-    const style = { backgroundColor: `rgba(0,0,0,${mask})` }
-    let maskStyle = Object.assign({}, baseStyle, style)
+    let maskStyle = { backgroundColor: `rgba(0,0,0,${mask})` }
     if (open) {
-      maskStyle.animationName = animationClass['modal-mask-fadein']
+      maskStyle.animationName = className['modal-mask-fadein']
     }
     else {
       maskStyle.backgroundColor = 'rgba(0,0,0,0)'
@@ -78,12 +59,14 @@ export default class ModalStateless extends Component {
     let modalContentStyle = Object.assign({}, this.modalContentStyle)
     if (position === 'center') {
       if (animation) {
-        modalContentStyle.animationName = animationClass['modal-content-zoom']
+        modalContentStyle.animationName = className['modal-content-zoom']
         maskStyle.transition = 'background-color 0.3s linear'
       }
 
       maskStyle.justifyContent = 'center'
+      maskStyle['-webkit-justify-content'] = 'center'
       maskStyle.alignItems = 'center'
+      maskStyle['-webkit-align-items'] = 'center'
       if (!open) {
         maskStyle.transition = 'background-color 0s linear'
         modalContentStyle.display = 'none'
@@ -91,49 +74,64 @@ export default class ModalStateless extends Component {
     }
     else if (position === 'left') {
       maskStyle.alignItems = 'center'
+      maskStyle['-webkit-align-items'] = 'center'
       maskStyle.transition = 'background-color .3s easy-out'
       if (open) {
         modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
-        modalContentStyle.animationName = animationClass['modal-content-left-in']
+        modalContentStyle['-webkit-transform'] = 'translate3d(0px, 0px, 0px)'
+        modalContentStyle.animationName = className['modal-content-left-in']
       }
       else {
         modalContentStyle.transform = 'translate3d(-100%, 0px, 0px)'
+        modalContentStyle['-webkit-transform'] = 'translate3d(-100%, 0px, 0px)'
       }
     }
     else if (position === 'right') {
       maskStyle.alignItems = 'center'
+      maskStyle['-webkit-align-items'] = 'center'
       maskStyle.justifyContent = 'flex-end'
+      maskStyle['-webkit-justify-content'] = 'flex-end'
       maskStyle.transition = 'background-color .3s easy-in'
       if (open) {
         modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
-        modalContentStyle.animationName = animationClass['modal-content-right-in']
+        modalContentStyle['-webkit-transform'] = 'translate3d(0px, 0px, 0px)'
+        modalContentStyle.animationName = className['modal-content-right-in']
       }
       else {
         modalContentStyle.transform = 'translate3d(100%, 0px, 0px)'
+        modalContentStyle['-webkit-transform'] = 'translate3d(100%, 0px, 0px)'
       }
     }
     else if (position === 'top') {
       maskStyle.alignItems = 'flex-start'
+      maskStyle['-webkit-align-items'] = 'flex-start'
       maskStyle.justifyContent = 'center'
+      maskStyle['-webkit-justify-content'] = 'center'
       maskStyle.transition = 'background-color .3s easy-in-out'
       if (open) {
         modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
-        modalContentStyle.animationName = animationClass['modal-content-top-in']
+        modalContentStyle['-webkit-transform'] = 'translate3d(0px, 0px, 0px)'
+        modalContentStyle.animationName = className['modal-content-top-in']
       }
       else {
         modalContentStyle.transform = 'translate3d(0, -100%, 0px)'
+        modalContentStyle['-webkit-transform'] = 'translate3d(0, -100%, 0px)'
       }
     }
     else if (position === 'bottom') {
       maskStyle.alignItems = 'flex-end'
+      maskStyle['-webkit-align-items'] = 'flex-end'
       maskStyle.justifyContent = 'center'
+      maskStyle['-webkit-justify-content'] = 'center'
       maskStyle.transition = 'background-color .3s easy-in-out'
       if (open) {
         modalContentStyle.transform = 'translate3d(0px, 0px, 0px)'
-        modalContentStyle.animationName = animationClass['modal-content-bottom-in']
+        modalContentStyle['-webkit-transform'] = 'translate3d(0px, 0px, 0px)'
+        modalContentStyle.animationName = className['modal-content-bottom-in']
       }
       else {
         modalContentStyle.transform = 'translate3d(0, 100%, 0px)'
+        modalContentStyle['-webkit-transform'] = 'translate3d(0, 100%, 0px)'
       }
     }
     // preact-portal 没有适配 Preact X 目前只能多加一个空div来解决
@@ -141,7 +139,8 @@ export default class ModalStateless extends Component {
     return open || !close ? (
       <Portal into={into}>
         <div
-          className="_modal_mask_"
+          id="_modal_mask_"
+          className={className.mask}
           onClick={hack(onMaskClick)}
           onTouchMove={this.noMove}
           style={maskStyle}

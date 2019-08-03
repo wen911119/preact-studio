@@ -22,6 +22,7 @@ const Line = ({
   if (!v) {
     baseStyle.height = size
     baseStyle.transform = `scaleY(${scale || scaleDefault})`
+    baseStyle['-webkit-transform'] = `scaleY(${scale || scaleDefault})`
     wrapStyle.paddingLeft = px2rem(indent[0])
     wrapStyle.paddingRight = px2rem(indent[1])
     wrapStyle.width = '100%'
@@ -29,6 +30,7 @@ const Line = ({
   else if (v) {
     baseStyle.width = size
     baseStyle.transform = `scaleX(${scale || scaleDefault})`
+    baseStyle['-webkit-transform'] = `scaleX(${scale || scaleDefault})`
     wrapStyle.paddingTop = px2rem(indent[0])
     wrapStyle.paddingBottom = px2rem(indent[1])
     wrapStyle.height = '100%'

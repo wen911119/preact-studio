@@ -101,7 +101,8 @@ export default class ScrollListener extends Component {
         overflowY: 'auto',
         paddingRight: '30px', // 为了去掉滚动条
         marginLeft: '-30px', // 为了去掉滚动条
-        transform: 'translateX(30px)' // 为了去掉滚动条
+        transform: 'translateX(30px)', // 为了去掉滚动条
+        '-webkit-transform': 'translateX(30px)'
       }
     }
     else {

@@ -1,0 +1,8 @@
+.tabindicator {
+  display: flex;
+}
+
+.tabindicator > span {
+  display: inline-block;
+  transition: 330ms;
+}

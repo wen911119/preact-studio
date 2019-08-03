@@ -1,6 +1,7 @@
 import { h, Component } from 'preact'
 import Swiper from '@ruiyun/preact-m-swiper'
 import px2rem from 'p-to-r'
+import className from './index.css'
 
 const renderTabHeaderItem = ({
   title,
@@ -27,16 +28,15 @@ const TabIndicator = ({
 }) => {
   const transformX = 750 / 4 - indicatorWith / 2 + 375 * index
   return (
-    <div style={{ display: 'flex' }}>
+    <div className={className.tabindicator}>
       <span
         style={{
-          display: 'inline-block',
           width: px2rem(indicatorWith),
           height: px2rem(indicatorHeight),
           marginTop: px2rem(-indicatorHeight),
           backgroundColor: indicatorColor,
-          transition: '330ms',
-          transform: `translate3d(${px2rem(transformX)}, 0px, 0px)`
+          transform: `translate3d(${px2rem(transformX)}, 0px, 0px)`,
+          '-webkit-transform': `translate3d(${px2rem(transformX)}, 0px, 0px)`
         }}
       />
     </div>

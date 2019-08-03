@@ -43,6 +43,8 @@ export default class SwipeResponder extends Component {
     }
     if (fill) {
       wrapStyle.flex = 1
+      wrapStyle['-webkit-flex'] = 1
+      wrapStyle['-webkit-box-flex'] = 1
     }
     return (
       <div
