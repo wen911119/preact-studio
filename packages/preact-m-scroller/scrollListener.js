@@ -26,6 +26,11 @@ export default class ScrollListener extends Component {
     if (scrollTop === 0) {
       this.setState({ position: 'top', contentHeight, containerHeight })
     }
+    // 顺序不能调整
+    else if (containerHeight + scrollTop === contentHeight) {
+      this.state.position !== 'bottom' &&
+        this.setState({ position: 'bottom', contentHeight, containerHeight })
+    }
     else if (containerHeight * 1.15 + scrollTop > contentHeight) {
       // 快接近底部了
       // 为了解决ios Safari 上滚动隐藏标题和底部菜单栏后取到的containerHeight高度小于实际值的问题
@@ -41,10 +46,6 @@ export default class ScrollListener extends Component {
           contentHeight,
           containerHeight
         })
-    }
-    else if (containerHeight + scrollTop === contentHeight) {
-      this.state.position !== 'bottom' &&
-        this.setState({ position: 'bottom', contentHeight, containerHeight })
     }
     else if (this.state.position !== 'middle') {
       this.setState({ position: 'middle', contentHeight, containerHeight })

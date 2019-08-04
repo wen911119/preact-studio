@@ -28,7 +28,7 @@ export default class LoadMore extends Component {
   }
   componentDidUpdate () {
     if (
-      this.props.position === 'will-bottom' &&
+      (this.props.position === 'will-bottom' || this.props.position === 'bottom') &&
       !this.state.nomore &&
       !this.onLoading
     ) {
