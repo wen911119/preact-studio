@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-auto-list",
-  "version": "1.2.16",
+  "version": "1.2.20",
   "description": "",
   "main": "index.js",
   "raw": "index.js",
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ruiyun/preact-m-scroller": "^1.2.16",
+    "@ruiyun/preact-m-scroller": "^1.2.20",
     "lodash.isequal": "^4.5.0",
     "p-to-r": "^1.0.3"
   },
