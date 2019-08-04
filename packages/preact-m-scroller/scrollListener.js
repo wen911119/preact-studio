@@ -26,10 +26,6 @@ export default class ScrollListener extends Component {
     if (scrollTop === 0) {
       this.setState({ position: 'top', contentHeight, containerHeight })
     }
-    else if (containerHeight + scrollTop === contentHeight) {
-      this.state.position !== 'bottom' &&
-        this.setState({ position: 'bottom', contentHeight, containerHeight })
-    }
     else if (containerHeight * 1.15 + scrollTop > contentHeight) {
       // 快接近底部了
       // 为了解决ios Safari 上滚动隐藏标题和底部菜单栏后取到的containerHeight高度小于实际值的问题
@@ -38,6 +34,7 @@ export default class ScrollListener extends Component {
       // 这个问题在设置了height，变为局部滚动时是不存在的
       // 但是为了统一解决，加入了will-bottom的状态
       // 以后onLoadMore触发条件改为will-bottom
+      // todo bugfix 填充下一页数据时也会触发scroll事件，导致再次触发will-bottom，又加载了一页。
       this.state.position !== 'will-bottom' &&
         this.setState({
           position: 'will-bottom',
@@ -45,13 +42,21 @@ export default class ScrollListener extends Component {
           containerHeight
         })
     }
+    else if (containerHeight + scrollTop === contentHeight) {
+      this.state.position !== 'bottom' &&
+        this.setState({ position: 'bottom', contentHeight, containerHeight })
+    }
     else if (this.state.position !== 'middle') {
       this.setState({ position: 'middle', contentHeight, containerHeight })
     }
   }
 
-  scrollTo (position) {
-    this.scrollEventTarget.scrollTop = position
+  scrollTo (position = 0, animation = true) {
+    this.scrollEventTarget.scrollTo({
+      top: position,
+      left: 0,
+      behavior: animation ? 'smooth' : 'instant'
+    })
   }
 
   getHeight (scrollEventTarget) {

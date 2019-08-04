@@ -140,12 +140,14 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: [
-          path.resolve(TARGET_PROJECT_PATH, './src')
+          path.resolve(TARGET_PROJECT_PATH, './src'),
+          path.resolve(TARGET_PROJECT_PATH, '../../packages/') // 为了本地调试需要
         ].concat(
           customInclude.map(packageName =>
             path.resolve(TARGET_PROJECT_PATH, `./node_modules/${packageName}`)
           )
         ),
+        exclude: /.+\/packages\/.+\/node_modules/, // 为了本地调试需要
         use: {
           loader: 'babel-loader',
           options: {

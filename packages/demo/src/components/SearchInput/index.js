@@ -32,7 +32,6 @@ export default class SearchInput extends Component {
     this.debouncedTextInput = debounce(value => {
       this.props.onTextInput && this.props.onTextInput(value)
     }, props.debounce || 400)
-    console.log('constructor')
     this.state = {
       keyword: ''
     }

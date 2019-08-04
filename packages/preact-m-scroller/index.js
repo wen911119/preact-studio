@@ -1,4 +1,4 @@
-import { h } from 'preact'
+import { h, Component } from 'preact'
 import TouchResponder from './touchResponder'
 import ScrollListener from './scrollListener'
 import Scrollable from './scrollable'
@@ -10,45 +10,76 @@ import LoadMore from './loadMore'
 // 导致滚动穿透
 // todo
 
-export const Scroller = ({ children, ...otherProps }) => (
-  <ScrollListener {...otherProps}>
-    <TouchResponder>
-      <Scrollable>{children}</Scrollable>
-    </TouchResponder>
-  </ScrollListener>
-)
-
-export const ScrollerWithRefresh = ({ children, ...otherProps }) => (
-  <ScrollListener {...otherProps}>
-    <TouchResponder>
-      <RefreshControl>
-        <Scrollable>{children}</Scrollable>
-      </RefreshControl>
-    </TouchResponder>
-  </ScrollListener>
-)
-
-export const ScrollerWithLoadMore = ({ children, ...otherProps }) => (
-  <ScrollListener {...otherProps}>
-    <TouchResponder>
-      <LoadMore>
-        <Scrollable>{children}</Scrollable>
-      </LoadMore>
-    </TouchResponder>
-  </ScrollListener>
-)
-
-
-export const ScrollerWithRefreshAndLoadMore = ({ children, ...otherProps }) => (
-  <ScrollListener {...otherProps}>
-    <TouchResponder>
-      <LoadMore>
-        <RefreshControl>
+export class Scroller extends Component {
+  scrollTo = (p, animation) => {
+    this.scroller.scrollTo(p, animation)
+  }
+  render () {
+    const { children, ...otherProps } = this.props
+    return (
+      <ScrollListener {...otherProps} ref={s => (this.scroller = s)}>
+        <TouchResponder>
           <Scrollable>{children}</Scrollable>
-        </RefreshControl>
-      </LoadMore>
-    </TouchResponder>
-  </ScrollListener>
-)
+        </TouchResponder>
+      </ScrollListener>
+    )
+  }
+}
+
+export class ScrollerWithRefresh extends Component {
+  scrollTo = (p, animation) => {
+    this.scroller.scrollTo(p, animation)
+  }
+  render () {
+    const { children, ...otherProps } = this.props
+    return (
+      <ScrollListener {...otherProps} ref={s => (this.scroller = s)}>
+        <TouchResponder>
+          <RefreshControl>
+            <Scrollable>{children}</Scrollable>
+          </RefreshControl>
+        </TouchResponder>
+      </ScrollListener>
+    )
+  }
+}
+
+export class ScrollerWithLoadMore extends Component {
+  scrollTo = (p, animation) => {
+    this.scroller.scrollTo(p, animation)
+  }
+  render () {
+    const { children, ...otherProps } = this.props
+    return (
+      <ScrollListener {...otherProps} ref={s => (this.scroller = s)}>
+        <TouchResponder>
+          <LoadMore>
+            <Scrollable>{children}</Scrollable>
+          </LoadMore>
+        </TouchResponder>
+      </ScrollListener>
+    )
+  }
+}
+
+export class ScrollerWithRefreshAndLoadMore extends Component {
+  scrollTo = (p, animation) => {
+    this.scroller.scrollTo(p, animation)
+  }
+  render () {
+    const { children, ...otherProps } = this.props
+    return (
+      <ScrollListener {...otherProps} ref={s => (this.scroller = s)}>
+        <TouchResponder>
+          <LoadMore>
+            <RefreshControl>
+              <Scrollable>{children}</Scrollable>
+            </RefreshControl>
+          </LoadMore>
+        </TouchResponder>
+      </ScrollListener>
+    )
+  }
+}
 
 export default Scroller

@@ -12,10 +12,13 @@ const SwiperItem = () => (
 export default class TabsDemo extends Component {
   render () {
     return (
-      <Tabs titles={['tab1', 'tab2']}>
+      <Tabs titles={['tab1', 'tab2', 'tab3']}>
         <SwiperItem />
         <XCenterView height={600}>
           <div>jun</div>
+        </XCenterView>
+        <XCenterView height={600}>
+          <div>jun2</div>
         </XCenterView>
       </Tabs>
     )

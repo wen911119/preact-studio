@@ -52,10 +52,8 @@ export default class AutolistDemo extends Component {
       })
     })
   }
-  componentDidMount () {
-    // setTimeout(() => {
-    //   this.list.scrollTo(0)
-    // }, 10000)
+  backToTop = () => {
+    this.list.scrollTo(0, false)
   }
   renderItem = item => (
     <div className={className.item}>
@@ -73,6 +71,7 @@ export default class AutolistDemo extends Component {
     return (
       <div>
         <SearchBar onTextInput={this.onSearch} />
+        <Text className={className.backtotop} color='#fff' size={24} onClick={this.backToTop}>TOP</Text>
         <AutoList
           pageSize={20}
           alias={{ pageNum: 'page', pageSize: 'page_size' }}
@@ -82,6 +81,7 @@ export default class AutolistDemo extends Component {
           keyExtractor={this.keyExtractor}
           format={this.format}
           ref={s => (this.list = s)}
+          height='400px'
         />
       </div>
     )
