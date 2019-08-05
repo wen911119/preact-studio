@@ -52,7 +52,7 @@ export default class ListDataProvider extends Component {
     this._fecthListData(Object.assign({}, params, paginationInfo))
   }
   componentWillReceiveProps (nextProps) {
-    const { params = {}, paginationInfo, _onRefresh } = this.props
+    const { params, paginationInfo, _onRefresh } = this.props
     if (!isEqual(nextProps.params, params)) {
       // params改变了需要重新刷新
       this.setState({
