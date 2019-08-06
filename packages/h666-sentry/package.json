@@ -1,0 +1,16 @@
+{
+  "name": "h666-sentry",
+  "version": "1.0.0",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sentry",
+    "h666"
+  ]
+}
