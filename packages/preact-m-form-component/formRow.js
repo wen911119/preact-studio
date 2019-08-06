@@ -23,12 +23,17 @@ const FormRow = ({
   padding = [30, 30, 30, 30],
   slot = 30,
   required = false,
-  direction = 'h'
+  direction = 'h',
+  renderRight
 }) => {
   if (direction === 'h') {
     return (
       <SlotRowView padding={padding} bgColor="#fff" slot={slot}>
-        <Text size={labelSize} color={labelColor} className={className.noshrink}>
+        <Text
+          size={labelSize}
+          color={labelColor}
+          className={className.noshrink}
+        >
           {required && (
             <Text size={labelSize} color="#f8584f">
               *
@@ -37,11 +42,19 @@ const FormRow = ({
           {label}
         </Text>
         {err && (
-          <Text size={errorSize} color={errorColor} className={className.noshrink}>
+          <Text
+            size={errorSize}
+            color={errorColor}
+            className={className.noshrink}
+          >
             {err}
           </Text>
         )}
-        <RowView className={className.flex1} style={{ height: '100%' }} hAlign="right">
+        <RowView
+          className={className.flex1}
+          style={{ height: '100%' }}
+          hAlign="right"
+        >
           {children}
         </RowView>
         {arrow && (
@@ -54,13 +67,18 @@ const FormRow = ({
             }}
           />
         )}
+        {!arrow && renderRight && renderRight()}
       </SlotRowView>
     )
   }
   return (
     <SlotColumnView slot={slot} padding={padding}>
       <SlotRowView slot={slot}>
-        <Text size={labelSize} color={labelColor} className={className.noshrink}>
+        <Text
+          size={labelSize}
+          color={labelColor}
+          className={className.noshrink}
+        >
           {required && (
             <Text size={labelSize} color="#f8584f">
               *
@@ -69,7 +87,11 @@ const FormRow = ({
           {label}
         </Text>
         {err && (
-          <Text size={errorSize} color={errorColor} className={className.noshrink}>
+          <Text
+            size={errorSize}
+            color={errorColor}
+            className={className.noshrink}
+          >
             {err}
           </Text>
         )}
