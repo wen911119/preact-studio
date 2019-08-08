@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-countdown",
-  "version": "1.0.0",
+  "version": "1.2.26",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,8 +13,8 @@
     "preact"
   ],
   "dependencies": {
-    "@ruiyun/preact-layout-suite": "^1.2.7",
     "@ruiyun/preact-button": "^1.2.7",
+    "@ruiyun/preact-layout-suite": "^1.2.7",
     "@ruiyun/preact-loading": "^1.2.20",
     "h666-sentry": "^1.2.24"
   },
