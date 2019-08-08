@@ -5,7 +5,7 @@ import Line from '@ruiyun/preact-line'
 import Indicator from 'h5-indicator'
 import { CountDownTextButton } from '@ruiyun/preact-countdown'
 import sentry from 'h666-sentry'
-import { FormRow } from './formRow'
+import FormRow from './formRow'
 
 
 const captchInputCheck = (data, type) => {
