@@ -100,7 +100,14 @@ export default class Tabs extends Component {
     super(props)
     this.onChange = this.onChange.bind(this)
     this.state = {
-      activeIndex: 0
+      activeIndex: props.activeIndex || 0
+    }
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.activeIndex !== this.props.activeIndex) {
+      this.setState({
+        activeIndex: nextProps.activeIndex
+      })
     }
   }
   render () {
@@ -117,17 +124,18 @@ export default class Tabs extends Component {
       activeTitleColor,
       renderHeaderItem,
       headerHeight,
-      freezingOnSwiping
+      shadow = true
     } = this.props
     const { activeIndex } = this.state
-
     return (
       <div style={style} className={fill && className.filltab}>
         <div
-          style={{
-            boxShadow: `0 ${px2rem(8)} ${px2rem(8)} 0 rgba(0,0,0,0.10)`,
-            zIndex: 1
-          }}
+          style={
+            shadow && {
+              boxShadow: `0 ${px2rem(8)} ${px2rem(8)} 0 rgba(0,0,0,0.10)`,
+              zIndex: 1
+            }
+          }
         >
           <TabHeader
             titles={titles}
@@ -147,12 +155,7 @@ export default class Tabs extends Component {
             childNum={titles.length}
           />
         </div>
-        <Swiper
-          onChange={this.onChange}
-          activeIndex={activeIndex}
-          fill
-          freezingOnSwiping={freezingOnSwiping}
-        >
+        <Swiper onChange={this.onChange} activeIndex={activeIndex} fill>
           {children}
         </Swiper>
       </div>
