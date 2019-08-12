@@ -36,6 +36,7 @@
     "@ruiyun/preact-number-input": "^1.2.7",
     "@ruiyun/preact-switch": "^1.2.7",
     "@ruiyun/preact-text": "^1.2.7",
+    "@ruiyun/preact-m-tree-picker": "^1.2.22",
     "lodash.debounce": "^4.0.8",
     "preact": "^10.0.0-beta.3"
   },
