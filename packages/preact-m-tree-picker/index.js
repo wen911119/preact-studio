@@ -1,150 +1,164 @@
 import { h, Component, cloneElement } from 'preact'
 import { WithModal } from '@ruiyun/preact-modal'
-import { XCenterView, RowView, SlotRowView } from '@ruiyun/preact-layout-suite'
+import { RowView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
-import Line from '@ruiyun/preact-line'
 import Scroller from '@ruiyun/preact-m-scroller'
+import Tabs from '@ruiyun/preact-m-tabs'
+import Line from '@ruiyun/preact-line'
 import p2r from 'p-to-r'
-import style from './index.css'
+import className from './index.css'
 
 class PickerContent extends Component {
   onCancel = () => {
     this.props.cb && this.props.cb()
   }
-  onConfirm = () => {
-    this.props.cb && this.props.cb(Array.from(this.state.selectedIndexs))
-  }
-  onSelect = index => {
-    const mode = this.props.mode || 1
-    if (mode > 1) {
-      // 多选模式
-      let selectedIndexs = Array.from(this.state.selectedIndexs)
-      if (selectedIndexs.length < mode) {
-        selectedIndexs.push(index)
+  onSelect = async item => {
+    const children = await this.props.getChildren(item)
+    if (children && children.length) {
+      const { tabItems, value, activeIndex } = this.state
+      if (tabItems.length - 1 === activeIndex) {
         this.setState({
-          selectedIndexs
+          tabItems: tabItems.concat([children]),
+          value: value.concat(item),
+          activeIndex: activeIndex + 1
+        })
+      }
+      else {
+        this.setState({
+          tabItems: tabItems.slice(0, activeIndex + 1).concat([children]),
+          value: value.slice(0, activeIndex).concat(item),
+          activeIndex: activeIndex + 1
         })
       }
     }
-    else if (mode === 1) {
-      // 单选模式
-      this.setState({
-        selectedIndexs: [index]
-      })
+    else {
+      this.props.cb && this.props.cb(this.state.value.concat([item]))
     }
   }
-  onRemove = index => {
-    const selectedIndexs = Array.from(this.state.selectedIndexs).filter(
-      item => item !== index
-    )
+  onTabChange = index => {
     this.setState({
-      selectedIndexs
+      activeIndex: index
     })
   }
   constructor (props) {
     super(props)
     this.state = {
-      selectedIndexs: props.values || []
+      tabItems: [],
+      value: props.value || [],
+      activeIndex: props.value ? props.value.length - 1 : 0
     }
   }
-  componentDidMount () {
-    if (this.state.selectedIndexs.length) {
-      try {
-        document.getElementsByClassName('_item_selected_')[0].scrollIntoView()
-      }
-      catch (err) {
-        console.log(err)
-      }
+  async componentWillMount () {
+    const { value, getChildren } = this.props
+    let tabItems
+    if (value) {
+      tabItems = await Promise.all(
+        value.map(async (item, index) => {
+          const children = await getChildren(value[index - 1])
+          return children
+        })
+      )
     }
+    else {
+      const children = await getChildren()
+      tabItems = [children]
+    }
+    this.setState({
+      tabItems,
+      value: value || []
+    })
   }
   render () {
     const {
-      title = '',
-      options = [],
-      mode = 1,
+      title,
+      getLabel,
       config: {
         titleSize,
         titleColor,
         cancelSize,
         cancelColor,
-        confirmSize,
-        confirmColor,
         itemSize,
         itemColor,
         itemHeight,
-        selectedColor
+        selectedColor,
+        headerHeight,
+        indicatorHeight,
+        indicatorWidth,
+        indicatorColor,
+        arrowSize,
+        arrowColor
       }
     } = this.props
-    const { selectedIndexs } = this.state
+    const { tabItems, value, activeIndex } = this.state
+    let titles = value.map(getLabel)
+    if (value.length < tabItems.length) {
+      titles.push('请选择')
+    }
     return (
-      <div style={{ backgroundColor: '#fff', width: '100vw' }}>
-        <RowView
-          hAlign="between"
-          height={80}
-          padding={[0, 30, 0, 30]}
-          style={{
-            boxShadow: 'rgba(0, 0, 0, 0.1) 0px 0.06rem 0.06rem 0px'
-          }}
-        >
-          <Text size={cancelSize} color={cancelColor} onClick={this.onCancel}>
-            取消
-          </Text>
+      <div
+        style={{
+          backgroundColor: '#fff',
+          width: '100vw',
+          borderRadius: '0.4rem 0.4rem 0 0'
+        }}
+      >
+        <RowView hAlign="between" height={80} padding={[0, 30, 0, 30]}>
           <Text size={titleSize} color={titleColor}>
             {title}
-            {mode > 1 && mode !== 999 && (
-              <Text color="#ccc" size={24}>{`(${
-                selectedIndexs.length
-              }/${mode})`}</Text>
-            )}
           </Text>
-          <Text
-            size={confirmSize}
-            color={confirmColor}
-            onClick={this.onConfirm}
-          >
-            确定
+
+          <Text size={cancelSize} color={cancelColor} onClick={this.onCancel}>
+            &#4030;
           </Text>
         </RowView>
-        <Scroller height={p2r(440)}>
-          {options.map((item, i) => (
-            <div
-              key={item}
-              className={
-                selectedIndexs.indexOf(i) > -1
-                  ? `${style.shadow} _item_selected_`
-                  : style.shadow
-              }
-              // eslint-disable-next-line
-              onClick={
-                selectedIndexs.indexOf(i) > -1
-                  ? this.onRemove.bind(this, i)
-                  : this.onSelect.bind(this, i)
-              }
-            >
-              <XCenterView height={itemHeight}>
-                <SlotRowView slot={30}>
-                  {selectedIndexs.indexOf(i) > -1 && (
-                    <Text color="#fff" style={{ opacity: 0 }}>
-                      &#10003;
-                    </Text>
-                  )}
-                  <Text
-                    color={
-                      selectedIndexs.indexOf(i) > -1 ? selectedColor : itemColor
-                    }
-                    size={itemSize}
-                  >
-                    {item}
-                  </Text>
-                  {selectedIndexs.indexOf(i) > -1 && (
-                    <Text color={selectedColor}>&#10003;</Text>
-                  )}
-                </SlotRowView>
-              </XCenterView>
+        <Tabs
+          activeIndex={activeIndex}
+          titles={titles}
+          headerHeight={headerHeight}
+          onChange={this.onTabChange}
+          indicatorHeight={indicatorHeight}
+          indicatorWidth={indicatorWidth}
+          indicatorColor={indicatorColor}
+          shadow={false}
+        >
+          {tabItems.map(tabItem => (
+            <Scroller height={p2r(440)}>
               <Line />
-            </div>
+              {tabItem.map(child => {
+                const label = getLabel(child)
+                const isSelected = value.map(getLabel).indexOf(label) > -1
+                return (
+                  <div key={label}>
+                    <RowView
+                      height={itemHeight}
+                      padding={[0, 30, 0, 30]}
+                      hAlign="between"
+                      className={className.shadow}
+                      // eslint-disable-next-line
+                      onClick={this.onSelect.bind(this, child)}
+                    >
+                      <Text
+                        color={isSelected ? selectedColor : itemColor}
+                        size={itemSize}
+                      >
+                        {label}
+                      </Text>
+                      <i
+                        className={className.arrow}
+                        style={{
+                          width: p2r(arrowSize),
+                          height: p2r(arrowSize),
+                          borderColor: arrowColor
+                        }}
+                      />
+                    </RowView>
+                    <Line />
+                  </div>
+                )
+              })}
+            </Scroller>
           ))}
-        </Scroller>
+        </Tabs>
       </div>
     )
   }
@@ -155,36 +169,42 @@ const renderModalContent = props => () => <PickerContent {...props} />
 
 @WithModal
 export class TreePicker extends Component {
-  treepicker ({ title, options, config, mode, values }) {
+  treepicker ({ title = '请选择', getChildren, getLabel, config, value }) {
     const styleConfig = Object.assign(
       {
-        titleSize: 30,
-        titleColor: '#333',
-        cancelSize: 28,
-        cancelColor: '#919191',
+        titleSize: 36,
+        titleColor: '#999',
+        cancelSize: 53,
+        cancelColor: '#ccc',
         confirmSize: 28,
         confirmColor: '#0078FE',
         itemSize: 28,
         itemColor: '#919191',
         itemHeight: 80,
-        selectedColor: '#39b54a'
+        selectedColor: '#f85f4f',
+        headerHeight: 80,
+        indicatorColor: '#f8584f',
+        indicatorHeight: 3,
+        indicatorWidth: 60,
+        arrowSize: 20,
+        arrowColor: '#b2b2b2'
       },
       config
     )
     return new Promise((resolve, reject) => {
-      const cb = indexs => {
+      const cb = value => {
         this.props.$modal.hide()
-        if (indexs) {
-          resolve(indexs)
+        if (value) {
+          resolve(value)
         }
       }
       const c = renderModalContent({
         title,
-        options,
+        getChildren,
         cb,
         config: styleConfig,
-        mode,
-        values
+        getLabel,
+        value
       })
       this.props.$modal.show({
         content: c,
