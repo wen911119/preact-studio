@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-form-component",
-  "version": "1.2.32",
+  "version": "1.2.33",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -19,7 +19,7 @@
     "@ruiyun/preact-line": "^1.2.20",
     "@ruiyun/preact-m-actionsheet": "^1.2.20",
     "@ruiyun/preact-m-picker": "^1.2.22",
-    "@ruiyun/preact-number-input": "^1.2.32",
+    "@ruiyun/preact-number-input": "^1.2.33",
     "@ruiyun/preact-switch": "^1.2.7",
     "@ruiyun/preact-text": "^1.2.7",
     "h5-indicator": "^1.0.2",

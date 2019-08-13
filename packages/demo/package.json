@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "demo",
-  "version": "1.2.32",
+  "version": "1.2.33",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "@ruiyun/preact-m-actionsheet": "^1.2.20",
     "@ruiyun/preact-m-auto-list": "^1.2.23",
     "@ruiyun/preact-m-dialog": "^1.2.20",
-    "@ruiyun/preact-m-form-component": "^1.2.32",
+    "@ruiyun/preact-m-form-component": "^1.2.33",
     "@ruiyun/preact-m-image-preview": "^1.2.31",
     "@ruiyun/preact-m-loading": "^1.2.20",
     "@ruiyun/preact-m-nav": "^1.2.7",
@@ -34,7 +34,7 @@
     "@ruiyun/preact-m-toast": "^1.2.21",
     "@ruiyun/preact-m-tree-picker": "^1.2.31",
     "@ruiyun/preact-modal": "^1.2.20",
-    "@ruiyun/preact-number-input": "^1.2.32",
+    "@ruiyun/preact-number-input": "^1.2.33",
     "@ruiyun/preact-switch": "^1.2.7",
     "@ruiyun/preact-text": "^1.2.7",
     "lodash.debounce": "^4.0.8",
