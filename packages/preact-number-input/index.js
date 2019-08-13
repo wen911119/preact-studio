@@ -55,7 +55,7 @@ export default class NumberInput extends Component {
         const { delimiter, block } = format
         // 自定义分隔字符，分隔距离
         if (delimiter && block) {
-          const reg = new RegExp(`(\\d{${block}})`, 'g')
+          const reg = new RegExp(`(\\d)(?=(?:\\d{${block}})+$)`, 'g')
           if (rawValue.indexOf('.') > -1) {
             // 有小数点，要特殊处理，目前还没想到一个正则搞定
             let temp = rawValue.split('.')
