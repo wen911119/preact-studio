@@ -109,7 +109,7 @@ export default class NumberInput extends Component {
       <Input
         {...otherProps}
         onBlur={this.onComplete}
-        onChange={this.onInput}
+        onInput={this.onInput}
         value={this.format(this.state.value)}
         type={float ? 'text' : 'tel'} // 为什么用text不用number？因为在ios上number有解决不了的bug啊！
       />
