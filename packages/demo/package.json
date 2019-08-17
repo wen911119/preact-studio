@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "demo",
-  "version": "1.2.34",
+  "version": "1.2.35",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "@ruiyun/preact-button": "^1.2.7",
     "@ruiyun/preact-form": "^1.2.7",
     "@ruiyun/preact-image": "^1.2.7",
+    "@ruiyun/preact-image-uploader": "^1.2.35",
     "@ruiyun/preact-input": "^1.2.7",
     "@ruiyun/preact-layout-suite": "^1.2.7",
     "@ruiyun/preact-line": "^1.2.20",
@@ -35,10 +36,9 @@
     "@ruiyun/preact-m-tree-picker": "^1.2.31",
     "@ruiyun/preact-modal": "^1.2.20",
     "@ruiyun/preact-number-input": "^1.2.33",
+    "@ruiyun/preact-oss": "^1.2.35",
     "@ruiyun/preact-switch": "^1.2.7",
     "@ruiyun/preact-text": "^1.2.7",
-    "@ruiyun/preact-image-uploader": "1.0.0",
-    "@ruiyun/preact-oss": "1.0.0",
     "lodash.debounce": "^4.0.8",
     "preact": "^10.0.0-beta.3"
   },

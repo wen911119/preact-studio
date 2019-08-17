@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-image-uploader",
-  "version": "1.0.0",
+  "version": "1.2.35",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,10 +13,10 @@
     "preact"
   ],
   "dependencies": {
-    "@ruiyun/preact-layout-suite": "^1.2.7",
     "@ruiyun/preact-image": "^1.2.7",
-    "@ruiyun/preact-m-image-preview": "^1.2.31",
+    "@ruiyun/preact-layout-suite": "^1.2.7",
     "@ruiyun/preact-loading": "^1.2.20",
+    "@ruiyun/preact-m-image-preview": "^1.2.31",
     "lodash.chunk": "^4.2.0"
   },
   "peerDependencies": {
