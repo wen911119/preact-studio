@@ -12,7 +12,8 @@
     "pages/switchDemo/index",
     "pages/treepickerDemo/index",
     "pages/scrollerDemo/index",
-    "pages/autolistDemo/index"
+    "pages/autolistDemo/index",
+    "pages/imageUploaderDemo/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

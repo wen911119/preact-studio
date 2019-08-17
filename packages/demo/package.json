@@ -37,6 +37,8 @@
     "@ruiyun/preact-number-input": "^1.2.33",
     "@ruiyun/preact-switch": "^1.2.7",
     "@ruiyun/preact-text": "^1.2.7",
+    "@ruiyun/preact-image-uploader": "1.0.0",
+    "@ruiyun/preact-oss": "1.0.0",
     "lodash.debounce": "^4.0.8",
     "preact": "^10.0.0-beta.3"
   },
@@ -76,7 +78,8 @@
     "switchDemo": "开关组件演示",
     "treepickerDemo": "多级选择器演示",
     "scrollerDemo": "滚动组件演示",
-    "autolistDemo": "自动列表演示"
+    "autolistDemo": "自动列表演示",
+    "imageUploaderDemo": "图片上传组件演示"
   },
   "include": [
     "@ruiyun",

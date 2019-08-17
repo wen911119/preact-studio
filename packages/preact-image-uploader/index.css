@@ -1,0 +1,30 @@
+.imageWrap {
+  position: relative;
+}
+.deleteIcon {
+  position: absolute;
+  padding: 0 0.2rem;
+  font-size: 0.4rem;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 0.4rem;
+  right: -0.25rem;
+  top: -0.25rem;
+  font-style: normal;
+}
+.loading {
+  border: 1px solid #ccc;
+}
+.add {
+  border: 1px dashed #ccc;
+}
+
+.add label {
+  color: #ccc;
+  font-size: 1rem;
+  line-height: 100%;
+}
+
+.add input {
+  display: none;
+}
