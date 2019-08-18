@@ -14,7 +14,7 @@ export default class FormImagesInput extends Component {
       err,
       value = [],
       required,
-      padding = [30, 30, 0, 30],
+      padding,
       labelSize,
       labelColor,
       errorSize,
