@@ -103,12 +103,21 @@ export default class ScrollListener extends Component {
     let defaultStyle
     if (height) {
       defaultStyle = {
-        height,
         overflowY: 'auto',
         paddingRight: '30px', // 为了去掉滚动条
         marginLeft: '-30px', // 为了去掉滚动条
         transform: 'translateX(30px)', // 为了去掉滚动条
         '-webkit-transform': 'translateX(30px)'
+      }
+      if (height === 'flex1') {
+        defaultStyle = Object.assign(defaultStyle, {
+          '-webkit-box-flex': 1,
+          '-webkit-flex': 1,
+          flex: 1
+        })
+      }
+      else {
+        defaultStyle.height = height
       }
     }
     else {
