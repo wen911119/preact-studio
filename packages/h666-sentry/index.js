@@ -1,5 +1,5 @@
 export default {
-  captureException: error => {
+  captureException (error) {
     if (typeof Raven !== 'undefined') {
       // eslint-disable-next-line
       Raven.captureException(error)
