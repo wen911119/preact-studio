@@ -11,7 +11,7 @@ export default class FlatList extends Component {
     }
     const index = current && current.dataset && current.dataset.listItemIndex
     if (index) {
-      this.props.itemClickHandler(this.props.data[index])
+      this.props.itemClickHandler(this.props.data[index], event.target)
     }
   }
   constructor (props) {
