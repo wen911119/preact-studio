@@ -82,6 +82,7 @@ export default class AutolistDemo extends Component {
           format={this.format}
           ref={s => (this.list = s)}
           height='400px'
+          id='demo-scroller'
         />
       </div>
     )

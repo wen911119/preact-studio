@@ -1,5 +1,5 @@
 import { h, Component, cloneElement } from 'preact'
-
+import className from './scroller.css'
 // copy from https://github.com/ElemeFE/mint-ui/blob/master/packages/infinite-scroll/src/directive.js
 const getScrollEventTarget = element => {
   let currentNode = element
@@ -97,17 +97,13 @@ export default class ScrollListener extends Component {
     this.observer && this.observer.disconnect()
   }
   render (
-    { children, height, style = {}, ...otherProps },
+    { children, height, style = {}, id, ...otherProps },
     { position, contentHeight, containerHeight }
   ) {
     let defaultStyle
     if (height) {
       defaultStyle = {
-        overflowY: 'auto',
-        paddingRight: '30px', // 为了去掉滚动条
-        marginLeft: '-30px', // 为了去掉滚动条
-        transform: 'translateX(30px)', // 为了去掉滚动条
-        '-webkit-transform': 'translateX(30px)'
+        overflowY: 'auto'
       }
       if (height === 'flex1') {
         defaultStyle = Object.assign(defaultStyle, {
@@ -130,6 +126,8 @@ export default class ScrollListener extends Component {
       <div
         style={Object.assign(defaultStyle, style)}
         ref={s => (this.scrollWrap = s)}
+        className={className.scroller}
+        id={id}
       >
         {cloneElement(children, {
           position,
