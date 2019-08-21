@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ruiyun/ajax": "^1.0.1",
+    "@ruiyun/ajax": "^1.0.5",
     "@ruiyun/preact-button": "^1.2.7",
     "@ruiyun/preact-form": "^1.2.7",
     "@ruiyun/preact-image": "^1.2.7",
@@ -84,7 +84,8 @@
   "include": [
     "@ruiyun",
     "p-to-r",
-    "h5-indicator"
+    "h5-indicator",
+    "h666-sentry"
   ],
   "browsers": [
     "android >= 4.4",

@@ -19,7 +19,7 @@
     "@ruiyun/preact-m-tabs": "^1.2.31",
     "@ruiyun/preact-modal": "^1.2.20",
     "@ruiyun/preact-text": "^1.2.7",
-    "p-to-r": "^1.0.3"
+    "p-to-r": "^1.0.4"
   },
   "peerDependencies": {
     "preact": "^10.0.0-beta.3"
