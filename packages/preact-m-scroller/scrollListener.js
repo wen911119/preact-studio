@@ -63,13 +63,19 @@ export default class ScrollListener extends Component {
   getHeight (scrollEventTarget) {
     // 读取容器高度containerHeight，滚动内容高度contentHeight，已经卷去的高度scrollTop
     let scrollingElement = scrollEventTarget
+    let scrollTop
     if (scrollEventTarget === window) {
-      scrollingElement = document.scrollingElement
+      scrollingElement = document.documentElement
+      scrollTop = Math.max(window.pageYOffset || 0, document.documentElement.scrollTop)
+    } else {
+      scrollTop = scrollingElement.scrollTop
     }
+    const containerHeight = scrollingElement.offsetHeight
+    const contentHeight = scrollingElement.scrollHeight
     return {
-      containerHeight: scrollingElement.offsetHeight,
-      contentHeight: scrollingElement.scrollHeight,
-      scrollTop: scrollingElement.scrollTop
+      containerHeight,
+      contentHeight,
+      scrollTop
     }
   }
 
