@@ -1,0 +1,25 @@
+{
+  "name": "@ruiyun/preact-m-search-bar",
+  "version": "1.0.0",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "dependencies": {
+    "@ruiyun/preact-m-search-input": "^1.0.0",
+    "@ruiyun/preact-layout-suite": "^1.2.39"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0-beta.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

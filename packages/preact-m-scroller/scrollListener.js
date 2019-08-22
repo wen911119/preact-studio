@@ -66,8 +66,12 @@ export default class ScrollListener extends Component {
     let scrollTop
     if (scrollEventTarget === window) {
       scrollingElement = document.documentElement
-      scrollTop = Math.max(window.pageYOffset || 0, document.documentElement.scrollTop)
-    } else {
+      scrollTop = Math.max(
+        window.pageYOffset || 0,
+        document.documentElement.scrollTop
+      )
+    }
+    else {
       scrollTop = scrollingElement.scrollTop
     }
     const containerHeight = scrollingElement.offsetHeight

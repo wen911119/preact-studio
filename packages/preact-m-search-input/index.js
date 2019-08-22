@@ -1,6 +1,5 @@
 import { h, Component } from 'preact'
 import Input from '@ruiyun/preact-input'
-import p2r from 'p-to-r'
 
 import debounce from 'lodash.debounce'
 import className from './index.css'
@@ -46,29 +45,21 @@ export default class SearchInput extends Component {
     })
   }
   render () {
-    const {
-      height,
-      width='100%',
-      formStyle,
-      style,
-      ...otherProps
-    } = this.props
     return (
       <form
         action={`javascript:${this.inputId}.blur()`}
         className={className.searchform}
-        style={Object.assign({ height: p2r(height) }, formStyle)}
       >
         <Input
           id={this.inputId}
-          style={Object.assign({ lineHeight: p2r(height) }, style)}
-          height="100%"
-          width={width}
-          type="search"
-          {...otherProps}
+          height='100%'
+          width='100%'
+          type='search'
+          {...this.props}
           value={this.state.value}
           onChange={this.onChange}
           onInput={this.onInput}
+          style={{ backgroundColor: 'transparent' }}
         />
       </form>
     )
