@@ -15,27 +15,16 @@ const innerStyle = {
 
 class SwiperItem extends Component {
   shouldComponentUpdate (nextProps) {
-    // 静止下来之后父元素的更新才会导致这里往下更新
-    if (
-      (this.props.offset === nextProps.offset &&
-        this.props.animation === nextProps.animation) ||
-      this.props.activeIndex !== nextProps.activeIndex
-    ) {
-      // 当前选中的item才会更新
-      if (nextProps.activeIndex === this.props.index) {
-        return true
-      }
-    }
-    return false
+    // 连续2个false才更新
+    return !nextProps.freeze && !this.props.freeze && nextProps.active
   }
   render () {
     const {
-      activeIndex,
-      index,
+      active,
       children
     } = this.props
     return cloneElement(children, {
-      active: activeIndex === index
+      active
     })
   }
 }
@@ -62,8 +51,7 @@ const Swipeable = ({
             offset={offset}
             animation={animation}
             freeze={freeze}
-            activeIndex={activeIndex}
-            index={index}
+            active={activeIndex===index}
           >
             {child}
           </SwiperItem>

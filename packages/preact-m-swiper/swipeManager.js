@@ -5,9 +5,8 @@ export default class SwipeManager extends Component {
     super(props)
     this.containerWidth = document.body.clientWidth
     this.state = {
-      swipeDistance: -this.containerWidth * (props.activeIndex || 0),
+      offset: -this.containerWidth * (props.activeIndex || 0),
       animation: false,
-      freeze: false,
       index: props.activeIndex || 0
     }
   }
@@ -19,9 +18,8 @@ export default class SwipeManager extends Component {
       nextProps.activeIndex !== this.state.index
     ) {
       this.setState({
-        swipeDistance: -nextProps.activeIndex * containerWidth,
+        offset: -nextProps.activeIndex * containerWidth,
         animation: true,
-        freeze: false,
         index: nextProps.activeIndex
       })
     }
@@ -34,10 +32,9 @@ export default class SwipeManager extends Component {
         return
       }
       this.setState({
-        swipeDistance:
+        offset:
           -this.state.index * containerWidth + nextProps.swipeDistance,
-        animation: false,
-        freeze: true
+        animation: false
       })
     }
     else if (
@@ -64,9 +61,8 @@ export default class SwipeManager extends Component {
       }
       this.setState(
         {
-          swipeDistance: -containerWidth * newIndex,
+          offset: -containerWidth * newIndex,
           animation: true,
-          freeze: false,
           index: newIndex
         },
         () => {
@@ -75,42 +71,21 @@ export default class SwipeManager extends Component {
       )
     }
     else if (nextProps.stage === 'swipe-start') {
-      const swipeDistance = -containerWidth * this.state.index
-      if (swipeDistance !== this.state.swipeDistance) {
+      const offset = -containerWidth * this.state.index
+      if (offset !== this.state.offset) {
         this.setState({
-          swipeDistance: -containerWidth * this.state.index,
+          offset,
           animation: false
         })
       }
     }
   }
-  shouldComponentUpdate (nextProps) {
-    const itemsNum = nextProps.itemsNum || 2
-    if (
-      nextProps.stage === 'swipe-start' ||
-      (nextProps.stage === 'swipe-end' && this.props.stage === 'swipe-start')
-    ) {
-      return false
-    }
-    if (nextProps.stage === 'swipe-moving' || nextProps.stage === 'swipe-end') {
-      if (
-        (nextProps.swipeDistance > 0 && this.state.index === 0) ||
-        (nextProps.swipeDistance < 0 && this.state.index === itemsNum - 1)
-      ) {
-        // 左右边界上
-        return false
-      }
-    }
-
-    return true
-  }
   render () {
     const { children, ...otherProps } = this.props
-    const { animation, freeze, swipeDistance, index } = this.state
+    const { animation, offset, index } = this.state
     return cloneElement(children, {
-      freeze,
       animation,
-      offset: swipeDistance,
+      offset,
       ...otherProps,
       activeIndex: index
     })

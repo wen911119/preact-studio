@@ -1,13 +1,11 @@
-import { h } from 'preact'
+import { h, toChildArray } from 'preact'
 import SwipeResponder from './swipeResponder'
 import Swipeable from './swipeable'
 import SwipeManager from './swipeManager'
 
-const getChildrenLength = children =>
-  children === undefined ? 0 : children.length
 
 const Swiper = ({ children, ...otherProps }) => {
-  const itemsNum = getChildrenLength(children)
+  const itemsNum = toChildArray(children).length
   return (
     <SwipeResponder {...otherProps}>
       <SwipeManager itemsNum={itemsNum}>
@@ -18,3 +16,4 @@ const Swiper = ({ children, ...otherProps }) => {
 }
 
 export default Swiper
+ 
