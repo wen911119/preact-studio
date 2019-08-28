@@ -71,6 +71,11 @@ export default class TouchResponder extends Component {
         onTouchMove={this.onTouchMove}
         onTouchStart={this.onTouchStart}
         onTouchEnd={this.onTouchEnd}
+        style={{
+          minHeight: '100%',
+          boxSizing: 'content-box',
+          paddingBottom: '1px' // 让它总是可以滚动
+        }}
       >
         {cloneElement(children, {
           distance,

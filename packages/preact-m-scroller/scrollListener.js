@@ -110,41 +110,40 @@ export default class ScrollListener extends Component {
     { children, height, style = {}, id, ...otherProps },
     { position, contentHeight, containerHeight }
   ) {
-    let defaultStyle
+    let innerStyle = {}
+    let innerClassName = ''
+    let wrapStyle = {}
+    let wrapClassName = ''
     if (height) {
-      defaultStyle = {
-        overflowY: 'auto'
-      }
+      wrapStyle.overflow = 'hidden'
+      innerStyle.overflowY = 'auto'
+      innerClassName = className.hideScrollBar
       if (height === 'flex1') {
-        defaultStyle = Object.assign(defaultStyle, {
-          '-webkit-box-flex': 1,
-          '-webkit-flex': 1,
-          flex: 1
-        })
+        wrapClassName = `${className.flex} ${className.flex1} ${className.flexColumn}`
+        innerClassName += ` ${className.flex1}`
       }
       else {
-        defaultStyle.height = height
+        innerStyle.height = height
       }
     }
     else {
-      defaultStyle = {
-        overflow: 'hidden' // 为了隐藏下拉刷新组件
-      }
+      innerStyle.overflow = 'hidden' // 为了隐藏下拉刷新组件
     }
 
     return (
-      <div
-        style={Object.assign(defaultStyle, style)}
-        ref={s => (this.scrollWrap = s)}
-        className={className.scroller}
-        id={id}
-      >
-        {cloneElement(children, {
-          position,
-          contentHeight,
-          containerHeight,
-          ...otherProps
-        })}
+      <div id={id} style={wrapStyle} className={wrapClassName}>
+        <div
+          style={Object.assign(innerStyle, style)}
+          ref={s => (this.scrollWrap = s)}
+          className={innerClassName}
+        >
+          {cloneElement(children, {
+            position,
+            contentHeight,
+            containerHeight,
+            ...otherProps
+          })}
+        </div>
       </div>
     )
   }

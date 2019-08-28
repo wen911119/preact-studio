@@ -1,3 +1,14 @@
-.scroller::-webkit-scrollbar {
-  width: 0 !important;
+.flex1 {
+  flex: 1;
+}
+.flex {
+  display: flex;
+}
+.flexColumn {
+  flex-direction: column;
+}
+.hideScrollBar {
+  padding-right: 30px;
+  margin-left: -30px;
+  transform: translateX(30px);
 }
