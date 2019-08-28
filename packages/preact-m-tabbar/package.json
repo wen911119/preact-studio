@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-tabbar",
-  "version": "1.0.0",
+  "version": "1.2.45",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,9 +13,9 @@
     "preact"
   ],
   "dependencies": {
+    "@ruiyun/preact-icon": "^1.2.39",
     "@ruiyun/preact-layout-suite": "^1.2.39",
-    "@ruiyun/preact-text": "^1.2.39",
-    "@ruiyun/preact-icon": "^1.2.39"
+    "@ruiyun/preact-text": "^1.2.39"
   },
   "peerDependencies": {
     "preact": "^10.0.0-beta.3"
