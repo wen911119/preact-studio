@@ -14,25 +14,17 @@ class PickerContent extends Component {
   }
   onSelect = async item => {
     const children = await this.props.getChildren(item)
+    const { tabItems, value, activeIndex } = this.state
     if (children && children.length) {
-      const { tabItems, value, activeIndex } = this.state
-      if (tabItems.length - 1 === activeIndex) {
-        this.setState({
-          tabItems: tabItems.concat([children]),
-          value: value.concat(item),
-          activeIndex: activeIndex + 1
-        })
-      }
-      else {
-        this.setState({
-          tabItems: tabItems.slice(0, activeIndex + 1).concat([children]),
-          value: value.slice(0, activeIndex).concat(item),
-          activeIndex: activeIndex + 1
-        })
-      }
+      this.setState({
+        tabItems: tabItems.slice(0, activeIndex + 1).concat([children]),
+        value: value.slice(0, activeIndex).concat([item]),
+        activeIndex: activeIndex + 1
+      })
     }
     else {
-      this.props.cb && this.props.cb(this.state.value.concat([item]))
+      const ultimateValue = value.slice(0, activeIndex).concat([item])
+      this.props.cb && this.props.cb(ultimateValue)
     }
   }
   onTabChange = index => {
