@@ -6,9 +6,13 @@ import FormRow from './formRow'
 @WithPicker
 export default class FormPickerSheet extends Component {
   onClick = () => {
-    const { title = '请选择', config, sync, mode } = this.props
-    const { options, selectedIndexs } = this.state
-
+    const { title = '请选择', config, sync, mode, value = [] } = this.props
+    const { options } = this.state
+    const selectedIndexs = value.map(v =>
+      options.findIndex(
+        option => this.labelExtractor(v) === this.labelExtractor(option)
+      )
+    )
     this.props
       .$picker({
         title,
@@ -18,62 +22,19 @@ export default class FormPickerSheet extends Component {
         values: selectedIndexs
       })
       .then(indexs => {
-        this.setState(
-          {
-            selectedIndexs: indexs
-          },
-          () => {
-            sync(indexs.map(index => options[index]))
-          }
-        )
+        sync(indexs.map(index => options[index]))
       })
-  }
-  updateOptions = options => {
-    let selectedIndexs = this.state.selectedIndexs
-    if (
-      this.props.value &&
-      this.props.value.length &&
-      options &&
-      options.length
-    ) {
-      // 需要将value转化为selectedIndexs
-      selectedIndexs = this.props.value.map(v =>
-        options.findIndex(
-          option => this.labelExtractor(v) === this.labelExtractor(option)
-        )
-      )
-    }
-    this.setState({
-      options,
-      selectedIndexs
-    })
   }
   constructor (props) {
     super(props)
     this.labelExtractor = props.labelExtractor || (v => v)
-    let selectedIndexs = []
-    if (
-      props.value &&
-      props.value.length &&
-      props.options &&
-      props.options.length
-    ) {
-      // 有初始值并且有初始options
-      // 需要将value转化为selectedIndexs
-      selectedIndexs = props.value.map(v =>
-        props.options.findIndex(
-          option => this.labelExtractor(v) === this.labelExtractor(option)
-        )
-      )
-    }
     this.state = {
-      options: props.options || [],
-      selectedIndexs
+      options: props.options || []
     }
   }
   componentDidMount () {
     if (this.props.getOptions) {
-      this.props.getOptions().then(this.updateOptions)
+      this.props.getOptions().then(options => this.setState({ options }))
     }
   }
   render () {
