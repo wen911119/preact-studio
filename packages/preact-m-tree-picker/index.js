@@ -1,11 +1,12 @@
 import { h, Component, cloneElement } from 'preact'
 import { WithModal } from '@ruiyun/preact-modal'
-import { RowView } from '@ruiyun/preact-layout-suite'
+import { RowView, XCenterView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import Scroller from '@ruiyun/preact-m-scroller'
 import Tabs from '@ruiyun/preact-m-tabs'
 import Line from '@ruiyun/preact-line'
 import p2r from 'p-to-r'
+import Loading from '@ruiyun/preact-loading'
 import className from './index.css'
 
 class PickerContent extends Component {
@@ -13,13 +14,19 @@ class PickerContent extends Component {
     this.props.cb && this.props.cb()
   }
   onSelect = async item => {
-    const children = await this.props.getChildren(item)
     const { tabItems, value, activeIndex } = this.state
+    this.setState({
+      tabItems: tabItems.slice(0, activeIndex + 1).concat(['loading']),
+      activeIndex: activeIndex + 1,
+      value: value.slice(0, activeIndex).concat([item])
+    })
+    const children = await this.props.getChildren(item)
+
     if (children && children.length) {
       this.setState({
-        tabItems: tabItems.slice(0, activeIndex + 1).concat([children]),
-        value: value.slice(0, activeIndex).concat([item]),
-        activeIndex: activeIndex + 1
+        tabItems: this.state.tabItems.map(item =>
+          item === 'loading' ? children : item
+        )
       })
     }
     else {
@@ -44,6 +51,9 @@ class PickerContent extends Component {
     const { value, getChildren } = this.props
     let tabItems
     if (value) {
+      this.setState({
+        tabItems: value.map(v => 'loading')
+      })
       tabItems = await Promise.all(
         value.map(async (item, index) => {
           const children = await getChildren(value[index - 1])
@@ -52,6 +62,9 @@ class PickerContent extends Component {
       )
     }
     else {
+      this.setState({
+        tabItems: ['loading']
+      })
       const children = await getChildren()
       tabItems = [children]
     }
@@ -113,41 +126,47 @@ class PickerContent extends Component {
           indicatorColor={indicatorColor}
           shadow={false}
         >
-          {tabItems.map(tabItem => (
-            <Scroller height={p2r(440)}>
+          {tabItems.map((tabItem, indexKey) => (
+            <Scroller height={p2r(440)} key={indexKey}>
               <Line />
-              {tabItem.map(child => {
-                const label = getLabel(child)
-                const isSelected = value.map(getLabel).indexOf(label) > -1
-                return (
-                  <div key={label}>
-                    <RowView
-                      height={itemHeight}
-                      padding={[0, 30, 0, 30]}
-                      hAlign="between"
-                      className={className.shadow}
-                      // eslint-disable-next-line
-                      onClick={this.onSelect.bind(this, child)}
-                    >
-                      <Text
-                        color={isSelected ? selectedColor : itemColor}
-                        size={itemSize}
+              {tabItem === 'loading' ? (
+                <XCenterView height={400}>
+                  <Loading size={50} />
+                </XCenterView>
+              ) : (
+                tabItem.map(child => {
+                  const label = getLabel(child)
+                  const isSelected = value.map(getLabel).indexOf(label) > -1
+                  return (
+                    <div key={label}>
+                      <RowView
+                        height={itemHeight}
+                        padding={[0, 30, 0, 30]}
+                        hAlign="between"
+                        className={className.shadow}
+                        // eslint-disable-next-line
+                        onClick={this.onSelect.bind(this, child)}
                       >
-                        {label}
-                      </Text>
-                      <i
-                        className={className.arrow}
-                        style={{
-                          width: p2r(arrowSize),
-                          height: p2r(arrowSize),
-                          borderColor: arrowColor
-                        }}
-                      />
-                    </RowView>
-                    <Line />
-                  </div>
-                )
-              })}
+                        <Text
+                          color={isSelected ? selectedColor : itemColor}
+                          size={itemSize}
+                        >
+                          {label}
+                        </Text>
+                        <i
+                          className={className.arrow}
+                          style={{
+                            width: p2r(arrowSize),
+                            height: p2r(arrowSize),
+                            borderColor: arrowColor
+                          }}
+                        />
+                      </RowView>
+                      <Line />
+                    </div>
+                  )
+                })
+              )}
             </Scroller>
           ))}
         </Tabs>
