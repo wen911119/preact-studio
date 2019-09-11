@@ -21,6 +21,7 @@
     "@ruiyun/preact-m-actionsheet": "^1.2.39",
     "@ruiyun/preact-m-picker": "^1.2.47",
     "@ruiyun/preact-number-input": "^1.2.39",
+    "@ruiyun/preact-m-tree-picker": "^1.2.47",
     "@ruiyun/preact-switch": "^1.2.39",
     "@ruiyun/preact-text": "^1.2.39",
     "h5-indicator": "^1.0.6",
