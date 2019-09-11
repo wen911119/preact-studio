@@ -4,39 +4,52 @@ import Text from '@ruiyun/preact-text'
 import FormRow from './formRow'
 
 @WithPicker
-export default class FormPickerSheet extends Component {
-  onClick = () => {
-    const { title = '请选择', config, sync, mode, value = [] } = this.props
-    const { options } = this.state
+export default class FormPickerInput extends Component {
+  onClick = async () => {
+    const {
+      title = '请选择',
+      config,
+      sync,
+      mode,
+      value = [],
+      getOptions,
+      linkData,
+      preflightCheck
+    } = this.props
+    if (preflightCheck && !preflightCheck(linkData)) {
+      return
+    }
+    if (getOptions) {
+      this.options = await getOptions(linkData)
+    }
     const selectedIndexs = value.map(v =>
-      options.findIndex(
+      this.options.findIndex(
         option => this.labelExtractor(v) === this.labelExtractor(option)
       )
     )
     this.props
       .$picker({
         title,
-        options: options.map(this.labelExtractor),
+        options: this.options.map(this.labelExtractor),
         config,
         mode,
         values: selectedIndexs
       })
       .then(indexs => {
-        sync(indexs.map(index => options[index]))
+        sync(indexs.map(index => this.options[index]))
       })
   }
   constructor (props) {
     super(props)
     this.labelExtractor = props.labelExtractor || (v => v)
-    this.state = {
-      options: props.options || []
+    this.options = props.options || []
+  }
+  componentWillReceiveProps (nextProps) {
+    if (this.props.linkData && nextProps.linkData !== this.props.linkData) {
+      setTimeout(this.props.sync, 0)
     }
   }
-  componentDidMount () {
-    if (this.props.getOptions) {
-      this.props.getOptions().then(options => this.setState({ options }))
-    }
-  }
+
   render () {
     const {
       label,
