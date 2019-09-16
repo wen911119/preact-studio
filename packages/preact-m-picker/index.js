@@ -52,13 +52,19 @@ class PickerContent extends Component {
     }
   }
   componentDidMount () {
+    let target
     if (this.state.selectedIndexs.length) {
-      try {
-        document.getElementsByClassName('_item_selected_')[0].scrollIntoView()
-      }
-      catch (err) {
-        console.log(err)
-      }
+      target = document.getElementsByClassName('_item_selected_')[0]
+    }
+    else {
+      target = document.getElementsByClassName(style.shadow)[0]
+    }
+    try {
+      // 不管有没有选中的值都要scrollIntoView,这样可以解决ios键盘把页面顶上去后不会自动收下来的奇怪bug
+      target.scrollIntoView()
+    }
+    catch (err) {
+      console.log(err)
     }
   }
   render () {
@@ -96,9 +102,10 @@ class PickerContent extends Component {
           <Text size={titleSize} color={titleColor}>
             {title}
             {mode > 1 && mode !== 999 && (
-              <Text color="#ccc" size={24}>{`(${
-                selectedIndexs.length
-              }/${mode})`}</Text>
+              <Text
+                color="#ccc"
+                size={24}
+              >{`(${selectedIndexs.length}/${mode})`}</Text>
             )}
           </Text>
           <Text
