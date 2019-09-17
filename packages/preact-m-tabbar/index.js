@@ -49,10 +49,7 @@ export default class Tabbar extends Component {
         {childrenArr.map((child, key) => (
           <div
             key={key}
-            className={className.item}
-            style={{
-              display: key === index ? 'block' : 'none'
-            }}
+            className={`${className.item} ${key === index ? className.show : className.hide}`}
           >
             <Item>
               {cloneElement(child, {

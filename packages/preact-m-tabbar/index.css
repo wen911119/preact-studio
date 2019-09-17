@@ -1,8 +1,14 @@
 .item {
   flex: 1;
   overflow: hidden;
-  height: 100%;
+  flex-direction: column;  
 }
 .noShrink {
   flex-shrink: 0;
+}
+.show {
+  display: flex;
+}
+.hide {
+  display: none;
 }

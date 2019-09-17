@@ -124,6 +124,7 @@ export default class ScrollListener extends Component {
       }
       else {
         innerStyle.height = height
+        wrapStyle.height = height
       }
     }
     else {
