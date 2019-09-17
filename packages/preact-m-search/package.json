@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-search",
-  "version": "1.2.47",
+  "version": "1.2.56",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "@ruiyun/preact-layout-suite": "^1.2.39",
-    "@ruiyun/preact-m-auto-list": "^1.2.47",
+    "@ruiyun/preact-m-auto-list": "^1.2.56",
     "@ruiyun/preact-m-search-bar": "^1.2.41"
   },
   "peerDependencies": {
