@@ -9,17 +9,20 @@ const Input = ({
   textColor = '#666',
   style,
   className = '',
+  value = '', // 解决undefined不能覆盖原值的问题
   ...otherProps
 }) => (
   <input
     {...otherProps}
+    value={value}
     className={`${defaultStyle.input} ${className}`}
     style={Object.assign(
       {
         height: px2rem(height),
         width: px2rem(width),
         fontSize: px2rem(textSize),
-        color: textColor
+        color: textColor,
+        lineHeight: px2rem(height)
       },
       style
     )}
