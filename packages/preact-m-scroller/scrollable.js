@@ -1,16 +1,27 @@
 import { h, Component, cloneElement } from 'preact'
 
+class ScrollerContent extends Component {
+  shouldComponentUpdate (nextProps) {
+    return (
+      nextProps.action === 'none' &&
+      this.props.action === 'none' &&
+      nextProps.position === this.props.position
+    )
+  }
+  render = () => this.props.children
+}
+
 // eslint-disable-next-line
 export default class Scrollable extends Component {
   render ({
     children,
     distance,
     action,
+    position,
     header,
     footer,
     onRefresh, // 过滤
     onLoadMore, // 过滤
-    freeze, // 过滤
     resetLoadMore, // 过滤
     ...otherProps
   }) {
@@ -23,13 +34,15 @@ export default class Scrollable extends Component {
     return (
       <div style={_style}>
         {header && header()}
-        {children &&
-          (children.length
-            ? children
-            : cloneElement(children, {
-              ...otherProps
-            }))}
-        {footer && footer()}
+        <ScrollerContent action={action} position={position}>
+          {children &&
+            (children.length
+              ? children
+              : cloneElement(children, {
+                ...otherProps
+              }))}
+          {footer && footer()}
+        </ScrollerContent>
       </div>
     )
   }

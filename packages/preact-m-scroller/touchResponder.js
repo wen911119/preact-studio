@@ -4,12 +4,19 @@ import { h, Component, cloneElement } from 'preact'
 // 需要父组件告知当前位置position
 // 这个组件的输出是告知子组件当前手势是什么(pulldown,pullup),距离是多少
 export default class TouchResponder extends Component {
-  onTouchStart (e) {
+
+  state = {
+    action: 'none', // pulldown,pullup
+    distance: 0
+  }
+
+  onTouchStart = e => {
     if (this.props.position === 'top' || this.props.position === 'bottom') {
       this.touchStartPoint = e.targetTouches[0]
     }
   }
-  onTouchMove (e) {
+
+  onTouchMove = e => {
     const { position, freeze } = this.props
     if (freeze) {
       // 有时候在左右滑动手势时候希望禁用这里的上下手势
@@ -28,21 +35,19 @@ export default class TouchResponder extends Component {
           (distance < 0 && position === 'bottom')
         ) {
           // 下拉或上拉动作
-          // this.lastMoved = false;
           e.preventDefault()
           const action = position === 'top' ? 'pulldown' : 'pullup'
           this.setState({ distance, action })
           // 换成requestAnimationFrame看不到明显优势，并且在安卓上有一定几率block掉touchend事件，非常坑爹。
           // requestAnimationFrame(() => {
-          //   this.setState({ distance, action }, () => {
-          //     this.lastMoved = true;
-          //   });
+          //   this.setState({ distance, action });
           // });
         }
       }
     }
   }
-  onTouchEnd () {
+
+  onTouchEnd = () => {
     if (
       (this.props.position === 'top' || this.props.position === 'bottom') &&
       this.state.distance !== 0
@@ -53,18 +58,8 @@ export default class TouchResponder extends Component {
       // });
     }
   }
-  constructor (props) {
-    super(props)
-    this.onTouchMove = this.onTouchMove.bind(this)
-    this.onTouchStart = this.onTouchStart.bind(this)
-    this.onTouchEnd = this.onTouchEnd.bind(this)
-    // this.lastMoved = true
-    this.state = {
-      action: 'none', // pulldown,pullup
-      distance: 0
-    }
-  }
-  render ({ children, ...otherProps }, { distance, action }) {
+
+  render ({ children, position, ...otherProps }, { distance, action }) {
     return (
       // 这个div少不了，这些事件加到子节点上不合适，职责边界就被打破了
       <div
@@ -80,6 +75,7 @@ export default class TouchResponder extends Component {
         {cloneElement(children, {
           distance,
           action,
+          position,
           ...otherProps
         })}
       </div>
