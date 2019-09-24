@@ -56,7 +56,7 @@ export default class SearchInput extends Component {
           width='100%'
           type='search'
           {...this.props}
-          value={this.state.value}
+          value={this.state.keyword}
           onChange={this.onChange}
           onInput={this.onInput}
           style={{ backgroundColor: 'transparent' }}
