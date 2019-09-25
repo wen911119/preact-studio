@@ -35,7 +35,7 @@ export default class TouchResponder extends Component {
           (distance < 0 && position === 'bottom')
         ) {
           // 下拉或上拉动作
-          e.preventDefault()
+          e.cancelable && e.preventDefault()
           const action = position === 'top' ? 'pulldown' : 'pullup'
           this.setState({ distance, action })
           // 换成requestAnimationFrame看不到明显优势，并且在安卓上有一定几率block掉touchend事件，非常坑爹。

@@ -13,7 +13,7 @@ export default class SwipeResponder extends Component {
     if (Math.abs(angle) < 0.5) {
       const distance = e.touches[0].clientX - this.touchStartPoint.clientX
       this.setState({ distance, stage: 'swipe-moving', freeze: true })
-      e.preventDefault()
+      e.cancelable && e.preventDefault()
     }
     else {
       this.touchStartPoint = e.touches[0]

@@ -3,7 +3,7 @@ import { createPortal } from 'preact/compat'
 import className from './index.css'
 
 export default class ModalStateless extends Component {
-  noMove = e => e.preventDefault()
+  noMove = e => e.cancelable && e.preventDefault()
   onContentTouchMove = e => this.props.allowContentTouchMove || this.noMove(e)
   constructor (props) {
     super(props)
