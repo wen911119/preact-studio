@@ -1,40 +1,215 @@
 .mask {
-  display: flex;
   position: fixed;
   z-index: 100;
+  top: 0;
   left: 0;
   right: 0;
-  top: 0;
   bottom: 0;
-  animation-duration: .3s;
-}
-@keyframes modal-mask-fadein {
-  0%{opacity: 0} 
-  100%{opacity: 1}
 }
 
-@keyframes modal-content-zoom {
-  0%{transform: scale(0)}
-  50%{transform: scale(1.1)}
-  100%{transform: scale(1)}
+.content {
+  position: fixed;
+  z-index: 999;
 }
 
-@keyframes modal-content-left-in {
-  0%{transform: translate3d(-100%, 0px, 0px)}
-  100%{transform: translate3d(0px, 0px, 0px)}
+.content-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-@keyframes modal-content-right-in {
-  0%{transform: translate3d(100%, 0px, 0px)}
-  100%{transform: translate3d(0px, 0px, 0px)}
+.content-top {
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
-@keyframes modal-content-top-in {
-  0%{transform: translate3d(0px, -100%, 0px)}
-  100%{transform: translate3d(0px, 0px, 0px)}
+.content-bottom {
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
-@keyframes modal-content-bottom-in {
-  0%{transform: translate3d(0px, 100%, 0px)}
-  100%{transform: translate3d(0px, 0px, 0px)}
+.content-left {
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.content-right {
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
+/* 中动画 */
+@keyframes centerIn {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.animate-center-show > * {
+  animation: centerIn ease .3s forwards;
+}
+
+@keyframes centerOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-center-hide > * {
+  animation: centerOut ease .3s forwards;
+}
+
+/* 下-动画 */
+@keyframes bottomIn {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-bottom-show {
+  animation: bottomIn ease .3s forwards;
+}
+
+@keyframes bottomOut {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+.animate-bottom-hide {
+  animation: bottomOut ease .3s forwards;
+}
+
+/* 上-动画 */
+@keyframes topIn {
+  from {
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-top-show {
+  animation: topIn ease .3s forwards;
+}
+
+@keyframes topOut {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+.animate-top-hide {
+  animation: topOut ease .3s forwards;
+}
+
+/* 左-动画 */
+@keyframes leftIn {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-left-show {
+  animation: leftIn ease .3s forwards;
+}
+
+@keyframes leftOut {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.animate-left-hide {
+  animation: leftOut ease .3s forwards;
+}
+/* 右-动画 */
+@keyframes rightIn {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-right-show {
+  animation: rightIn ease .3s forwards;
+}
+
+@keyframes rightOut {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+.animate-right-hide {
+  animation: rightOut ease .3s forwards;
+}
+
+/* 背景动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn ease .3s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fade-out {
+  animation: fadeOut ease .3s forwards;
 }
