@@ -135,7 +135,7 @@ class PickerContent extends Component {
               <XCenterView height={itemHeight}>
                 <SlotRowView slot={30}>
                   {selectedIndexs.indexOf(i) > -1 && (
-                    <Text color="#fff" style={{ opacity: 0 }}>
+                    <Text color="transparent" style={{ opacity: 0 }}>
                       &#10003;
                     </Text>
                   )}
