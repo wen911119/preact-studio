@@ -1,16 +1,32 @@
 import { h, Component, cloneElement } from 'preact'
 
 export default class SwipeResponder extends Component {
-  onTouchStart (e) {
+  state = {
+    distance: 0,
+    speed: 0,
+    stage: 'swipe-end',
+    freeze: false
+  }
+  onTouchStart = (e) => {
     this.touchStartPoint = e.touches[0]
     this.touchStartTime = Date.now()
     this.setState({ stage: 'swipe-start', freeze: true })
   }
-  onTouchMove (e) {
-    const angle =
-      (this.touchStartPoint.clientY - e.touches[0].clientY) /
-      (this.touchStartPoint.clientX - e.touches[0].clientX)
+  getSwipeAngle = touchMoveEvent => {
+    if (!this.angle) {
+      this.angle =
+        (this.touchStartPoint.clientY - touchMoveEvent.touches[0].clientY) /
+        (this.touchStartPoint.clientX - touchMoveEvent.touches[0].clientX)
+    }
+    return this.angle
+  }
+  onTouchMove = (e) => {
+    const angle = this.getSwipeAngle(e)
     if (Math.abs(angle) < 0.5) {
+      // 判断角度
+      // 小于0.5代表水平滑动手势
+      // 这时通过阻止冒泡独占组件范围内的touchmove事件
+      e.stopPropagation()
       const distance = e.touches[0].clientX - this.touchStartPoint.clientX
       this.setState({ distance, stage: 'swipe-moving', freeze: true })
       e.cancelable && e.preventDefault()
@@ -19,22 +35,11 @@ export default class SwipeResponder extends Component {
       this.touchStartPoint = e.touches[0]
     }
   }
-  onTouchEnd (e) {
+  onTouchEnd = (e) => {
+    this.angle = null
     const distance = e.changedTouches[0].clientX - this.touchStartPoint.clientX
     const speed = Math.abs(distance / (Date.now() - this.touchStartTime))
     this.setState({ distance, speed, stage: 'swipe-end', freeze: false })
-  }
-  constructor (props) {
-    super(props)
-    this.onTouchStart = this.onTouchStart.bind(this)
-    this.onTouchMove = this.onTouchMove.bind(this)
-    this.onTouchEnd = this.onTouchEnd.bind(this)
-    this.state = {
-      distance: 0,
-      speed: 0,
-      stage: 'swipe-end',
-      freeze: false
-    }
   }
   render () {
     const { children, style = {}, fill, ...otherProps } = this.props

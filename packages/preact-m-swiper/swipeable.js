@@ -1,4 +1,4 @@
-import { h, Component, cloneElement } from 'preact'
+import { h, Component, cloneElement, toChildArray } from 'preact'
 
 const itemStyle = {
   width: '100vw',
@@ -42,16 +42,16 @@ const Swipeable = ({
     '-webkit-transform': `translate3d(${offset}px,0,0)`,
     transition: animation ? '330ms' : 'none'
   })
-  const childrenArr = children ? (children.map ? children : [children]) : []
+  const childrenArr = toChildArray(children)
   return (
     <div style={_style}>
       {childrenArr.map((child, index) => (
-        <div style={itemStyle}>
+        <div style={itemStyle} key={index}>
           <SwiperItem
             offset={offset}
             animation={animation}
             freeze={freeze}
-            active={activeIndex===index}
+            active={activeIndex === index}
           >
             {child}
           </SwiperItem>

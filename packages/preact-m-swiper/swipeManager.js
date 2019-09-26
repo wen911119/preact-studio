@@ -3,7 +3,7 @@ import { h, Component, cloneElement } from 'preact'
 export default class SwipeManager extends Component {
   constructor (props) {
     super(props)
-    this.containerWidth = document.body.clientWidth
+    this.containerWidth = props.containerWidth || document.body.clientWidth
     this.state = {
       offset: -this.containerWidth * (props.activeIndex || 0),
       animation: false,
