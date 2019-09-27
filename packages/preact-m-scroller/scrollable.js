@@ -8,7 +8,9 @@ class ScrollerContent extends Component {
       nextProps.position === this.props.position
     )
   }
-  render = () => this.props.children
+  // 这里的div还少不了，少了div，如果children是个数组，在只有loadmore时会导致loadmore组件渲染错位
+  // 这个应该是preact的diff算法问题
+  render = () => <div>{this.props.children}</div>
 }
 
 // eslint-disable-next-line
@@ -41,8 +43,8 @@ export default class Scrollable extends Component {
               : cloneElement(children, {
                 ...otherProps
               }))}
-          {footer && footer()}
         </ScrollerContent>
+        {footer && footer()}
       </div>
     )
   }
