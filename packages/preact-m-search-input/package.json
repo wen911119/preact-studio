@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-search-input",
-  "version": "1.2.65",
+  "version": "1.2.66",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,7 +13,7 @@
     "preact"
   ],
   "dependencies": {
-    "@ruiyun/preact-input": "^1.2.65",
+    "@ruiyun/preact-input": "^1.2.66",
     "lodash.debounce": "^4.0.8"
   },
   "peerDependencies": {
