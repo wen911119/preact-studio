@@ -16,7 +16,8 @@
     "@ruiyun/preact-layout-suite": "^1.2.39",
     "@ruiyun/preact-line": "^1.2.39",
     "@ruiyun/preact-modal": "^1.2.62",
-    "@ruiyun/preact-text": "^1.2.39"
+    "@ruiyun/preact-text": "^1.2.39",
+    "@ruiyun/preact-input": "^1.2.66"
   },
   "compileDependencies": [
     "@ruiyun/preact-layout-suite",

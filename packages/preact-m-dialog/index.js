@@ -8,6 +8,7 @@ import {
 } from '@ruiyun/preact-layout-suite'
 import { WithModal } from '@ruiyun/preact-modal'
 import Line from '@ruiyun/preact-line'
+import Input from '@ruiyun/preact-input'
 import className from './index.css'
 
 const defaultConfig = {
@@ -48,9 +49,10 @@ const renderModalContent = ({
           {content}
         </Text>
       )}
-      { slot && slot()}
+      {slot && slot()}
       {placeholder && (
-        <input
+        <Input
+          textSize={26}
           placeholder={placeholder}
           className={className.promptInput}
           id={inputId}
@@ -105,13 +107,29 @@ export class Dialog extends Component {
       cb && cb(btnIndex)
     }
     const mergedConfig = Object.assign({}, defaultConfig, config)
-    const c = renderModalContent({ title, content, btns, cb: callback, config: mergedConfig, slot })
+    const c = renderModalContent({
+      title,
+      content,
+      btns,
+      cb: callback,
+      config: mergedConfig,
+      slot
+    })
     this.props.$modal.show({
       content: c,
       autoClose: false
     })
   }
-  prompt ({ title, content, btns, cb, placeholder = '请输入', value, config, slot }) {
+  prompt ({
+    title,
+    content,
+    btns,
+    cb,
+    placeholder = '请输入',
+    value,
+    config,
+    slot
+  }) {
     const inputId = `input_${Math.random()}`
     const callback = btnIndex => {
       this.props.$modal.hide()
