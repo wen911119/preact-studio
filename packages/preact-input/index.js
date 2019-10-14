@@ -5,10 +5,7 @@ import defaultStyle from './input.css'
 const onBlurWrap = onblur => e => {
   onblur && onblur(e)
   // fix#ios 键盘收起页面推上去没有自动拉下来的bug
-  window.scrollTo(Math.max(
-    window.pageYOffset || 0,
-    document.documentElement.scrollTop
-  ),0)
+  window.scrollTo()
 }
 
 const Input = ({
