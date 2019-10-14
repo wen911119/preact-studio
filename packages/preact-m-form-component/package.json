@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-form-component",
-  "version": "1.2.64",
+  "version": "1.2.65",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -15,13 +15,13 @@
   "dependencies": {
     "@ruiyun/preact-countdown": "^1.2.39",
     "@ruiyun/preact-image-uploader": "^1.2.63",
-    "@ruiyun/preact-input": "^1.2.57",
+    "@ruiyun/preact-input": "^1.2.65",
     "@ruiyun/preact-layout-suite": "^1.2.39",
     "@ruiyun/preact-line": "^1.2.39",
     "@ruiyun/preact-m-actionsheet": "^1.2.62",
     "@ruiyun/preact-m-picker": "^1.2.64",
     "@ruiyun/preact-m-tree-picker": "^1.2.64",
-    "@ruiyun/preact-number-input": "^1.2.57",
+    "@ruiyun/preact-number-input": "^1.2.65",
     "@ruiyun/preact-switch": "^1.2.39",
     "@ruiyun/preact-text": "^1.2.39",
     "h5-indicator": "^1.0.6",
