@@ -2,6 +2,15 @@ import { h } from 'preact'
 import px2rem from 'p-to-r'
 import defaultStyle from './input.css'
 
+const onBlurWrap = onblur => e => {
+  onblur && onblur(e)
+  // fix#ios 键盘收起页面推上去没有自动拉下来的bug
+  window.scrollTo(Math.max(
+    window.pageYOffset || 0,
+    document.documentElement.scrollTop
+  ),0)
+}
+
 const Input = ({
   height,
   width,
@@ -10,10 +19,12 @@ const Input = ({
   style,
   className = '',
   value = '', // 解决undefined不能覆盖原值的问题
+  onBlur,
   ...otherProps
 }) => (
   <input
     {...otherProps}
+    onBlur={onBlurWrap(onBlur)}
     value={value}
     className={`${defaultStyle.input} ${className}`}
     style={Object.assign(
