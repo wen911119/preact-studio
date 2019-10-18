@@ -45,6 +45,7 @@ export default class SearchInput extends Component {
     })
   }
   render () {
+    const { keyword } = this.state
     return (
       <form
         action={`javascript:${this.inputId}.blur()`}
@@ -52,11 +53,10 @@ export default class SearchInput extends Component {
       >
         <Input
           id={this.inputId}
-          height='100%'
-          width='100%'
-          type='search'
+          width="100%"
+          type="search"
           {...this.props}
-          value={this.state.keyword}
+          value={keyword}
           onChange={this.onChange}
           onInput={this.onInput}
           style={{ backgroundColor: 'transparent' }}
