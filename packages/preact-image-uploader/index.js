@@ -129,9 +129,7 @@ export default class ImageUploader extends Component {
                       className={className.deleteIcon}
                       // eslint-disable-next-line
                       onClick={this.onDelete.bind(this, rowItems * i + j)}
-                    >
-                      &#xFBE;
-                    </i>
+                    />
                   )}
                   <Image
                     // eslint-disable-next-line

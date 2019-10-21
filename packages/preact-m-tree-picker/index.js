@@ -95,6 +95,7 @@ class PickerContent extends Component {
       }
     } = this.props
     const { tabItems, value, activeIndex } = this.state
+    const cancelSizeRem = p2r(cancelSize)
     let titles = value.map(getLabel)
     if (value.length < tabItems.length) {
       titles.push('请选择')
@@ -111,10 +112,18 @@ class PickerContent extends Component {
           <Text size={titleSize} color={titleColor}>
             {title}
           </Text>
-
-          <Text size={cancelSize} color={cancelColor} onClick={this.onCancel}>
-            &#4030;
-          </Text>
+          <i
+            className={className.close}
+            onClick={this.onCancel}
+            style={{
+              fontSize: cancelSizeRem,
+              width: cancelSizeRem,
+              height: cancelSizeRem
+            }}
+          >
+            <i style={{ backgroundColor: cancelColor }} />
+            <i style={{ backgroundColor: cancelColor }} />
+          </i>
         </RowView>
         <Tabs
           activeIndex={activeIndex}
@@ -185,10 +194,8 @@ export class TreePicker extends Component {
       {
         titleSize: 36,
         titleColor: '#999',
-        cancelSize: 53,
+        cancelSize: 36,
         cancelColor: '#ccc',
-        confirmSize: 28,
-        confirmColor: '#0078FE',
         itemSize: 28,
         itemColor: '#919191',
         itemHeight: 80,

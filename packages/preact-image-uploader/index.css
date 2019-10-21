@@ -3,15 +3,31 @@
 }
 .deleteIcon {
   position: absolute;
-  padding: 0 0.2rem;
+  padding: 0.1rem;
   font-size: 0.4rem;
-  color: #fff;
   background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 0.4rem;
-  right: -0.25rem;
-  top: -0.25rem;
-  font-style: normal;
+  border-radius: 0.3rem;
+  right: -0.3rem;
+  top: -0.3rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  box-sizing: content-box;
 }
+.deleteIcon:before, .deleteIcon:after {
+  position: absolute;
+  left: 0.3rem;
+  content: ' ';
+  height: 0.4rem;
+  width: 0.02rem;
+  background-color: #fff;
+}
+.deleteIcon:before {
+  transform: rotate(45deg);
+}
+.deleteIcon:after {
+  transform: rotate(-45deg);
+}
+
 .loading {
   border: 1px solid #ccc;
 }
