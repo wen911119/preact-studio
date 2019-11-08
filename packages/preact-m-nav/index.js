@@ -1,5 +1,8 @@
 import { h } from 'preact'
 
+const isWechatMp = window.location.search.indexOf('_c=mp') > -1
+const isH5Plus = navigator.userAgent.indexOf('Html5Plus') > -1
+
 const current = window.location.pathname.replace(/\/(.+)\.html/, '$1')
 const paramsStr = window.location.search.replace(
   /.+_p=(.+)&.+|.+_p=(.+)/g,
@@ -116,7 +119,7 @@ export default WithNav
 // 问题2
 // 在小程序下，只能用storage事件，而storage事件不能捕获用户自主返回
 
-if (location.search.indexOf('_c=mp') > -1) {
+if (isWechatMp || isH5Plus) {
   // 小程序内webview
   // 微信多webview只能靠这个
   // todo: storage事件不能捕获用户自主返回
