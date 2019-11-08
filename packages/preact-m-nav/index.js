@@ -93,6 +93,18 @@ const nav = {
           delta: backSteps
         })
       }
+      else if (isH5Plus && backSteps > 1) {
+        // h5+内多级返回
+        if (window.plus) {
+          const allWebviews = window.plus.webview.all().filter(v => v.getURL().indexOf('http') > -1)
+          const closedWebviews = allWebviews.slice(-backSteps)
+          const l = closedWebviews.length
+          // 只有当前webview关闭才需要动画
+          closedWebviews.map((v, i) =>
+            v.close( l === i + 1 ? undefined : 'none')
+          )
+        }
+      }
       else {
         window.history.go(-backSteps)
       }
