@@ -2,6 +2,7 @@ import { h } from 'preact'
 
 const isWechatMp = window.location.search.indexOf('_c=mp') > -1
 const isH5Plus = navigator.userAgent.indexOf('Html5Plus') > -1
+const isH5PlusLocalPath = window.location.href.indexOf('http') < 0
 
 const current = window.location.pathname.replace(/\/(.+)\.html/, '$1')
 const paramsStr = window.location.search.replace(
@@ -43,6 +44,10 @@ const nav = {
         paramsStr: newAppInfoStr
       })
     }
+    else if (isH5Plus && isH5PlusLocalPath) {
+      // 是h5+,并且是本地网页
+      window.plus.webview.open(`/${path}.html?_p=${newAppInfoStr}`, undefined, undefined, 'slide-in-right')
+    }
     else {
       window.location.href = `/${path}.html?_p=${newAppInfoStr}`
     }
@@ -55,9 +60,10 @@ const nav = {
       params,
       target
     }
+    const paramsStr = JSON.stringify(onPopParams)
     window.localStorage.setItem(
       'on-pop-back-params',
-      JSON.stringify(onPopParams)
+      paramsStr
     )
     if (typeof wx !== 'undefined') {
       // eslint-disable-next-line
@@ -66,6 +72,13 @@ const nav = {
     else if (typeof weex !== 'undefined') {
       // eslint-disable-next-line
       weex.pop()
+    }
+    else if (isH5Plus && isH5PlusLocalPath) {
+      // 本地网页file://协议下storage事件是不会触发的
+      // 所以得用替代方案
+      const allWebviews = window.plus.webview.all().filter(v => v.getTitle())
+      allWebviews[allWebviews.length - 2].evalJS(`__ON_POP__('${paramsStr}')`)
+      window.plus.webview.currentWebview().close('pop-out')
     }
     else {
       window.history.back()
@@ -79,9 +92,10 @@ const nav = {
         params,
         target: path
       }
+      const paramsStr = JSON.stringify(onBackParams)
       window.localStorage.setItem(
         'on-pop-back-params',
-        JSON.stringify(onBackParams)
+        paramsStr
       )
       let index = appInfo.paths.indexOf(path)
       // 找不到就去首页
@@ -96,12 +110,19 @@ const nav = {
       else if (isH5Plus && backSteps > 1) {
         // h5+内多级返回
         if (window.plus) {
-          const allWebviews = window.plus.webview.all().filter(v => v.getURL().indexOf('http') > -1)
-          const closedWebviews = allWebviews.slice(-backSteps)
-          const l = closedWebviews.length
+          const allWebviews = window.plus.webview.all().filter(v => v.getTitle())
+          const toHandledWebviews = allWebviews.slice(-(backSteps + 1))
+          const l = toHandledWebviews.length
           // 只有当前webview关闭才需要动画
-          closedWebviews.map((v, i) =>
-            v.close( l === i + 1 ? undefined : 'none')
+          toHandledWebviews.map((v, i) => {
+            if (i === 0) {
+              // 执行onBack回调
+              v.evalJS(`__ON_BACK__('${paramsStr}')`)
+            }
+            else {
+              v.close(l === i + 1 ? 'pop-out' : 'none')
+            }
+          }
           )
         }
       }
@@ -190,3 +211,15 @@ document.addEventListener('visibilitychange', () => {
     onWakeUpListeners.forEach(l => l())
   }
 })
+
+// h5+内加载本地网页不会触发storage事件，所以用这种方法代替
+if (isH5Plus && isH5PlusLocalPath) {
+  window.__ON_POP__ = paramsStr => {
+    const params = JSON.parse(paramsStr)
+    onPopListeners.forEach(l => l(params.params))
+  }
+  window.__ON_BACK__ = paramsStr => {
+    const params = JSON.parse(paramsStr)
+    onBackListeners.forEach(l => l(params.params))
+  }
+}
