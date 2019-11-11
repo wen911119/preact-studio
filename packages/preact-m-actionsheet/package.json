@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-actionsheet",
-  "version": "1.2.62",
+  "version": "1.2.72",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,7 +13,7 @@
     "preact"
   ],
   "dependencies": {
-    "@ruiyun/preact-layout-suite": "^1.2.39",
+    "@ruiyun/preact-layout-suite": "^1.2.72",
     "@ruiyun/preact-line": "^1.2.39",
     "@ruiyun/preact-modal": "^1.2.62",
     "@ruiyun/preact-text": "^1.2.39"
