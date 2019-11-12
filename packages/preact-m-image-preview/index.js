@@ -25,6 +25,9 @@ export class Preview extends Component {
         urls // 需要预览的图片http链接列表
       })
     }
+    else if (window.plus) {
+      window.plus.nativeUI.previewImage(urls, { current })
+    }
     else {
       this.props.$modal.show({
         content: renderBottomModalContent(

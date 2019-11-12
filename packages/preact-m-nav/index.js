@@ -25,7 +25,7 @@ if (!appInfo.paths) {
   appInfo.paths = [current]
 }
 const nav = {
-  push: (path, params) => {
+  push: (path, params, headerConfig = {}) => {
     const newAppInfo = {
       params,
       paths: appInfo.paths.concat([path])
@@ -46,7 +46,12 @@ const nav = {
     }
     else if (isH5Plus && isH5PlusLocalPath) {
       // 是h5+,并且是本地网页
-      window.plus.webview.open(`/${path}.html?_p=${newAppInfoStr}`, undefined, undefined, 'pop-in')
+      window.plus.webview.open(`/${path}.html?_p=${newAppInfoStr}`, undefined, Object.assign({
+        titleNView: {
+          autoBackButton: true
+        },
+        backButtonAutoControl: 'close'
+      }, headerConfig), 'pop-in')
     }
     else {
       window.location.href = `/${path}.html?_p=${newAppInfoStr}`
