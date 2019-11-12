@@ -8,7 +8,7 @@ const getOSS = () =>
     }
     else {
       let script = document.createElement('script')
-      script.src = '//gosspublic.alicdn.com/aliyun-oss-sdk-6.0.0.min.js'
+      script.src = 'https://gosspublic.alicdn.com/aliyun-oss-sdk-6.0.0.min.js'
       script.onload = () => {
         setTimeout(() => {
           resolve(window.OSS)

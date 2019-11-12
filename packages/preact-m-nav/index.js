@@ -46,7 +46,7 @@ const nav = {
     }
     else if (isH5Plus && isH5PlusLocalPath) {
       // 是h5+,并且是本地网页
-      window.plus.webview.open(`/${path}.html?_p=${newAppInfoStr}`, undefined, undefined, 'slide-in-right')
+      window.plus.webview.open(`/${path}.html?_p=${newAppInfoStr}`, undefined, undefined, 'pop-in')
     }
     else {
       window.location.href = `/${path}.html?_p=${newAppInfoStr}`
