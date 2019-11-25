@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "preact-boilerplate",
-  "version": "1.2.73",
+  "version": "1.2.74",
   "license": "MIT",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
@@ -29,7 +29,7 @@
     "@ruiyun/preact-m-actionsheet": "^1.2.72",
     "@ruiyun/preact-m-auto-list": "^1.2.64",
     "@ruiyun/preact-m-dialog": "^1.2.72",
-    "@ruiyun/preact-m-image-preview": "^1.2.72",
+    "@ruiyun/preact-m-image-preview": "^1.2.74",
     "@ruiyun/preact-m-loading": "^1.2.39",
     "@ruiyun/preact-m-scroller": "^1.2.64",
     "@ruiyun/preact-m-swiper": "^1.2.63",
