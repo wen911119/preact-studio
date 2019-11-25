@@ -1,0 +1,45 @@
+.days {
+  flex-wrap: wrap;
+}
+.disable > span {
+  color: #ccc !important;
+}
+.start {
+  background-color: #81c747;
+}
+.start > span {
+  color: #fff !important;
+}
+.end {
+  background-color: #f98d87;
+}
+.end > span {
+  color: #fff !important;
+}
+.between {
+  background-color: #eee;
+}
+.arrow {
+  display: inline-block;
+  border-width: 2px 2px 0 0;
+  border-style: solid;
+  transform-origin: center;
+  width: 0.32rem;
+  height: 0.32rem;
+}
+
+.arrow:active {
+  opacity: 0.7;
+}
+
+.arrowWrap:active {
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+.arrowLeft {
+  transform: rotate(-135deg);
+}
+
+.arrowRight {
+  transform: rotate(45deg);
+}

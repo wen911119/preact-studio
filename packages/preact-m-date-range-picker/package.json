@@ -1,0 +1,34 @@
+{
+  "name": "@ruiyun/preact-m-date-range-picker",
+  "version": "1.0.0",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "dependencies": {
+    "@ruiyun/preact-button": "^1.2.72",
+    "@ruiyun/preact-layout-suite": "^1.2.72",
+    "p-to-r": "^1.0.4",
+    "@ruiyun/preact-modal": "^1.2.62",
+    "@ruiyun/preact-text": "^1.2.39"
+  },
+  "compileDependencies": [
+    "@ruiyun/preact-layout-suite",
+    "@ruiyun/preact-line",
+    "@ruiyun/preact-modal",
+    "@ruiyun/preact-text"
+  ],
+  "peerDependencies": {
+    "preact": "^10.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
