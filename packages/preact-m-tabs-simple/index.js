@@ -36,7 +36,7 @@ const TabsSimple = ({
         <i
           className={classNames.line}
           style={{
-            width: index === i ? p2r(lineWidth) : 0,
+            width: index === i ? p2r(lineWidth || '100%') : 0,
             height: p2r(lineHeight),
             backgroundColor: activeColor
           }}
