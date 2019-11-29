@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-picker",
-  "version": "1.2.72",
+  "version": "1.2.77",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -13,9 +13,9 @@
     "preact"
   ],
   "dependencies": {
-    "@ruiyun/preact-layout-suite": "^1.2.72",
+    "@ruiyun/preact-layout-suite": "^1.2.77",
     "@ruiyun/preact-line": "^1.2.39",
-    "@ruiyun/preact-m-scroller": "^1.2.64",
+    "@ruiyun/preact-m-scroller": "^1.2.77",
     "@ruiyun/preact-modal": "^1.2.62",
     "@ruiyun/preact-text": "^1.2.39",
     "p-to-r": "^1.0.4"
