@@ -3,9 +3,9 @@ import { WithModal } from '@ruiyun/preact-modal'
 import { TextButton } from '@ruiyun/preact-button'
 import Search from '@ruiyun/preact-m-search'
 
-// const SEARCH_HEIGHT = window.innerHeight + 'px'
+const SEARCH_HEIGHT = window.innerHeight + 'px'
 // 在ios safari浏览器内100vh包含了地址栏，所以有bug，待解决
-const SEARCH_HEIGHT = '100vh'
+// const SEARCH_HEIGHT = '100vh'
 
 // eslint-disable-next-line
 const renderModalContent = ({ searchbar, autolist, slot }) => () => (
