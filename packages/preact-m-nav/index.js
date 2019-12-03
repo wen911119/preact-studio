@@ -37,13 +37,6 @@ const nav = {
         url: `/pages/${path}/index?_p=${newAppInfoStr}`
       })
     }
-    else if (typeof weex !== 'undefined') {
-      // eslint-disable-next-line
-      weex.push({
-        page: path,
-        paramsStr: newAppInfoStr
-      })
-    }
     else if (isH5Plus && isH5PlusLocalPath) {
       // 是h5+,并且是本地网页
       window.plus.webview.open(`/${path}.html?_p=${newAppInfoStr}`, undefined, Object.assign({
@@ -55,6 +48,33 @@ const nav = {
     }
     else {
       window.location.href = `/${path}.html?_p=${newAppInfoStr}`
+    }
+  },
+  replace: (path, params, headerConfig = {}) => {
+    appInfo.paths.pop()
+    appInfo.paths.push(path)
+    const newAppInfo = {
+      params,
+      paths: appInfo.paths
+    }
+    const newAppInfoStr = encodeURI(JSON.stringify(newAppInfo))
+    if (typeof wx !== 'undefined') {
+      // eslint-disable-next-line
+      wx.miniProgram.redirectTo({
+        url: `/pages/${path}/index?_p=${newAppInfoStr}`
+      })
+    }
+    else if (isH5Plus && isH5PlusLocalPath) {
+      // 是h5+,并且是本地网页
+      window.plus.webview.open(`/${path}.html?_p=${newAppInfoStr}`, undefined, Object.assign({
+        titleNView: {
+          autoBackButton: true
+        },
+        backButtonAutoControl: 'close'
+      }, headerConfig), 'pop-in', 200, () => window.plus.webview.currentWebview().close('none'))
+    }
+    else {
+      window.location.replace(`/${path}.html?_p=${newAppInfoStr}`)
     }
   },
   pop: params => {
@@ -73,10 +93,6 @@ const nav = {
     if (typeof wx !== 'undefined') {
       // eslint-disable-next-line
       wx.miniProgram.navigateBack()
-    }
-    else if (typeof weex !== 'undefined') {
-      // eslint-disable-next-line
-      weex.pop()
     }
     else if (isH5Plus && isH5PlusLocalPath) {
       // 本地网页file://协议下storage事件是不会触发的
