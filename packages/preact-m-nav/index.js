@@ -24,7 +24,7 @@ if (!appInfo.paths) {
   // 第一个页面
   appInfo.paths = [current]
 }
-const nav = {
+export const nav = {
   push: (path, params, headerConfig = {}) => {
     const newAppInfo = {
       params,
