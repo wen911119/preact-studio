@@ -1,4 +1,5 @@
 import { h } from 'preact'
+import { forwardRef } from 'preact/compat'
 
 const isWechatMp = window.location.search.indexOf('_c=mp') > -1
 const isH5Plus = navigator.userAgent.indexOf('Html5Plus') > -1
@@ -162,9 +163,9 @@ export const nav = {
   params: appInfo.params
 }
 // eslint-disable-next-line
-const WithNav = BaseComponent => ({ ...props }) => (
-  <BaseComponent {...props} $nav={nav} />
-)
+const WithNav = BaseComponent => forwardRef((props, ref ) => (
+  <BaseComponent {...props} $nav={nav} ref={ref} />
+))
 
 export default WithNav
 
