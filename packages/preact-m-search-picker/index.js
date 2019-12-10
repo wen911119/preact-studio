@@ -3,9 +3,16 @@ import { WithModal } from '@ruiyun/preact-modal'
 import { TextButton } from '@ruiyun/preact-button'
 import Search from '@ruiyun/preact-m-search'
 
-const SEARCH_HEIGHT = window.innerHeight + 'px'
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+let SEARCH_HEIGHT
+if (isIOS) {
+  SEARCH_HEIGHT = window.innerHeight + 'px'
+}
+else {
+  SEARCH_HEIGHT = '100vh'
+}
 // 在ios safari浏览器内100vh包含了地址栏，所以有bug，待解决
-// const SEARCH_HEIGHT = '100vh'
+// 在安卓上innerHeight在键盘弹起时页面会缩小导致内容被顶上去
 
 // eslint-disable-next-line
 const renderModalContent = ({ searchbar, autolist, slot }) => () => (
