@@ -4,12 +4,12 @@ import { forwardRef } from 'preact/compat'
 const isWechatMp = window.location.search.indexOf('_c=mp') > -1
 const isH5Plus = navigator.userAgent.indexOf('Html5Plus') > -1
 const isH5PlusLocalPath = window.location.href.indexOf('http') < 0
-
 const current = window.location.pathname.replace(/\/(.+)\.html/, '$1')
 const paramsStr = window.location.search.replace(
   /.+_p=(.+)&.+|.+_p=(.+)/g,
   '$1$2'
 )
+let pagesTitleMap = {}
 let appInfo = {}
 let onPopListeners = []
 let onBackListeners = []
@@ -20,6 +20,13 @@ try {
 }
 catch (e) {
   console.log(paramsStr)
+}
+try {
+  // eslint-disable-next-line
+  pagesTitleMap = $PAGES_TITLE_MAP$
+}
+catch (err){
+  console.log(err)
 }
 if (!appInfo.paths) {
   // 第一个页面
@@ -32,10 +39,11 @@ export const nav = {
       paths: appInfo.paths.concat([path])
     }
     const newAppInfoStr = encodeURI(JSON.stringify(newAppInfo))
+    const headerConfigStr = encodeURI(JSON.stringify(Object.assign({ title: pagesTitleMap[path] }, headerConfig)))
     if (typeof wx !== 'undefined') {
       // eslint-disable-next-line
       wx.miniProgram.navigateTo({
-        url: `/pages/${path}/index?_p=${newAppInfoStr}`
+        url: `/pages/page${newAppInfo.paths.length}/index?page=${path}&headerConfig=${headerConfigStr}&_p=${newAppInfoStr}`
       })
     }
     else if (isH5Plus && isH5PlusLocalPath) {
@@ -59,10 +67,12 @@ export const nav = {
       paths: appInfo.paths
     }
     const newAppInfoStr = encodeURI(JSON.stringify(newAppInfo))
+    const headerConfigStr = encodeURI(JSON.stringify(Object.assign({ title: pagesTitleMap[path] }, headerConfig)))
+
     if (typeof wx !== 'undefined') {
       // eslint-disable-next-line
       wx.miniProgram.redirectTo({
-        url: `/pages/${path}/index?_p=${newAppInfoStr}`
+        url: `/pages/page${newAppInfo.paths.length}/index?page=${path}&headerConfig=${headerConfigStr}&_p=${newAppInfoStr}`
       })
     }
     else if (isH5Plus && isH5PlusLocalPath) {
