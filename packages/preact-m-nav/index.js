@@ -15,6 +15,13 @@ let onPopListeners = []
 let onBackListeners = []
 let onWakeUpListeners = [] // 从后台回到前台,后退从缓存恢复,多webview模式当前webview激活时
 let onSleepListeners = [] // 从前台退到后台, 路由前进当前页被加入缓存，多webview模式当前webview失去焦点
+const serialize = obj => {
+  let str = '?' + Object.keys(obj).reduce((a, k) => {
+    a.push(k + '=' + encodeURIComponent(obj[k]))
+    return a
+  }, []).join('&')
+  return str
+}
 try {
   appInfo = JSON.parse(decodeURI(paramsStr))
 }
@@ -33,7 +40,7 @@ if (!appInfo.paths) {
   appInfo.paths = [current]
 }
 export const nav = {
-  push: (path, params, headerConfig = {}) => {
+  push: (path, params, headerConfig = {}, host = '') => {
     const newAppInfo = {
       params,
       paths: appInfo.paths.concat([path])
@@ -43,7 +50,7 @@ export const nav = {
     if (typeof wx !== 'undefined') {
       // eslint-disable-next-line
       wx.miniProgram.navigateTo({
-        url: `/pages/page${newAppInfo.paths.length}/index?page=${path}&headerConfig=${headerConfigStr}&_p=${newAppInfoStr}`
+        url: `/pages/h666Container${newAppInfo.paths.length}/index?page=${path}&headerConfig=${headerConfigStr}&host=${host}&_p=${newAppInfoStr}`
       })
     }
     else if (isH5Plus && isH5PlusLocalPath) {
@@ -59,7 +66,15 @@ export const nav = {
       window.location.href = `/${path}.html?_p=${newAppInfoStr}`
     }
   },
-  replace: (path, params, headerConfig = {}) => {
+  pushToNative: (path, params={}) => {
+    if (typeof wx !== 'undefined') {
+      // eslint-disable-next-line
+      wx.miniProgram.navigateTo({
+        url: `/pages/${path}/index${serialize(params)}`
+      })
+    }
+  },
+  replace: (path, params, headerConfig = {}, host = '') => {
     appInfo.paths.pop()
     appInfo.paths.push(path)
     const newAppInfo = {
@@ -72,7 +87,7 @@ export const nav = {
     if (typeof wx !== 'undefined') {
       // eslint-disable-next-line
       wx.miniProgram.redirectTo({
-        url: `/pages/page${newAppInfo.paths.length}/index?page=${path}&headerConfig=${headerConfigStr}&_p=${newAppInfoStr}`
+        url: `/pages/h666Container${newAppInfo.paths.length}/index?page=${path}&headerConfig=${headerConfigStr}&host=${host}&_p=${newAppInfoStr}`
       })
     }
     else if (isH5Plus && isH5PlusLocalPath) {
@@ -86,6 +101,14 @@ export const nav = {
     }
     else {
       window.location.replace(`/${path}.html?_p=${newAppInfoStr}`)
+    }
+  },
+  replaceToNative: (path, params={}) => {
+    if (typeof wx !== 'undefined') {
+      // eslint-disable-next-line
+      wx.miniProgram.redirectTo({
+        url: `/pages/${path}/index${serialize(params)}`
+      })
     }
   },
   pop: params => {
@@ -114,6 +137,16 @@ export const nav = {
     }
     else {
       window.history.back()
+    }
+  },
+  popToNative: params => {
+    if (typeof wx !== 'undefined') {
+      if (params){
+        // eslint-disable-next-line
+        wx.miniProgram.postMessage({ data: params, type: 'pop-params' })
+      }
+      // eslint-disable-next-line
+      wx.miniProgram.navigateBack()
     }
   },
   backTo: (path, params) => {
@@ -161,6 +194,18 @@ export const nav = {
       else {
         window.history.go(-backSteps)
       }
+    }
+  },
+  backToNative: (steps, params) => {
+    if (typeof wx !== 'undefined') {
+      if (params){
+        // eslint-disable-next-line
+        wx.miniProgram.postMessage({ data: params, type: 'back-params' })
+      }
+      // eslint-disable-next-line
+      wx.miniProgram.navigateBack({
+        delta: steps
+      })
     }
   },
   setTitle: title => {
