@@ -19,7 +19,7 @@ const DefaultRefreshHeader = ({ stage, percent }) => {
   return (
     <div
       style={{
-        marginTop: '-50px',
+        marginTop: '-51px',
         height: '50px',
         lineHeight: '50px',
         backgroundColor: '#eaeaea',
