@@ -5,10 +5,10 @@ import Image from '@ruiyun/preact-image'
 
 // eslint-disable-next-line
 const renderBottomModalContent = (urls, currentIndex, clickHandler) => () => (
-  <div onClick={clickHandler} style={{ width: '100vw' }}>
+  <div onClick={clickHandler} style={{ width: window.innerHeight + 'px' }}>
     <Swiper activeIndex={currentIndex}>
       {urls.map((url, i) => (
-        <Image key={i} mode="fit" src={url} width="100vw" height="100vh" />
+        <Image key={i} mode="fit" src={url} width="100vw" height={window.innerHeight + 'px'} />
       ))}
     </Swiper>
   </div>
