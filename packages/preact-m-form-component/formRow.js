@@ -24,11 +24,12 @@ const FormRow = ({
   slot = 30,
   required = false,
   direction = 'h',
-  renderRight
+  renderRight,
+  bgColor='#fff'
 }) => {
   if (direction === 'h') {
     return (
-      <SlotRowView padding={padding} bgColor="#fff" slot={slot}>
+      <SlotRowView padding={padding} bgColor={bgColor} slot={slot}>
         <Text
           size={labelSize}
           color={labelColor}
@@ -72,7 +73,7 @@ const FormRow = ({
     )
   }
   return (
-    <SlotColumnView slot={slot} padding={padding}>
+    <SlotColumnView padding={padding} bgColor={bgColor} slot={slot}>
       <SlotRowView slot={slot}>
         <Text
           size={labelSize}
