@@ -134,14 +134,13 @@ export class FormConditionField extends BaseFormField {
  
   componentDidMount (){
     if (this.props.condition && this.props.condition(this.getLinkData())) {
-      this.subscribeValidate()
+      this.subscribeId = this.subscribeValidate()
     }
   }
 
   componentDidUpdate () {
     if (this.show && !this.subscribeId) {
       this.subscribeId = this.subscribeValidate()
-      
     }
     else if (!this.show && this.subscribeId){
       const { cleanWhenChange = true, unsubscribeValidate } = this.props
