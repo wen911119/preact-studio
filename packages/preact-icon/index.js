@@ -10,8 +10,8 @@ export const setIconFontUrl = url => {
 }
 // todo
 // 没有默认size
-const Icon = ({ name, size, color }) => (
-  <i className={`iconfont ${name}`} style={{ fontSize: p2r(size), color }} />
+const Icon = ({ name, size = 30, color, style, className = '', ...otherProps }) => (
+  <i className={`iconfont ${name} ${className}`} style={Object.assign({ fontSize: p2r(size), color }, style)} {...otherProps} />
 )
 
 export default Icon

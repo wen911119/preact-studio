@@ -21,14 +21,14 @@ export default class LoadMore extends Component {
       this.renderFooter = nomore => () => <DefaultFooter nomore={nomore} />
     }
     this.resetLoadMore = this.resetLoadMore.bind(this)
-    this.onLoading = false
+    this.onLoading = false // 避免重复触发
     this.state = {
       nomore: false
     }
   }
   componentDidUpdate () {
     if (
-      this.props.position === 'bottom' &&
+      (this.props.position === 'will-bottom' || this.props.position === 'bottom') &&
       !this.state.nomore &&
       !this.onLoading
     ) {
@@ -39,7 +39,7 @@ export default class LoadMore extends Component {
           this.props.onLoadMore(resolve)
         })
         p.then(nomore => {
-          this.props.recomputeLayout && this.props.recomputeLayout()
+          // 动态插入元素增加高度后要重庆计算布局，获取新的高度
           this.setState({ nomore: !!nomore }, () => {
             this.onLoading = false
           })

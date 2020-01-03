@@ -13,7 +13,6 @@ export default class FormNumberInput extends Component {
     this.props.sync(value)
   }
   render () {
-    console.log('render-form-number-input')
     const {
       label,
       err,
@@ -43,11 +42,11 @@ export default class FormNumberInput extends Component {
       >
         <NumberInput
           {...otherProps}
-          height="100%"
+          height="0.6rem"
           width="100%"
           onChange={this.onChange}
           style={Object.assign(
-            { textAlign: direction === 'v' ? 'left' : 'right' },
+            { textAlign: direction === 'v' ? 'left' : 'right', lineHeight: '0.6rem' },
             style
           )}
         />

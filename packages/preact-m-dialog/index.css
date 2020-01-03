@@ -1,3 +1,6 @@
+.shadow {
+  flex: 1;
+}
 .shadow:active {
   background-color: rgba(0, 0, 0, 0.07);
 }

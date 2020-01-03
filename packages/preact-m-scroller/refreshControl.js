@@ -19,7 +19,7 @@ const DefaultRefreshHeader = ({ stage, percent }) => {
   return (
     <div
       style={{
-        marginTop: '-50px',
+        marginTop: '-51px',
         height: '50px',
         lineHeight: '50px',
         backgroundColor: '#eaeaea',
@@ -76,9 +76,8 @@ export default class RefreshControl extends Component {
               })
               p.then(() => {
                 this.setState({ pullDownDistance: 0, stage: 4 }, () => {
-                  // 重新计算布局。下拉刷新应该不用更新布局
-                  // this.props.recomputeLayout && this.props.recomputeLayout();
                   // 重新设置loadmore
+                  // 下拉刷新之后要将加载更多的分页重置为第一页
                   this.props.resetLoadMore && this.props.resetLoadMore()
                 })
               })

@@ -1,0 +1,25 @@
+{
+  "name": "@ruiyun/preact-m-search-input",
+  "version": "1.2.68",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "dependencies": {
+    "@ruiyun/preact-input": "^1.2.66",
+    "lodash.debounce": "^4.0.8"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0-beta.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

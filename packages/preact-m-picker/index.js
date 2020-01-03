@@ -7,6 +7,10 @@ import Scroller from '@ruiyun/preact-m-scroller'
 import p2r from 'p-to-r'
 import style from './index.css'
 
+// 这个组件只接受扁平options,和options的index的值为value
+// 这个组件是无状态的
+// 复杂的options和状态交给调用者或者父级组件处理
+
 class PickerContent extends Component {
   onCancel = () => {
     this.props.cb && this.props.cb()
@@ -48,13 +52,19 @@ class PickerContent extends Component {
     }
   }
   componentDidMount () {
+    let target
     if (this.state.selectedIndexs.length) {
-      try {
-        document.getElementsByClassName('_item_selected_')[0].scrollIntoView()
-      }
-      catch (err) {
-        console.log(err)
-      }
+      target = document.getElementsByClassName('_item_selected_')[0]
+    }
+    else {
+      target = document.getElementsByClassName(style.shadow)[0]
+    }
+    try {
+      // 不管有没有选中的值都要scrollIntoView,这样可以解决ios键盘把页面顶上去后不会自动收下来的奇怪bug
+      target.scrollIntoView()
+    }
+    catch (err) {
+      console.log(err)
     }
   }
   render () {
@@ -92,9 +102,10 @@ class PickerContent extends Component {
           <Text size={titleSize} color={titleColor}>
             {title}
             {mode > 1 && mode !== 999 && (
-              <Text color="#ccc" size={24}>{`(${
-                selectedIndexs.length
-              }/${mode})`}</Text>
+              <Text
+                color="#ccc"
+                size={24}
+              >{`(${selectedIndexs.length}/${mode})`}</Text>
             )}
           </Text>
           <Text
@@ -124,7 +135,7 @@ class PickerContent extends Component {
               <XCenterView height={itemHeight}>
                 <SlotRowView slot={30}>
                   {selectedIndexs.indexOf(i) > -1 && (
-                    <Text color="#fff" style={{ opacity: 0 }}>
+                    <Text color="transparent" style={{ opacity: 0 }}>
                       &#10003;
                     </Text>
                   )}

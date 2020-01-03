@@ -55,7 +55,7 @@ export default class NumberInput extends Component {
         const { delimiter, block } = format
         // 自定义分隔字符，分隔距离
         if (delimiter && block) {
-          const reg = new RegExp(`(\\d{${block}})`, 'g')
+          const reg = new RegExp(`(\\d)(?=(?:\\d{${block}})+$)`, 'g')
           if (rawValue.indexOf('.') > -1) {
             // 有小数点，要特殊处理，目前还没想到一个正则搞定
             let temp = rawValue.split('.')
@@ -109,7 +109,7 @@ export default class NumberInput extends Component {
       <Input
         {...otherProps}
         onBlur={this.onComplete}
-        onChange={this.onInput}
+        onInput={this.onInput}
         value={this.format(this.state.value)}
         type={float ? 'text' : 'tel'} // 为什么用text不用number？因为在ios上number有解决不了的bug啊！
       />

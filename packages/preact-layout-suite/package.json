@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-layout-suite",
-  "version": "1.2.7",
+  "version": "1.2.77",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -14,12 +14,13 @@
     "preact"
   ],
   "dependencies": {
-    "p-to-r": "^1.0.3"
+    "p-to-r": "^1.0.4"
   },
   "peerDependencies": {
     "preact": "^10.0.0-beta.3"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "sideEffects": false
 }

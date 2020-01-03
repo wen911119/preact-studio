@@ -8,7 +8,8 @@ import {
 } from '@ruiyun/preact-layout-suite'
 import { WithModal } from '@ruiyun/preact-modal'
 import Line from '@ruiyun/preact-line'
-import style from './index.css'
+import Input from '@ruiyun/preact-input'
+import className from './index.css'
 
 const defaultConfig = {
   titleColor: '#333',
@@ -48,11 +49,12 @@ const renderModalContent = ({
           {content}
         </Text>
       )}
-      { slot && slot()}
+      {slot && slot()}
       {placeholder && (
-        <input
+        <Input
+          textSize={26}
           placeholder={placeholder}
-          className={style.promptInput}
+          className={className.promptInput}
           id={inputId}
           value={value}
         />
@@ -66,8 +68,7 @@ const renderModalContent = ({
           // eslint-disable-next-line
           onClick={() => cb(i)}
           height={100}
-          className={style.shadow}
-          style={{ flex: 1 }}
+          className={className.shadow}
         >
           <Text size={config.btnSize} color={config.btnsColor[i] || '#fc9153'}>
             {btn}
@@ -106,13 +107,29 @@ export class Dialog extends Component {
       cb && cb(btnIndex)
     }
     const mergedConfig = Object.assign({}, defaultConfig, config)
-    const c = renderModalContent({ title, content, btns, cb: callback, config: mergedConfig, slot })
+    const c = renderModalContent({
+      title,
+      content,
+      btns,
+      cb: callback,
+      config: mergedConfig,
+      slot
+    })
     this.props.$modal.show({
       content: c,
       autoClose: false
     })
   }
-  prompt ({ title, content, btns, cb, placeholder = '请输入', value, config, slot }) {
+  prompt ({
+    title,
+    content,
+    btns,
+    cb,
+    placeholder = '请输入',
+    value,
+    config,
+    slot
+  }) {
     const inputId = `input_${Math.random()}`
     const callback = btnIndex => {
       this.props.$modal.hide()

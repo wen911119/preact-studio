@@ -7,13 +7,7 @@ import {
 } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import p2r from 'p-to-r'
-
-const arrowStyle = {
-  display: 'inline-block',
-  borderWidth: '2px 2px 0 0',
-  borderStyle: 'solid',
-  transform: 'matrix(0.71, 0.71, -0.71, 0.71, 0, 0)'
-}
+import className from './formrow.css'
 
 const FormRow = ({
   label,
@@ -29,12 +23,18 @@ const FormRow = ({
   padding = [30, 30, 30, 30],
   slot = 30,
   required = false,
-  direction = 'h'
+  direction = 'h',
+  renderRight,
+  bgColor='#fff'
 }) => {
   if (direction === 'h') {
     return (
-      <SlotRowView padding={padding} bgColor="#fff" slot={slot}>
-        <Text size={labelSize} color={labelColor} style={{ flexShrink: 0 }}>
+      <SlotRowView padding={padding} bgColor={bgColor} slot={slot}>
+        <Text
+          size={labelSize}
+          color={labelColor}
+          className={className.noshrink}
+        >
           {required && (
             <Text size={labelSize} color="#f8584f">
               *
@@ -43,33 +43,43 @@ const FormRow = ({
           {label}
         </Text>
         {err && (
-          <Text size={errorSize} color={errorColor} style={{ flexShrink: 0 }}>
+          <Text
+            size={errorSize}
+            color={errorColor}
+            className={className.noshrink}
+          >
             {err}
           </Text>
         )}
-        <RowView style={{ flex: 1, height: '100%' }} hAlign="right">
+        <RowView
+          className={className.flex1}
+          style={{ height: '100%' }}
+          hAlign="right"
+        >
           {children}
         </RowView>
         {arrow && (
           <i
-            style={Object.assign(
-              {
-                flexShrink: 0,
-                width: p2r(arrowSize),
-                height: p2r(arrowSize),
-                borderColor: arrowColor
-              },
-              arrowStyle
-            )}
+            className={className.arrow}
+            style={{
+              width: p2r(arrowSize),
+              height: p2r(arrowSize),
+              borderColor: arrowColor
+            }}
           />
         )}
+        {!arrow && renderRight && renderRight()}
       </SlotRowView>
     )
   }
   return (
-    <SlotColumnView slot={slot} padding={padding}>
+    <SlotColumnView padding={padding} bgColor={bgColor} slot={slot}>
       <SlotRowView slot={slot}>
-        <Text size={labelSize} color={labelColor} style={{ flexShrink: 0 }}>
+        <Text
+          size={labelSize}
+          color={labelColor}
+          className={className.noshrink}
+        >
           {required && (
             <Text size={labelSize} color="#f8584f">
               *
@@ -78,7 +88,11 @@ const FormRow = ({
           {label}
         </Text>
         {err && (
-          <Text size={errorSize} color={errorColor} style={{ flexShrink: 0 }}>
+          <Text
+            size={errorSize}
+            color={errorColor}
+            className={className.noshrink}
+          >
             {err}
           </Text>
         )}

@@ -7,7 +7,6 @@ export default class FormTextInput extends Component {
     this.props.sync(event.target.value)
   }
   render () {
-    console.log('render-form-text-input')
     const {
       label,
       err,
@@ -38,11 +37,12 @@ export default class FormTextInput extends Component {
         <Input
           {...otherProps}
           onChange={this.onChange}
-          height="100%"
+          height="0.6rem"
           width="100%"
           style={Object.assign(
             {
-              textAlign: direction === 'v' ? 'left' : 'right'
+              textAlign: direction === 'v' ? 'left' : 'right',
+              lineHeight: '0.6rem'
             },
             style
           )}

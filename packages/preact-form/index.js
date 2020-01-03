@@ -3,6 +3,7 @@ import safeGet from 'dlv'
 
 const FormContext = createContext({
   subscribeValidate: () => {},
+  unsubscribeValidate: () => {},
   update: () => {},
   onChange: () => {},
   parentData: {}
@@ -14,8 +15,7 @@ const withFormContext = Component => props => (
   </FormContext.Consumer>
 )
 
-@withFormContext
-export class FormField extends Component {
+class BaseFormField extends Component {
   state = {
     err: ''
   }
@@ -27,11 +27,12 @@ export class FormField extends Component {
       this.setState({ err: '' })
     }
   }
-  componentDidMount () {
+
+  subscribeValidate = () => {
     const self = this
     const { validate = [], subscribeValidate } = self.props
     if (validate.length > 0) {
-      subscribeValidate(
+      return subscribeValidate(
         () =>
           new Promise(async (resolve, reject) => {
             const {
@@ -60,6 +61,21 @@ export class FormField extends Component {
       )
     }
   }
+
+  getLinkData = () => {
+    const { link, getFormData } = this.props
+    let linkData = {}
+    if (link) {
+      const formData = getFormData()
+      for (let key in link) {
+        if (link.hasOwnProperty(key)) {
+          linkData[key] = safeGet(formData, link[key])
+        }
+      }
+    }
+    return linkData
+  }
+
   shouldComponentUpdate (nextProps, nextState) {
     let shouldUpdate =
       this.props.parentData[this.props.field] !==
@@ -83,17 +99,18 @@ export class FormField extends Component {
     }
     return shouldUpdate
   }
+}
+
+@withFormContext
+export class FormField extends BaseFormField {
+  
+  componentDidMount () {
+    this.subscribeValidate()
+  }
+
   render () {
-    const { children, label, field, parentData, link, getFormData } = this.props
-    let linkData = {}
-    if (link) {
-      const formData = getFormData()
-      for (let key in link) {
-        if (link.hasOwnProperty(key)) {
-          linkData[key] = safeGet(formData, link[key])
-        }
-      }
-    }
+    const { children, label, field, parentData } = this.props
+    const linkData = this.getLinkData()
     return cloneElement(children, {
       value: parentData[field],
       label,
@@ -101,6 +118,52 @@ export class FormField extends Component {
       sync: this.update,
       ...linkData
     })
+  }
+}
+
+@withFormContext
+export class FormConditionField extends BaseFormField {
+  
+  constructor (props){
+    super(props)
+    this.subscribeId = undefined
+    this.state = {
+      err: ''
+    }
+  }
+ 
+  componentDidMount (){
+    if (this.props.condition && this.props.condition(this.getLinkData())) {
+      this.subscribeId = this.subscribeValidate()
+    }
+  }
+
+  componentDidUpdate () {
+    if (this.show && !this.subscribeId) {
+      this.subscribeId = this.subscribeValidate()
+    }
+    else if (!this.show && this.subscribeId){
+      const { cleanWhenChange = true, unsubscribeValidate } = this.props
+      unsubscribeValidate(this.subscribeId)
+      this.subscribeId = undefined
+      cleanWhenChange && this.update()
+    }
+  }
+  render () {
+    const { children, label, field, parentData, condition } = this.props
+    const linkData = this.getLinkData()
+    let content
+    if (condition(linkData)) {
+      content = cloneElement(children, {
+        value: parentData[field],
+        label,
+        err: this.state.err,
+        sync: this.update,
+        ...linkData
+      })
+    }
+    this.show = !!content
+    return content
   }
 }
 
@@ -144,6 +207,7 @@ export class FormFragment extends Component {
 export default class Form extends Component {
   static Fragment = FormFragment
   static Field = FormField
+  static ConditionField = FormConditionField
   init = initFormData => {
     this.setState({
       formData: initFormData || {},
@@ -167,9 +231,8 @@ export default class Form extends Component {
       })
   }
   getFormData = () => this.state.formData
-  subscribeValidate = callback => {
-    this.validateListeners.push(callback)
-  }
+  subscribeValidate = callback => this.validateListeners.push(callback) - 1
+  unsubscribeValidate = index => this.validateListeners.splice(index, 1)
   update = (key, value, keypathsArr) => {
     let newFormData = { ...this.state.formData }
     newFormData[key] = value
@@ -197,6 +260,7 @@ export default class Form extends Component {
           lastUpdate: this.state.lastUpdate,
           update: this.update,
           subscribeValidate: this.subscribeValidate,
+          unsubscribeValidate: this.unsubscribeValidate,
           getFormData: this.getFormData
         }}
       >

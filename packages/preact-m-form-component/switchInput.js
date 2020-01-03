@@ -7,7 +7,6 @@ export default class FormSwitchInput extends Component {
     this.props.sync(value)
   }
   render () {
-    console.log('render-form-switch-input')
     const {
       label,
       err,

@@ -5,10 +5,10 @@ import Image from '@ruiyun/preact-image'
 
 // eslint-disable-next-line
 const renderBottomModalContent = (urls, currentIndex, clickHandler) => () => (
-  <div onClick={clickHandler} style={{ width: '100vw' }}>
+  <div onClick={clickHandler} style={{ width: window.innerHeight + 'px' }}>
     <Swiper activeIndex={currentIndex}>
       {urls.map((url, i) => (
-        <Image key={i} mode="fit" src={url} width="100vw" height="100vh" />
+        <Image key={i} mode="fit" src={url} width="100vw" height={window.innerHeight + 'px'} />
       ))}
     </Swiper>
   </div>
@@ -24,6 +24,9 @@ export class Preview extends Component {
         current: urls[current], // 当前显示图片的http链接
         urls // 需要预览的图片http链接列表
       })
+    }
+    else if (window.plus) {
+      window.plus.nativeUI.previewImage(urls, { current })
     }
     else {
       this.props.$modal.show({

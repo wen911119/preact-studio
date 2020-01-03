@@ -1,6 +1,16 @@
 import { h, Component } from 'preact'
 import Swiper from '@ruiyun/preact-m-swiper'
 import px2rem from 'p-to-r'
+import Text from '@ruiyun/preact-text'
+import { RowView, XCenterView } from '@ruiyun/preact-layout-suite'
+import className from './index.css'
+
+let BODY_WIDTH = 750
+// eslint-disable-next-line
+if (typeof $P_2_R_BASE$ !== 'undefined' && $P_2_R_BASE$ !== 'undefined') {
+  // eslint-disable-next-line
+  BODY_WIDTH = parseInt($P_2_R_BASE$)
+}
 
 const renderTabHeaderItem = ({
   title,
@@ -9,34 +19,32 @@ const renderTabHeaderItem = ({
   titleSize,
   activeTitleColor
 }) => (
-  <span
-    style={{
-      fontSize: px2rem(titleSize),
-      color: isActive ? activeTitleColor : titleColor
-    }}
-  >
+  <Text color={isActive ? activeTitleColor : titleColor} size={titleSize}>
     {title}
-  </span>
+  </Text>
 )
 
 const TabIndicator = ({
   index,
   indicatorWith = 100,
   indicatorHeight = 6,
-  indicatorColor = '#f8584f'
+  indicatorColor = '#f8584f',
+  childNum = 2
 }) => {
-  const transformX = 750 / 4 - indicatorWith / 2 + 375 * index
+  const transformX =
+    (BODY_WIDTH / childNum) * index +
+    BODY_WIDTH / childNum / 2 -
+    indicatorWith / 2
   return (
-    <div style={{ display: 'flex' }}>
+    <div className={className.tabindicator}>
       <span
         style={{
-          display: 'inline-block',
           width: px2rem(indicatorWith),
           height: px2rem(indicatorHeight),
           marginTop: px2rem(-indicatorHeight),
           backgroundColor: indicatorColor,
-          transition: '330ms',
-          transform: `translate3d(${px2rem(transformX)}, 0px, 0px)`
+          transform: `translate3d(${px2rem(transformX)}, 0px, 0px)`,
+          '-webkit-transform': `translate3d(${px2rem(transformX)}, 0px, 0px)`
         }}
       />
     </div>
@@ -55,22 +63,10 @@ const TabHeader = ({
 }) => {
   const _renderItem = renderItem || renderTabHeaderItem
   return (
-    <div
-      style={{
-        height: px2rem(headerHeight),
-        display: 'flex',
-        flexDirection: 'row'
-      }}
-    >
+    <RowView height={headerHeight}>
       {titles.map((t, index) => (
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
+        <XCenterView
+          className={className.flex1}
           key={index}
           // eslint-disable-next-line
           onClick={() => onItemClick && onItemClick(index)}
@@ -82,28 +78,36 @@ const TabHeader = ({
             titleSize,
             activeTitleColor
           })}
-        </div>
+        </XCenterView>
       ))}
-    </div>
+    </RowView>
   )
 }
 export default class Tabs extends Component {
   onChange (index) {
-    this.setState({
-      activeIndex: index
-    })
-  }
-  onTabHeaderClick (index) {
-    this.setState({
-      activeIndex: index
-    })
+    this.setState(
+      {
+        activeIndex: index
+      },
+      () => {
+        if (this.props.onChange) {
+          this.props.onChange(index)
+        }
+      }
+    )
   }
   constructor (props) {
     super(props)
     this.onChange = this.onChange.bind(this)
-    this.onTabHeaderClick = this.onTabHeaderClick.bind(this)
     this.state = {
-      activeIndex: 0
+      activeIndex: props.activeIndex || 0
+    }
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.activeIndex !== this.props.activeIndex) {
+      this.setState({
+        activeIndex: nextProps.activeIndex
+      })
     }
   }
   render () {
@@ -120,29 +124,23 @@ export default class Tabs extends Component {
       activeTitleColor,
       renderHeaderItem,
       headerHeight,
-      freezingOnSwiping
+      shadow = true
     } = this.props
     const { activeIndex } = this.state
-    let _style = {}
-    if (fill) {
-      _style = {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1
-      }
-    }
     return (
-      <div style={Object.assign(_style, style)}>
+      <div style={style} className={fill && className.filltab}>
         <div
-          style={{
-            boxShadow: `0 ${px2rem(8)} ${px2rem(8)} 0 rgba(0,0,0,0.10)`,
-            zIndex: 1
-          }}
+          style={
+            shadow && {
+              boxShadow: `0 ${px2rem(8)} ${px2rem(8)} 0 rgba(0,0,0,0.10)`,
+              zIndex: 1
+            }
+          }
         >
           <TabHeader
             titles={titles}
             current={activeIndex}
-            onItemClick={this.onTabHeaderClick}
+            onItemClick={this.onChange}
             titleColor={titleColor}
             titleSize={titleSize}
             activeTitleColor={activeTitleColor}
@@ -154,14 +152,10 @@ export default class Tabs extends Component {
             indicatorColor={indicatorColor}
             indicatorHeight={indicatorHeight}
             indicatorWidth={indicatorWidth}
+            childNum={titles.length}
           />
         </div>
-        <Swiper
-          onChange={this.onChange}
-          activeIndex={activeIndex}
-          fill
-          freezingOnSwiping={freezingOnSwiping}
-        >
+        <Swiper onChange={this.onChange} activeIndex={activeIndex} fill>
           {children}
         </Swiper>
       </div>

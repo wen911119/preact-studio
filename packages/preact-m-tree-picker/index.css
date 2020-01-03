@@ -1,0 +1,30 @@
+.arrow {
+  display: inline-block;
+  border-width: 1px 1px 0 0;
+  border-style: solid;
+  transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+  flex-shrink: 0;
+}
+.shadow:active {
+  background-color: rgba(0, 0, 0, 0.07);
+}
+.close {
+  width: 0.6rem;
+  height: 0.6rem;
+  position: relative;
+  font-size: 0.6rem;
+}
+.close > i {
+  position: absolute;
+  left: 0.5em;
+  content: " ";
+  height: 1em;
+  width: 0.05em;
+  background-color: #919191;
+}
+.close > i:first-child {
+  transform: rotate(45deg);
+}
+.close > i:last-child {
+  transform: rotate(-45deg);
+}

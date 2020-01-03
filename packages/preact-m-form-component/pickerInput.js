@@ -4,63 +4,61 @@ import Text from '@ruiyun/preact-text'
 import FormRow from './formRow'
 
 @WithPicker
-export default class FormPickerSheet extends Component {
-  defaultMapIndexsToValues = (indexs = [], options = []) => {
-    const split = this.props.split || ','
-    return indexs.map(index => options[index]).join(split)
-  }
-  defaultMapValuesToIndexs = (values, options = []) => {
-    const split = this.props.split || ','
-    return (
-      values &&
-      values
-        .split(split)
-        .map(value => options.findIndex(item => item === value))
-    )
-  }
-
-  onClick = () => {
+export default class FormPickerInput extends Component {
+  onClick = async () => {
     const {
       title = '请选择',
-      options = [],
       config,
       sync,
       mode,
-      value,
-      mapIndexsToValues,
-      mapValuesToIndexs
+      value = [],
+      getOptions,
+      linkData,
+      preflightCheck
     } = this.props
-    if (
-      (mapIndexsToValues && !mapValuesToIndexs) ||
-      (mapValuesToIndexs && !mapIndexsToValues)
-    ) {
-      throw new Error(
-        'mapIndexsToValues 和 mapValuesToIndexs必须同时传或者同时不传'
-      )
+    if (preflightCheck && !preflightCheck(linkData)) {
+      return
     }
-    const deFormat = mapValuesToIndexs || this.defaultMapValuesToIndexs
+    if (getOptions) {
+      this.options = await getOptions(linkData)
+    }
+    const selectedIndexs = value.map(v =>
+      this.options.findIndex(
+        option => this.labelExtractor(v) === this.labelExtractor(option)
+      )
+    )
     this.props
       .$picker({
         title,
-        options,
+        options: this.options.map(this.labelExtractor),
         config,
         mode,
-        values: deFormat(value, options)
+        values: selectedIndexs
       })
       .then(indexs => {
-        const format = mapIndexsToValues || this.defaultMapIndexsToValues
-        sync(format(indexs, options))
+        sync(indexs.map(index => this.options[index]))
       })
   }
+  constructor (props) {
+    super(props)
+    this.labelExtractor = props.labelExtractor || (v => v)
+    this.options = props.options || []
+  }
+  componentWillReceiveProps (nextProps) {
+    if (this.props.linkData && nextProps.linkData !== this.props.linkData) {
+      setTimeout(this.props.sync, 0)
+    }
+  }
+
   render () {
-    console.log('render-form-picker')
     const {
       label,
       err,
       placeholder,
       textColor = '#666',
       textSize = 30,
-      value,
+      value, // 是数组
+      split = ',',
       required,
       padding,
       labelSize,
@@ -73,6 +71,10 @@ export default class FormPickerSheet extends Component {
       arrowColor,
       ...otherProps
     } = this.props
+    let valueShow
+    if (value && value.length) {
+      valueShow = value.map(this.labelExtractor).join(split)
+    }
     return (
       <FormRow
         label={label}
@@ -91,11 +93,11 @@ export default class FormPickerSheet extends Component {
       >
         <Text
           {...otherProps}
-          color={value ? textColor : '#ccc'}
+          color={valueShow ? textColor : '#ccc'}
           size={textSize}
           onClick={this.onClick}
         >
-          {value || placeholder || '请选择'}
+          {valueShow || placeholder || '请选择'}
         </Text>
       </FormRow>
     )

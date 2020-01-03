@@ -5,11 +5,14 @@ import FlatList from './list'
 import Pagination from './pagination'
 
 export default class AutoList extends Component {
+  scrollTo = (p, animation) => {
+    this.scroller.scrollTo(p, animation)
+  }
   render () {
     return (
       <Pagination {...this.props}>
         <ListDataProvider>
-          <ScrollerWithRefreshAndLoadMore>
+          <ScrollerWithRefreshAndLoadMore ref={s => (this.scroller = s)}>
             <FlatList />
           </ScrollerWithRefreshAndLoadMore>
         </ListDataProvider>

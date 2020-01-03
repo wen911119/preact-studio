@@ -1,0 +1,24 @@
+.searchform {
+  line-height: 0;
+  padding: 0;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  /* Remove default */
+  -webkit-appearance: none;
+
+  /* Now your own custom styles */
+  height: 14px;
+  width: 14px;
+  display: block;
+  /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC); */
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAGFBMVEVHcEzMzMzPz8/MzMzNzc3Pz8/MzMzMzMx+QT0bAAAAB3RSTlMAzBDvYC2HxpN1NwAAARhJREFUSMelVu2yhSAIlAXl/d/42rFuQpRxDn+axt2RjxUoxRukEbGqEjUpK4OQsm7wzfqXBE/wdkAn41bv8BLAByWEV9Jbo+CSyvpgfAlfdGGSxDtGVU0xXuGVz8jpFUEpEcCwvR6YE8ruNjLZHjJpxk8YBsHUp/kLtrhmBsFVFDaCkYeTQfAaaDZFA/DPcL97omBdniABXrU6TU+gEN/L3VwaD1iM70EQx4wY34O4yIKmR4zraaCjk4FAZCUSGe7xXxA461IyaL4Qlml1zW5dONGkNNLiS8s794DkmyeaagLItZmj92UbWb5VWqfeNGNk231+oORH1mqosPw+dvOD/X51wGI5sc48Lie7Z339+aiqrz8oHv8Huc4pVmyWCkAAAAAASUVORK5CYII=);
+  /* setup all the background tweaks for our custom icon */
+  background-repeat: no-repeat;
+
+  /* icon size */
+  background-size: 14px;
+}

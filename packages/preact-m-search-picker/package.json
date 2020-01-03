@@ -1,0 +1,26 @@
+{
+  "name": "@ruiyun/preact-m-search-picker",
+  "version": "1.4.0",
+  "description": "",
+  "author": "wen911119@gmail.com",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "preact"
+  ],
+  "dependencies": {
+    "@ruiyun/preact-button": "^1.2.77",
+    "@ruiyun/preact-m-search": "^1.4.0",
+    "@ruiyun/preact-modal": "^1.2.62"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0-beta.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

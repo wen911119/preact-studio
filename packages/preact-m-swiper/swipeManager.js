@@ -3,22 +3,23 @@ import { h, Component, cloneElement } from 'preact'
 export default class SwipeManager extends Component {
   constructor (props) {
     super(props)
-    this.containerWidth = document.body.clientWidth
+    this.containerWidth = props.containerWidth || document.body.clientWidth
     this.state = {
-      swipeDistance: - this.containerWidth * (props.activeIndex || 0),
+      offset: -this.containerWidth * (props.activeIndex || 0),
       animation: false,
-      freeze: false,
       index: props.activeIndex || 0
     }
   }
   componentWillReceiveProps (nextProps) {
     const containerWidth = this.containerWidth
     const itemsNum = nextProps.itemsNum || 2
-    if (nextProps.activeIndex !== this.props.activeIndex) {
+    if (
+      nextProps.activeIndex !== this.props.activeIndex &&
+      nextProps.activeIndex !== this.state.index
+    ) {
       this.setState({
-        swipeDistance: -nextProps.activeIndex * containerWidth,
+        offset: -nextProps.activeIndex * containerWidth,
         animation: true,
-        freeze: false,
         index: nextProps.activeIndex
       })
     }
@@ -27,22 +28,24 @@ export default class SwipeManager extends Component {
         (nextProps.swipeDistance > 0 && this.state.index === 0) ||
         (nextProps.swipeDistance < 0 && this.state.index === itemsNum - 1)
       ) {
-        // 左边界
+        // 左右边界
         return
       }
       this.setState({
-        swipeDistance:
+        offset:
           -this.state.index * containerWidth + nextProps.swipeDistance,
-        animation: false,
-        freeze: true
+        animation: false
       })
     }
-    else if (nextProps.stage === 'swipe-end') {
+    else if (
+      nextProps.stage === 'swipe-end' &&
+      this.props.stage === 'swipe-moving'
+    ) {
       if (
         (nextProps.swipeDistance > 0 && this.state.index === 0) ||
         (nextProps.swipeDistance < 0 && this.state.index === itemsNum - 1)
       ) {
-        // 右边界
+        // 左右边界
         return
       }
       let newIndex = this.state.index
@@ -58,9 +61,8 @@ export default class SwipeManager extends Component {
       }
       this.setState(
         {
-          swipeDistance: -containerWidth * newIndex,
+          offset: -containerWidth * newIndex,
           animation: true,
-          freeze: false,
           index: newIndex
         },
         () => {
@@ -69,24 +71,23 @@ export default class SwipeManager extends Component {
       )
     }
     else if (nextProps.stage === 'swipe-start') {
-      const swipeDistance = -containerWidth * this.state.index
-      if (swipeDistance !== this.state.swipeDistance) {
+      const offset = -containerWidth * this.state.index
+      if (offset !== this.state.offset) {
         this.setState({
-          swipeDistance: -containerWidth * this.state.index,
+          offset,
           animation: false
         })
       }
     }
   }
-
   render () {
     const { children, ...otherProps } = this.props
-    const { animation, freeze, swipeDistance } = this.state
+    const { animation, offset, index } = this.state
     return cloneElement(children, {
-      freeze,
       animation,
-      offset: swipeDistance,
-      ...otherProps
+      offset,
+      ...otherProps,
+      activeIndex: index
     })
   }
 }

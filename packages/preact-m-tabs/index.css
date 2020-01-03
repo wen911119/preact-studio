@@ -1,0 +1,18 @@
+.tabindicator {
+  display: flex;
+}
+
+.tabindicator > span {
+  display: inline-block;
+  transition: 330ms;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.filltab {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

@@ -4,20 +4,15 @@ import ScrollListener from './scrollListener'
 import Scrollable from './scrollable'
 import RefreshControl from './refreshControl'
 import LoadMore from './loadMore'
+
 export class Scroller extends Component {
-  recomputeLayout () {
-    this.scrollListener.recomputeLayout()
+  scrollTo = (p, animation) => {
+    this.scroller.scrollTo(p, animation)
   }
-  scrollTo (position) {
-    this.scrollListener.scrollTo(position)
-  }
-  constructor (props) {
-    super(props)
-    this.recomputeLayout = this.recomputeLayout.bind(this)
-  }
-  render ({ children, ...otherProps }) {
+  render () {
+    const { children, ...otherProps } = this.props
     return (
-      <ScrollListener {...otherProps} ref={s => (this.scrollListener = s)}>
+      <ScrollListener {...otherProps} ref={s => (this.scroller = s)}>
         <TouchResponder>
           <Scrollable>{children}</Scrollable>
         </TouchResponder>
@@ -27,16 +22,13 @@ export class Scroller extends Component {
 }
 
 export class ScrollerWithRefresh extends Component {
-  recomputeLayout () {
-    this.scrollListener.recomputeLayout()
+  scrollTo = (p, animation) => {
+    this.scroller.scrollTo(p, animation)
   }
-  constructor (props) {
-    super(props)
-    this.recomputeLayout = this.recomputeLayout.bind(this)
-  }
-  render ({ children, ...otherProps }) {
+  render () {
+    const { children, ...otherProps } = this.props
     return (
-      <ScrollListener {...otherProps} ref={s => (this.scrollListener = s)}>
+      <ScrollListener {...otherProps} ref={s => (this.scroller = s)}>
         <TouchResponder>
           <RefreshControl>
             <Scrollable>{children}</Scrollable>
@@ -48,16 +40,13 @@ export class ScrollerWithRefresh extends Component {
 }
 
 export class ScrollerWithLoadMore extends Component {
-  recomputeLayout () {
-    this.scrollListener.recomputeLayout()
+  scrollTo = (p, animation) => {
+    this.scroller.scrollTo(p, animation)
   }
-  constructor (props) {
-    super(props)
-    this.recomputeLayout = this.recomputeLayout.bind(this)
-  }
-  render ({ children, ...otherProps }) {
+  render () {
+    const { children, ...otherProps } = this.props
     return (
-      <ScrollListener {...otherProps} ref={s => (this.scrollListener = s)}>
+      <ScrollListener {...otherProps} ref={s => (this.scroller = s)}>
         <TouchResponder>
           <LoadMore>
             <Scrollable>{children}</Scrollable>
@@ -69,16 +58,13 @@ export class ScrollerWithLoadMore extends Component {
 }
 
 export class ScrollerWithRefreshAndLoadMore extends Component {
-  recomputeLayout () {
-    this.scrollListener.recomputeLayout()
+  scrollTo = (p, animation) => {
+    this.scroller.scrollTo(p, animation)
   }
-  constructor (props) {
-    super(props)
-    this.recomputeLayout = this.recomputeLayout.bind(this)
-  }
-  render ({ children, ...otherProps }) {
+  render () {
+    const { children, ...otherProps } = this.props
     return (
-      <ScrollListener {...otherProps} ref={s => (this.scrollListener = s)}>
+      <ScrollListener {...otherProps} ref={s => (this.scroller = s)}>
         <TouchResponder>
           <LoadMore>
             <RefreshControl>
