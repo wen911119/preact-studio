@@ -134,7 +134,7 @@ export class FormConditionField extends BaseFormField {
  
   componentDidMount (){
     if (this.props.condition && this.props.condition(this.getLinkData())) {
-      this.subscribeValidateWrap()
+      this.subscribeValidate()
     }
   }
 
