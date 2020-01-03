@@ -6,7 +6,8 @@ const FormContext = createContext({
   unsubscribeValidate: () => {},
   update: () => {},
   onChange: () => {},
-  parentData: {}
+  parentData: {},
+  getFormData: () => {}
 })
 // eslint-disable-next-line
 const withFormContext = Component => props => (
@@ -15,10 +16,9 @@ const withFormContext = Component => props => (
   </FormContext.Consumer>
 )
 
-class BaseFormField extends Component {
-  state = {
-    err: ''
-  }
+@withFormContext
+export class FormField extends Component {
+
   update = value => {
     const { field, update } = this.props
     update(field, value, [field])
@@ -32,7 +32,7 @@ class BaseFormField extends Component {
     const self = this
     const { validate = [], subscribeValidate } = self.props
     if (validate.length > 0) {
-      return subscribeValidate(
+      return this.subscribeId = subscribeValidate(
         () =>
           new Promise(async (resolve, reject) => {
             const {
@@ -62,6 +62,16 @@ class BaseFormField extends Component {
     }
   }
 
+  unsubscribeValidate = () => {
+    if (this.subscribeId) {
+      const { unsubscribeValidate, cleanWhenUnmount = true } = this.props
+      unsubscribeValidate(this.subscribeId)
+      this.subscribeId = undefined
+      // 默认清空该字段的值
+      cleanWhenUnmount && this.update()
+    }
+  }
+
   getLinkData = () => {
     const { link, getFormData } = this.props
     let linkData = {}
@@ -74,6 +84,18 @@ class BaseFormField extends Component {
       }
     }
     return linkData
+  }
+
+  constructor (props){
+    super(props)
+    this.subscribeId = undefined
+    this.state = {
+      err: ''
+    }
+  }
+
+  componentDidMount () {
+    this.subscribeValidate()
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -99,13 +121,9 @@ class BaseFormField extends Component {
     }
     return shouldUpdate
   }
-}
 
-@withFormContext
-export class FormField extends BaseFormField {
-  
-  componentDidMount () {
-    this.subscribeValidate()
+  componentWillUnmount (){
+    this.unsubscribeValidate()
   }
 
   render () {
@@ -122,52 +140,6 @@ export class FormField extends BaseFormField {
 }
 
 @withFormContext
-export class FormConditionField extends BaseFormField {
-  
-  constructor (props){
-    super(props)
-    this.subscribeId = undefined
-    this.state = {
-      err: ''
-    }
-  }
- 
-  componentDidMount (){
-    if (this.props.condition && this.props.condition(this.getLinkData())) {
-      this.subscribeId = this.subscribeValidate()
-    }
-  }
-
-  componentDidUpdate () {
-    if (this.show && !this.subscribeId) {
-      this.subscribeId = this.subscribeValidate()
-    }
-    else if (!this.show && this.subscribeId){
-      const { cleanWhenChange = true, unsubscribeValidate } = this.props
-      unsubscribeValidate(this.subscribeId)
-      this.subscribeId = undefined
-      cleanWhenChange && this.update()
-    }
-  }
-  render () {
-    const { children, label, field, parentData, condition } = this.props
-    const linkData = this.getLinkData()
-    let content
-    if (condition(linkData)) {
-      content = cloneElement(children, {
-        value: parentData[field],
-        label,
-        err: this.state.err,
-        sync: this.update,
-        ...linkData
-      })
-    }
-    this.show = !!content
-    return content
-  }
-}
-
-@withFormContext
 export class FormFragment extends Component {
   update = (key, value, keypathsArr) => {
     const { namespace, parentData, update } = this.props
@@ -179,12 +151,18 @@ export class FormFragment extends Component {
       [namespace].concat(keypathsArr)
     )
   }
+  componentWillUnmount () {
+    const { cleanWhenUnmount = true, namespace, update } = this.props
+    // 默认 被卸载的时候清除字段
+    cleanWhenUnmount && setTimeout(() => update(namespace, undefined, namespace), 0)
+  }
   render () {
     const {
       children,
       namespace,
       parentData,
       subscribeValidate,
+      unsubscribeValidate,
       getFormData,
       lastUpdate
     } = this.props
@@ -194,6 +172,7 @@ export class FormFragment extends Component {
           parentData: parentData[namespace] || {},
           update: this.update,
           subscribeValidate,
+          unsubscribeValidate,
           getFormData,
           lastUpdate
         }}
@@ -204,10 +183,42 @@ export class FormFragment extends Component {
   }
 }
 
+@withFormContext
+export class FormCondition extends Component {
+  
+  render () {
+    const {
+      children,
+      parentData,
+      subscribeValidate,
+      unsubscribeValidate,
+      getFormData,
+      lastUpdate,
+      update,
+      condition = () => true
+    } = this.props
+    return condition(getFormData()) ? (
+      <FormContext.Provider
+        value={{
+          parentData,
+          update,
+          subscribeValidate,
+          unsubscribeValidate,
+          getFormData,
+          lastUpdate
+        }}
+      >
+        {children}
+      </FormContext.Provider>
+    ): undefined
+  }
+}
+
+
 export default class Form extends Component {
   static Fragment = FormFragment
   static Field = FormField
-  static ConditionField = FormConditionField
+  static Condition = FormCondition
   init = initFormData => {
     this.setState({
       formData: initFormData || {},
