@@ -34,9 +34,10 @@ const FormRow = ({
           size={labelSize}
           color={labelColor}
           className={className.noshrink}
+          style={{ position: 'relative' }}
         >
           {required && (
-            <Text size={labelSize} color="#f8584f">
+            <Text size={labelSize} color="#f8584f"  style={{ position: 'absolute',left: p2r(-(labelSize/2)) }}>
               *
             </Text>
           )}
@@ -79,9 +80,10 @@ const FormRow = ({
           size={labelSize}
           color={labelColor}
           className={className.noshrink}
+          style={{ position: 'relative' }}
         >
           {required && (
-            <Text size={labelSize} color="#f8584f">
+            <Text size={labelSize} color="#f8584f"  style={{ position: 'absolute',left: p2r(-(labelSize/2)) }}>
               *
             </Text>
           )}
