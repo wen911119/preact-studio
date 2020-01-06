@@ -63,7 +63,7 @@ export class FormField extends Component {
   }
 
   unsubscribeValidate = () => {
-    if (this.subscribeId) {
+    if (typeof this.subscribeId === 'number') {
       const { unsubscribeValidate, cleanWhenUnmount = true } = this.props
       unsubscribeValidate(this.subscribeId)
       this.subscribeId = undefined
