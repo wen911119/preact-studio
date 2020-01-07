@@ -32,7 +32,7 @@ export class FormField extends Component {
     const self = this
     const { validate = [], subscribeValidate } = self.props
     if (validate.length > 0) {
-      return this.subscribeId = subscribeValidate(
+      this.subscribeId = subscribeValidate(
         () =>
           new Promise(async (resolve, reject) => {
             const {
@@ -63,7 +63,7 @@ export class FormField extends Component {
   }
 
   unsubscribeValidate = () => {
-    if (typeof this.subscribeId === 'number') {
+    if (this.subscribeId) {
       const { unsubscribeValidate, cleanWhenUnmount = true } = this.props
       unsubscribeValidate(this.subscribeId)
       this.subscribeId = undefined
@@ -242,8 +242,14 @@ export default class Form extends Component {
       })
   }
   getFormData = () => this.state.formData
-  subscribeValidate = callback => this.validateListeners.push(callback) - 1
-  unsubscribeValidate = index => this.validateListeners.splice(index, 1)
+  subscribeValidate = callback => {
+    this.validateListeners.push(callback)
+    return callback
+  }
+  unsubscribeValidate = callbackRef => {
+    const index = this.validateListeners.findIndex(item => item === callbackRef)
+    this.validateListeners.splice(index, 1)
+  }
   update = (key, value, keypathsArr) => {
     let newFormData = { ...this.state.formData }
     newFormData[key] = value
