@@ -68,7 +68,7 @@ class List extends Component {
       return renderEmptyView()
     } else {
       return (
-        <div onClick={itemClickHandler && this.clickHandler}>
+        <div onClick={itemClickHandler}>
           {data.map((d, index) => (
             // eslint-disable-next-line
             <ListFragment
