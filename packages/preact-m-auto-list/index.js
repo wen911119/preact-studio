@@ -177,13 +177,7 @@ class Base extends Component {
 
 export default class AutoList extends Base {
   render() {
-    const {
-      keyExtractor,
-      renderItem,
-      itemClickHandler,
-      FooterView,
-      HeaderView
-    } = this.props
+    const { keyExtractor, renderItem, FooterView, HeaderView } = this.props
     const { data, nomore, loading } = this.state
     return (
       <ScrollerWithLoadMore
@@ -196,7 +190,7 @@ export default class AutoList extends Base {
         <List
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          itemClickHandler={itemClickHandler}
+          itemClickHandler={this.clickHandler}
           data={data}
           renderEmptyView={this.renderEmptyView}
           renderLoadingView={this.renderLoadingView}
@@ -211,13 +205,7 @@ export default class AutoList extends Base {
 // 彻底分为了tree-shaking
 export class AutoListWithRefresh extends Base {
   render() {
-    const {
-      keyExtractor,
-      renderItem,
-      itemClickHandler,
-      FooterView,
-      HeaderView
-    } = this.props
+    const { keyExtractor, renderItem, FooterView, HeaderView } = this.props
     const { data, nomore, loading } = this.state
     return (
       <ScrollerWithRefreshAndLoadMore
@@ -230,7 +218,7 @@ export class AutoListWithRefresh extends Base {
         <List
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          itemClickHandler={itemClickHandler}
+          itemClickHandler={this.clickHandler}
           data={data}
           renderEmptyView={this.renderEmptyView}
           renderLoadingView={this.renderLoadingView}
