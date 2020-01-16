@@ -13,6 +13,7 @@ class PickerContent extends Component {
   onCancel = () => {
     this.props.cb && this.props.cb()
   }
+
   onSelect = async item => {
     const { tabItems, value, activeIndex } = this.state
     this.setState({
@@ -28,18 +29,19 @@ class PickerContent extends Component {
           item === 'loading' ? children : item
         )
       })
-    }
-    else {
+    } else {
       const ultimateValue = value.slice(0, activeIndex).concat([item])
       this.props.cb && this.props.cb(ultimateValue)
     }
   }
+
   onTabChange = index => {
     this.setState({
       activeIndex: index
     })
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     this.state = {
       tabItems: [],
@@ -47,12 +49,13 @@ class PickerContent extends Component {
       activeIndex: props.value ? props.value.length - 1 : 0
     }
   }
-  async componentWillMount () {
+
+  async componentDidMount() {
     const { value, getChildren } = this.props
     let tabItems
     if (value) {
       this.setState({
-        tabItems: value.map(v => 'loading')
+        tabItems: value.map(() => 'loading')
       })
       tabItems = await Promise.all(
         value.map(async (item, index) => {
@@ -60,8 +63,7 @@ class PickerContent extends Component {
           return children
         })
       )
-    }
-    else {
+    } else {
       this.setState({
         tabItems: ['loading']
       })
@@ -73,7 +75,8 @@ class PickerContent extends Component {
       value: value || []
     })
   }
-  render () {
+
+  render() {
     const {
       title,
       getLabel,
@@ -96,7 +99,7 @@ class PickerContent extends Component {
     } = this.props
     const { tabItems, value, activeIndex } = this.state
     const cancelSizeRem = p2r(cancelSize)
-    let titles = value.map(getLabel)
+    const titles = value.map(getLabel)
     if (value.length < tabItems.length) {
       titles.push('请选择')
     }
@@ -108,7 +111,7 @@ class PickerContent extends Component {
           borderRadius: '0.4rem 0.4rem 0 0'
         }}
       >
-        <RowView hAlign="between" height={80} padding={[0, 30, 0, 30]}>
+        <RowView hAlign='between' height={80} padding={[0, 30, 0, 30]}>
           <Text size={titleSize} color={titleColor}>
             {title}
           </Text>
@@ -151,7 +154,7 @@ class PickerContent extends Component {
                       <RowView
                         height={itemHeight}
                         padding={[0, 30, 0, 30]}
-                        hAlign="between"
+                        hAlign='between'
                         className={className.shadow}
                         // eslint-disable-next-line
                         onClick={this.onSelect.bind(this, child)}
@@ -189,7 +192,7 @@ const renderModalContent = props => () => <PickerContent {...props} />
 
 @WithModal
 export class TreePicker extends Component {
-  treepicker ({ title = '请选择', getChildren, getLabel, config, value }) {
+  treepicker = ({ title = '请选择', getChildren, getLabel, config, value }) => {
     const styleConfig = Object.assign(
       {
         titleSize: 36,
@@ -209,7 +212,7 @@ export class TreePicker extends Component {
       },
       config
     )
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       const cb = value => {
         this.props.$modal.hide()
         if (value) {
@@ -231,11 +234,8 @@ export class TreePicker extends Component {
       })
     })
   }
-  constructor (props) {
-    super(props)
-    this.treepicker = this.treepicker.bind(this)
-  }
-  render ({ children }) {
+
+  render({ children }) {
     return cloneElement(children, {
       $treepicker: this.treepicker
     })
@@ -244,7 +244,7 @@ export class TreePicker extends Component {
 
 export const WithTreePicker = BaseComponent => {
   class ComponentWithPicker extends Component {
-    render () {
+    render() {
       return (
         <TreePicker>
           <BaseComponent {...this.props} />
