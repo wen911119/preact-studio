@@ -20,6 +20,7 @@ export default class Scroller extends Component {
 
   updatePosition = debounce(() => {
     let position
+    const { loadMoreThreshold = 25 } = this.props
     if (this.scroller.scrollHeight === this.scroller.clientHeight) {
       // 内容高度小于等于容器高度，不能滚动
       position = '0'
@@ -27,8 +28,11 @@ export default class Scroller extends Component {
       // 在顶部
       position = '1'
     } else if (
-      this.scroller.scrollTop + this.scroller.clientHeight ===
-      this.scroller.scrollHeight
+      Math.abs(
+        this.scroller.scrollTop +
+          this.scroller.clientHeight -
+          this.scroller.scrollHeight
+      ) <= loadMoreThreshold
     ) {
       // 在底部
       position = '3'
