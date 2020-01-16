@@ -11,9 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ruiyun/preact-m-scroller": "^1.4.0",
-    "lodash.isequal": "^4.5.0",
-    "p-to-r": "^1.0.4"
+    "@ruiyun/preact-m-scroller": "^1.4.0"
   },
   "compileDependencies": [
     "@ruiyun/preact-m-scroller"
@@ -23,5 +21,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "sideEffects": false
 }

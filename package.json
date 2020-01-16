@@ -20,8 +20,5 @@
     "lint": "eslint ./ --cache --ignore-pattern .gitignore",
     "bootstrap": "lerna bootstrap",
     "publish": "lerna publish"
-  },
-  "pre-commit": [
-    "lint"
-  ]
+  }
 }
