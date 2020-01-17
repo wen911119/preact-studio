@@ -6,7 +6,8 @@ export default class FormSwitchInput extends Component {
   onChange = value => {
     this.props.sync(value)
   }
-  render () {
+
+  render() {
     const {
       label,
       err,
@@ -18,6 +19,8 @@ export default class FormSwitchInput extends Component {
       errorColor,
       direction,
       slot,
+      bgColor,
+      renderRight,
       ...otherProps
     } = this.props
     return (
@@ -32,11 +35,10 @@ export default class FormSwitchInput extends Component {
         errorSize={errorSize}
         errorColor={errorColor}
         slot={slot}
+        bgColor={bgColor}
+        renderRight={renderRight}
       >
-        <Switch
-          {...otherProps}
-          onChange={this.onChange}
-        />
+        <Switch {...otherProps} onChange={this.onChange} />
       </FormRow>
     )
   }

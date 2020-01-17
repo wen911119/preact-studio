@@ -8,7 +8,8 @@ export default class FormImagesInput extends Component {
   onChange = images => {
     this.props.sync(images)
   }
-  render () {
+
+  render() {
     const {
       label,
       err,
@@ -22,13 +23,14 @@ export default class FormImagesInput extends Component {
       slot,
       max = 999,
       mode = 'edit',
+      bgColor,
       ...otherProps
     } = this.props
     return (
       <FormRow
         label={label}
         err={err}
-        direction="v"
+        direction='v'
         required={required}
         padding={padding}
         labelSize={labelSize}
@@ -37,13 +39,16 @@ export default class FormImagesInput extends Component {
         errorColor={errorColor}
         slot={slot}
         style={{ position: 'relative' }}
+        bgColor={bgColor}
       >
         {mode === 'edit' && max !== 999 && (
           <Text
             size={26}
             style={{ position: 'absolute', right: '0.4rem', margin: 0 }}
-            color="#919191"
-          >{`(${value.length}/${max})`}</Text>
+            color='#919191'
+          >
+            {`(${value.length}/${max})`}
+          </Text>
         )}
         <ImageUploader
           mode={mode}

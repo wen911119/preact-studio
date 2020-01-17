@@ -6,7 +6,8 @@ export default class FormTextInput extends Component {
   onChange = event => {
     this.props.sync(event.target.value)
   }
-  render () {
+
+  render() {
     const {
       label,
       err,
@@ -19,6 +20,8 @@ export default class FormTextInput extends Component {
       errorColor,
       direction,
       slot,
+      bgColor,
+      renderRight,
       ...otherProps
     } = this.props
     return (
@@ -33,12 +36,14 @@ export default class FormTextInput extends Component {
         errorSize={errorSize}
         errorColor={errorColor}
         slot={slot}
+        bgColor={bgColor}
+        renderRight={renderRight}
       >
         <Input
           {...otherProps}
           onChange={this.onChange}
-          height="0.6rem"
-          width="100%"
+          height='0.6rem'
+          width='100%'
           style={Object.assign(
             {
               textAlign: direction === 'v' ? 'left' : 'right',

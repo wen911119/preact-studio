@@ -12,7 +12,8 @@ export default class FormNumberInput extends Component {
   onChange = value => {
     this.props.sync(value)
   }
-  render () {
+
+  render() {
     const {
       label,
       err,
@@ -25,6 +26,8 @@ export default class FormNumberInput extends Component {
       errorSize,
       errorColor,
       slot,
+      bgColor,
+      renderRight,
       ...otherProps
     } = this.props
     return (
@@ -39,14 +42,19 @@ export default class FormNumberInput extends Component {
         errorSize={errorSize}
         errorColor={errorColor}
         slot={slot}
+        renderRight={renderRight}
+        bgColor={bgColor}
       >
         <NumberInput
           {...otherProps}
-          height="0.6rem"
-          width="100%"
+          height='0.6rem'
+          width='100%'
           onChange={this.onChange}
           style={Object.assign(
-            { textAlign: direction === 'v' ? 'left' : 'right', lineHeight: '0.6rem' },
+            {
+              textAlign: direction === 'v' ? 'left' : 'right',
+              lineHeight: '0.6rem'
+            },
             style
           )}
         />

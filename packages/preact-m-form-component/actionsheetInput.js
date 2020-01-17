@@ -11,8 +11,8 @@ export default class FormActionSheet extends Component {
       sync(options[index])
     })
   }
-  render () {
-    console.log('render-form-actionsheet')
+
+  render() {
     const {
       label,
       err,
@@ -30,6 +30,8 @@ export default class FormActionSheet extends Component {
       slot,
       arrowSize,
       arrowColor,
+      bgColor,
+      renderRight,
       ...otherProps
     } = this.props
     return (
@@ -46,6 +48,8 @@ export default class FormActionSheet extends Component {
         slot={slot}
         arrowSize={arrowSize}
         arrowColor={arrowColor}
+        bgColor={bgColor}
+        renderRight={renderRight}
         arrow
       >
         <Text

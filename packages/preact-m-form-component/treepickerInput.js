@@ -25,7 +25,8 @@ export default class FormTreePickerInput extends Component {
       })
       .then(sync)
   }
-  render () {
+
+  render() {
     const {
       label,
       err,
@@ -45,6 +46,7 @@ export default class FormTreePickerInput extends Component {
       arrowSize,
       arrowColor,
       getLabel,
+      bgColor,
       ...otherProps
     } = this.props
     return (
@@ -61,13 +63,14 @@ export default class FormTreePickerInput extends Component {
         slot={slot}
         arrowSize={arrowSize}
         arrowColor={arrowColor}
+        bgColor={bgColor}
         arrow
       >
         {value && value.length ? (
           <SlotColumnView
             onClick={this.onClick}
             slot={valueSlot}
-            hAlign="center"
+            hAlign='center'
           >
             {value.map(getLabel).map(label => (
               <Text size={textSize} color={textColor} key={label}>
@@ -78,7 +81,7 @@ export default class FormTreePickerInput extends Component {
         ) : (
           <Text
             {...otherProps}
-            color="#ccc"
+            color='#ccc'
             size={textSize}
             onClick={this.onClick}
           >

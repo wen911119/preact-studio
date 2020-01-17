@@ -3,6 +3,10 @@ import { WithPicker } from '@ruiyun/preact-m-picker'
 import Text from '@ruiyun/preact-text'
 import FormRow from './formRow'
 
+const isEqual = (obj1, obj2) => {
+  return JSON.stringify(obj1) === JSON.stringify(obj2)
+}
+
 @WithPicker
 export default class FormPickerInput extends Component {
   onClick = async () => {
@@ -39,18 +43,20 @@ export default class FormPickerInput extends Component {
         sync(indexs.map(index => this.options[index]))
       })
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     this.labelExtractor = props.labelExtractor || (v => v)
     this.options = props.options || []
   }
-  componentWillReceiveProps (nextProps) {
-    if (this.props.linkData && nextProps.linkData !== this.props.linkData) {
-      setTimeout(this.props.sync, 0)
+
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.linkData, this.props.linkData)) {
+      this.props.sync()
     }
   }
 
-  render () {
+  render() {
     const {
       label,
       err,

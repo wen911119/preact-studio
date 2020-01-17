@@ -25,7 +25,7 @@ const FormRow = ({
   required = false,
   direction = 'h',
   renderRight,
-  bgColor='#fff'
+  bgColor = '#fff'
 }) => {
   if (direction === 'h') {
     return (
@@ -36,7 +36,7 @@ const FormRow = ({
           className={className.noshrink}
         >
           {required && (
-            <Text size={labelSize} color="#f8584f">
+            <Text size={labelSize} color='#f8584f'>
               *
             </Text>
           )}
@@ -54,7 +54,7 @@ const FormRow = ({
         <RowView
           className={className.flex1}
           style={{ height: '100%' }}
-          hAlign="right"
+          hAlign='right'
         >
           {children}
         </RowView>
@@ -81,7 +81,7 @@ const FormRow = ({
           className={className.noshrink}
         >
           {required && (
-            <Text size={labelSize} color="#f8584f">
+            <Text size={labelSize} color='#f8584f'>
               *
             </Text>
           )}
