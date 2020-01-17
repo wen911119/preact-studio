@@ -9,6 +9,17 @@ export default class FormImagesInput extends Component {
     this.props.sync(images)
   }
 
+  renderRight = () => {
+    const { max = 999, mode = 'edit', value = [] } = this.props
+    if (mode === 'edit' && max !== 999) {
+      return (
+        <Text size={26} color='#919191'>
+          {`(${value.length}/${max})`}
+        </Text>
+      )
+    }
+  }
+
   render() {
     const {
       label,
@@ -38,18 +49,9 @@ export default class FormImagesInput extends Component {
         errorSize={errorSize}
         errorColor={errorColor}
         slot={slot}
-        style={{ position: 'relative' }}
         bgColor={bgColor}
+        renderRight={this.renderRight}
       >
-        {mode === 'edit' && max !== 999 && (
-          <Text
-            size={26}
-            style={{ position: 'absolute', right: '0.4rem', margin: 0 }}
-            color='#919191'
-          >
-            {`(${value.length}/${max})`}
-          </Text>
-        )}
         <ImageUploader
           mode={mode}
           max={max}

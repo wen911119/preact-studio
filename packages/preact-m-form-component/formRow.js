@@ -74,29 +74,32 @@ const FormRow = ({
   }
   return (
     <SlotColumnView padding={padding} bgColor={bgColor} slot={slot}>
-      <SlotRowView slot={slot}>
-        <Text
-          size={labelSize}
-          color={labelColor}
-          className={className.noshrink}
-        >
-          {required && (
-            <Text size={labelSize} color='#f8584f'>
-              *
-            </Text>
-          )}
-          {label}
-        </Text>
-        {err && (
+      <RowView hAlign='between'>
+        <SlotRowView slot={slot}>
           <Text
-            size={errorSize}
-            color={errorColor}
+            size={labelSize}
+            color={labelColor}
             className={className.noshrink}
           >
-            {err}
+            {required && (
+              <Text size={labelSize} color='#f8584f'>
+                *
+              </Text>
+            )}
+            {label}
           </Text>
-        )}
-      </SlotRowView>
+          {err && (
+            <Text
+              size={errorSize}
+              color={errorColor}
+              className={className.noshrink}
+            >
+              {err}
+            </Text>
+          )}
+        </SlotRowView>
+        {renderRight && renderRight()}
+      </RowView>
       {children}
     </SlotColumnView>
   )

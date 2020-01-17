@@ -13,32 +13,43 @@ export default class CaptchInput extends Component {
   }
 
   preflightCheck = async () => {
-    const { preflightCheck, data, label, sendCode, regexp } = this.props
+    const {
+      preflightCheck,
+      linkData,
+      sendCode,
+      regexp,
+      suffix = '手机号'
+    } = this.props
     let result = true
-    if (data && regexp.test(data)) {
-      if (preflightCheck) {
-        // 父级自定义preflightCheck,比如人机校验
-        try {
-          result = await preflightCheck()
-        } catch (error) {
-          sentry.captureException(error)
-          result = false
+    if (linkData) {
+      if (regexp.test(linkData)) {
+        if (preflightCheck) {
+          // 父级自定义preflightCheck,比如人机校验
+          try {
+            result = await preflightCheck()
+          } catch (error) {
+            sentry.captureException(error)
+            result = false
+          }
         }
-      }
-      if (result) {
-        try {
-          const session = await sendCode(data)
-          this.setState({
-            session
-          })
-        } catch (error) {
-          sentry.captureException(error)
-          result = false
+        if (result) {
+          try {
+            const session = await sendCode(linkData)
+            this.setState({
+              session
+            })
+          } catch (error) {
+            sentry.captureException(error)
+            result = false
+          }
         }
+      } else {
+        result = false
+        Indicator.toast('请输入正确的' + suffix)
       }
     } else {
       result = false
-      Indicator.toast('请输入正确的' + label)
+      Indicator.toast('请先填写' + suffix)
     }
     return result
   }
