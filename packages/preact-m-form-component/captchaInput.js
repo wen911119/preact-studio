@@ -4,7 +4,6 @@ import { SlotRowView } from '@ruiyun/preact-layout-suite'
 import Line from '@ruiyun/preact-line'
 import Indicator from 'h5-indicator'
 import { CountDownTextButton } from '@ruiyun/preact-countdown'
-import sentry from 'h666-sentry'
 import FormRow from './formRow'
 
 export default class CaptchInput extends Component {
@@ -25,21 +24,15 @@ export default class CaptchInput extends Component {
       if (regexp.test(linkData)) {
         if (preflightCheck) {
           // 父级自定义preflightCheck,比如人机校验
-          try {
-            result = await preflightCheck()
-          } catch (error) {
-            sentry.captureException(error)
-            result = false
-          }
+          result = await preflightCheck()
         }
         if (result) {
-          try {
-            const session = await sendCode(linkData)
+          const session = await sendCode(linkData)
+          if (session) {
             this.setState({
               session
             })
-          } catch (error) {
-            sentry.captureException(error)
+          } else {
             result = false
           }
         }
