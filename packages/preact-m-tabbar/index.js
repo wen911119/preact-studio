@@ -62,7 +62,8 @@ export default class Tabbar extends Component {
       config: { options, color, activeColor, textSize, iconSize },
       padding = [10, 50, 0, 50],
       slot = 5,
-      bgColor = '#fff'
+      bgColor = '#fff',
+      zIndex = 1
     } = this.props
     const childrenArr = toChildArray(children)
     return (
@@ -81,7 +82,7 @@ export default class Tabbar extends Component {
           hAlign='between'
           padding={padding}
           className={className.noShrink}
-          style={{ boxShadow: '0px -5px 5px -5px rgba(0,0,0,.1)' }}
+          style={{ boxShadow: '0px -5px 5px -5px rgba(0,0,0,.1)', zIndex }}
           bgColor={bgColor}
         >
           {options.map((item, i) => (

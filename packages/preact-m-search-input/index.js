@@ -8,11 +8,13 @@ export default class SearchInput extends Component {
   onChange = () => {
     this.props.onSearch && this.props.onSearch(this.state.keyword)
   }
+
   onInput = event => {
     if (!this.isCompositing) {
       this.onTextInput(event.target.value)
     }
   }
+
   onTextInput = value => {
     this.setState(
       {
@@ -23,7 +25,8 @@ export default class SearchInput extends Component {
       }
     )
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     this.inputId = `input_${Math.random()}`.replace('0.', '')
     this.isCompositing = false
@@ -34,9 +37,10 @@ export default class SearchInput extends Component {
       keyword: ''
     }
   }
-  componentDidMount () {
+
+  componentDidMount() {
     const inputElement = document.getElementById(this.inputId)
-    inputElement.addEventListener('compositionstart', event => {
+    inputElement.addEventListener('compositionstart', () => {
       this.isCompositing = true
     })
     inputElement.addEventListener('compositionend', event => {
@@ -44,8 +48,11 @@ export default class SearchInput extends Component {
       this.onTextInput(event.target.value)
     })
   }
-  render () {
+
+  render() {
     const { keyword } = this.state
+    // eslint-disable-next-line
+    const { onSearch, ...otherProps } = this.props
     return (
       <form
         action={`javascript:${this.inputId}.blur()`}
@@ -53,9 +60,9 @@ export default class SearchInput extends Component {
       >
         <Input
           id={this.inputId}
-          width="100%"
-          type="search"
-          {...this.props}
+          width='100%'
+          type='search'
+          {...otherProps}
           value={keyword}
           onChange={this.onChange}
           onInput={this.onInput}

@@ -1,5 +1,5 @@
 import { h } from 'preact'
-import { RowView, ColumnView } from '@ruiyun/preact-layout-suite'
+import { SlotRowView, ColumnView, RowView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import p2r from 'p-to-r'
 import classNames from './index.css'
@@ -16,15 +16,26 @@ const TabsSimple = ({
   lineWidth = 60,
   lineHeight = 4,
   align = 'around',
+  bgColor,
+  slot,
+  padding,
   renderItem
 }) => (
-  <RowView height={height} hAlign={align} width={width}>
+  <SlotRowView
+    height={height}
+    hAlign={align}
+    width={width}
+    bgColor={bgColor}
+    slot={slot}
+    padding={padding}
+  >
     {items.map((item, i) => (
-      <ColumnView key={i} hAlign="center" vAlign="between" height="100%">
+      <ColumnView key={i} hAlign='center' vAlign='between' height='100%'>
         <i />
         <RowView
           // eslint-disable-next-line
-          onClick={() => onChange(i)}>
+          onClick={() => onChange(i)}
+        >
           {renderItem ? (
             renderItem(item)
           ) : (
@@ -43,7 +54,7 @@ const TabsSimple = ({
         />
       </ColumnView>
     ))}
-  </RowView>
+  </SlotRowView>
 )
 
 export default TabsSimple
