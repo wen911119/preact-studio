@@ -61,7 +61,8 @@ export default class Tabbar extends Component {
       children,
       config: { options, color, activeColor, textSize, iconSize },
       padding = [10, 50, 0, 50],
-      slot = 5
+      slot = 5,
+      bgColor = '#fff'
     } = this.props
     const childrenArr = toChildArray(children)
     return (
@@ -81,6 +82,7 @@ export default class Tabbar extends Component {
           padding={padding}
           className={className.noShrink}
           style={{ boxShadow: '0px -5px 5px -5px rgba(0,0,0,.1)' }}
+          bgColor={bgColor}
         >
           {options.map((item, i) => (
             <SlotColumnView
