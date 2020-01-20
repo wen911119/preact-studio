@@ -1,11 +1,8 @@
-import { h, Component, toChildArray, cloneElement } from 'preact'
-import {
-  ColumnView,
-  RowView,
-  SlotColumnView
-} from '@ruiyun/preact-layout-suite'
+import { h, Component, toChildArray, cloneElement, Fragment } from 'preact'
+import { RowView, SlotColumnView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import Icon from '@ruiyun/preact-icon'
+import px2rem from 'p-to-r'
 import className from './index.css'
 
 class Item extends Component {
@@ -60,20 +57,20 @@ export default class Tabbar extends Component {
     const {
       children,
       config: { options, color, activeColor, textSize, iconSize },
-      padding = [10, 50, 0, 50],
+      padding = [0, 50, 0, 50],
       slot = 5,
       bgColor = '#fff',
-      zIndex = 1
+      zIndex = 1,
+      barHeight = 100
     } = this.props
     const childrenArr = toChildArray(children)
     return (
-      <ColumnView height='100%'>
+      <Fragment>
         {childrenArr.map((child, key) => (
           <div
             key={key}
-            className={`${className.item} ${
-              key === index ? className.show : className.hide
-            }`}
+            style={{ height: `calc(100% - ${px2rem(barHeight)})` }}
+            className={`${key === index ? className.show : className.hide}`}
           >
             <Item show={key === index}>{child}</Item>
           </div>
@@ -81,9 +78,10 @@ export default class Tabbar extends Component {
         <RowView
           hAlign='between'
           padding={padding}
-          className={className.noShrink}
+          className={className.fixBottom}
           style={{ boxShadow: '0px -5px 5px -5px rgba(0,0,0,.1)', zIndex }}
           bgColor={bgColor}
+          height={barHeight}
         >
           {options.map((item, i) => (
             <SlotColumnView
@@ -104,7 +102,7 @@ export default class Tabbar extends Component {
             </SlotColumnView>
           ))}
         </RowView>
-      </ColumnView>
+      </Fragment>
     )
   }
 }

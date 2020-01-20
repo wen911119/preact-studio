@@ -1,13 +1,12 @@
-.item {
-  flex: 1;
-  overflow: hidden;
-  flex-direction: column;  
-}
-.noShrink {
-  flex-shrink: 0;
+
+.fixBottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 .show {
-  display: flex;
+  display: block;
 }
 .hide {
   display: none;
