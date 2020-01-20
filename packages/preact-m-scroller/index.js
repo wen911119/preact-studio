@@ -159,13 +159,17 @@ export default class Scroller extends Component {
     const { children, height, footer, ...otherProps } = this.props
     const { position } = this.state
     return (
-      <div className={classNames.wrap} style={{ height }}>
+      <div
+        className={height ? '' : classNames.wrap}
+        style={{ height, overflow: 'hidden' }}
+      >
         <div
           ref={s => (this.scroller = s)}
           className={classNames.scroller}
           onTouchStart={this.onTouchStart}
           onTouchMove={this.onTouchMove}
           onTouchEnd={this.onTouchEnd}
+          style={{ height }}
         >
           {children &&
             (children.length

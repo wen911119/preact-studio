@@ -177,7 +177,13 @@ class Base extends Component {
 
 export default class AutoList extends Base {
   render() {
-    const { keyExtractor, renderItem, FooterView, HeaderView } = this.props
+    const {
+      keyExtractor,
+      renderItem,
+      FooterView,
+      HeaderView,
+      height
+    } = this.props
     const { data, nomore, loading } = this.state
     return (
       <ScrollerWithLoadMore
@@ -185,6 +191,7 @@ export default class AutoList extends Base {
         onRefresh={this.onRefresh}
         nomore={nomore}
         loading={loading}
+        height={height}
       >
         {HeaderView && <HeaderView />}
         <List
