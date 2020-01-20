@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-search-picker",
-  "version": "1.5.9",
+  "version": "1.6.0",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "@ruiyun/preact-button": "^1.2.77",
-    "@ruiyun/preact-m-search": "^1.5.9",
+    "@ruiyun/preact-m-search": "^1.6.0",
     "@ruiyun/preact-modal": "^1.2.62"
   },
   "peerDependencies": {
