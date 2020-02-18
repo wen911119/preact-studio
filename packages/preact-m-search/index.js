@@ -9,6 +9,7 @@ export default class Search extends Component {
       keyword: ''
     }
   }
+
   onSearch = keyword => {
     this.setState({
       extraParams: Object.assign({}, this.state.extraParams, {
@@ -16,12 +17,14 @@ export default class Search extends Component {
       })
     })
   }
+
   update = extraParams => {
     this.setState({
       extraParams: Object.assign({}, this.state.extraParams, extraParams)
     })
   }
-  render () {
+
+  render() {
     const {
       searchbar,
       autolist: { params, ...others },
@@ -34,7 +37,7 @@ export default class Search extends Component {
       <ColumnView height={height}>
         <SearchBar {...searchbar} onTextInput={this.onSearch} />
         {slot && slot(this.update)}
-        <AutoList height="flex1" {...others} params={mergedParams} />
+        <AutoList {...others} params={mergedParams} />
       </ColumnView>
     )
   }
