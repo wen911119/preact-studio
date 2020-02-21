@@ -22,24 +22,28 @@
   top: 0;
   left: 0;
   width: 100%;
+  transform: translate3d(0, -100%, 0);
 }
 
 .content-bottom {
   bottom: 0;
   left: 0;
   width: 100%;
+  transform: translate3d(0, 100%, 0);
 }
 
 .content-left {
   top: 0;
   left: 0;
   height: 100%;
+  transform: translate3d(-100%, 0, 0);
 }
 
 .content-right {
   top: 0;
   right: 0;
   height: 100%;
+  transform: translate3d(100%, 0, 0);
 }
 
 /* 中动画 */
@@ -85,6 +89,7 @@
 
 .animate-bottom-show {
   animation: bottomIn ease .3s forwards;
+  animation-delay: 0.005s;
 }
 
 @keyframes bottomOut {
@@ -114,6 +119,7 @@
 
 .animate-top-show {
   animation: topIn ease .3s forwards;
+  animation-delay: 0.005s;
 }
 
 @keyframes topOut {
@@ -143,6 +149,7 @@
 
 .animate-left-show {
   animation: leftIn ease .3s forwards;
+  animation-delay: 0.005s;
 }
 
 @keyframes leftOut {
@@ -171,6 +178,7 @@
 
 .animate-right-show {
   animation: rightIn ease .3s forwards;
+  animation-delay: 0.005s;
 }
 
 @keyframes rightOut {
