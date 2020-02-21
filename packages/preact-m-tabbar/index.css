@@ -6,7 +6,9 @@
   width: 100%;
 }
 .show {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .hide {
   display: none;
