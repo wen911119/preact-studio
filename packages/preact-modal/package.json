@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-modal",
-  "version": "1.2.62",
+  "version": "1.6.3",
   "description": "",
   "main": "index.js",
   "module": "index.js",
