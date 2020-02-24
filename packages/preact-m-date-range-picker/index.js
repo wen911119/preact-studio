@@ -32,7 +32,7 @@ const dateFormator = dateObj => {
 // 计算出某年某月有多少天
 const getDays = (year, month) => {
   let maxDay = 28
-  let days = []
+  const days = []
   if (month === 2) {
     const isLeapYear =
       (year % 4 === 0 && year & (100 !== 0)) || year % 400 === 0
@@ -40,8 +40,7 @@ const getDays = (year, month) => {
       // 润年
       maxDay = 29
     }
-  }
-  else {
+  } else {
     maxDay = 30
     if ([1, 3, 5, 7, 8, 10, 12].indexOf(month) > -1) {
       maxDay = 31
@@ -56,7 +55,7 @@ const getDays = (year, month) => {
 const withWeekOffset = (days, year, month) => {
   const offset = new Date(`${year}/${month}/1`).getDay()
   const offsetEmptyArray = [...new Array(offset)]
-  let arr = offsetEmptyArray.concat(days)
+  const arr = offsetEmptyArray.concat(days)
   while (arr.length < 36) {
     arr.push('')
   }
@@ -93,8 +92,7 @@ const DaysPannel = ({
     ([error, d]) => {
       if (error) {
         onError(error)
-      }
-      else {
+      } else {
         d && onChange(d)
       }
     },
@@ -108,29 +106,26 @@ const DaysPannel = ({
             d > maxLimit
               ? `不能晚于${year}年${month}月${maxLimit}日`
               : d < minLimit
-                ? `不能早于${year}年${month}月${minLimit}日`
-                : undefined
+              ? `不能早于${year}年${month}月${minLimit}日`
+              : undefined
           let status = 'normal'
           if (error) {
             status = 'disable'
-          }
-          else if (
+          } else if (
             start &&
             start.year === year &&
             start.month === month &&
             start.day === d
           ) {
             status = 'start'
-          }
-          else if (
+          } else if (
             end &&
             end.year === year &&
             end.month === month &&
             end.day === d
           ) {
             status = 'end'
-          }
-          else if (start && end && d) {
+          } else if (start && end && d) {
             const startDateTs = new Date(dateFormator(start)).getTime()
             const endDateTs = new Date(dateFormator(end)).getTime()
             const currentTs = new Date(
@@ -153,7 +148,7 @@ const DaysPannel = ({
               // eslint-disable-next-line
               onClick={() => onSelectedHandler([error, d])}
             >
-              <Text size={28} color="#333">
+              <Text size={28} color='#333'>
                 {d}
               </Text>
             </XCenterView>
@@ -165,7 +160,7 @@ const DaysPannel = ({
 }
 
 const Week = ({ weekSize = 26, weekColor = '#00000061' }) => (
-  <RowView hAlign="around" width={690}>
+  <RowView hAlign='around' width={690}>
     {['日', '一', '二', '三', '四', '五', '六'].map(item => (
       <Text key={item} size={weekSize} color={weekColor}>
         {item}
@@ -181,8 +176,7 @@ const Cursor = ({ year, month, onChange, min, max }) => {
     let nextMonthsNum = year * 12 + month
     if (target === 'month') {
       nextMonthsNum -= 1
-    }
-    else if (target === 'year') {
+    } else if (target === 'year') {
       nextMonthsNum -= 12
     }
     if (nextMonthsNum >= minMonthsNum) {
@@ -199,8 +193,7 @@ const Cursor = ({ year, month, onChange, min, max }) => {
     let nextMonthsNum = year * 12 + month
     if (target === 'month') {
       nextMonthsNum += 1
-    }
-    else if (target === 'year') {
+    } else if (target === 'year') {
       nextMonthsNum += 12
     }
     if (nextMonthsNum <= maxMonthsNum) {
@@ -221,7 +214,7 @@ const Cursor = ({ year, month, onChange, min, max }) => {
       ? year === min.year || year * 12 + month - 12 < min.year * 12 + min.month
       : year === min.year && month === min.month
   return (
-    <RowView hAlign="around" width="100%" height={100}>
+    <RowView hAlign='around' width='100%' height={100}>
       <XCenterView
         height={70}
         width={70}
@@ -233,19 +226,23 @@ const Cursor = ({ year, month, onChange, min, max }) => {
           style={{ borderColor: isNoLess ? '#ccc' : '#007DFF' }}
         />
       </XCenterView>
-      <SlotRowView slot={15} width={250} hAlign="center">
+      <SlotRowView slot={15} width={250} hAlign='center'>
         <Text
           size={target === 'year' ? 36 : 30}
           color={target === 'year' ? '#007DFF' : '#919191'}
           // eslint-disable-next-line
           onClick={() => updateTarget('year')}
-        >{`${year}年`}</Text>
+        >
+          {`${year}年`}
+        </Text>
         <Text
           size={target === 'month' ? 36 : 30}
           color={target === 'month' ? '#007DFF' : '#919191'}
           // eslint-disable-next-line
           onClick={() => updateTarget('month')}
-        >{`${month}月`}</Text>
+        >
+          {`${month}月`}
+        </Text>
       </SlotRowView>
       <XCenterView
         height={70}
@@ -265,29 +262,29 @@ const Cursor = ({ year, month, onChange, min, max }) => {
 const Title = ({ titleSize = 30, children, onConfirm, onCancel }) => (
   <RowView
     height={80}
-    hAlign="between"
+    hAlign='between'
     padding={[0, 30, 0, 30]}
     style={{ boxShadow: `0 ${px2rem(6)} ${px2rem(6)} 0 rgba(0,0,0,0.10)` }}
   >
-    <TextButton textColor="#919191" textSize={28} onClick={onCancel}>
+    <TextButton textColor='#919191' textSize={28} onClick={onCancel}>
       取消
     </TextButton>
-    <Text color="#333" size={titleSize}>
+    <Text color='#333' size={titleSize}>
       {children}
     </Text>
-    <TextButton textColor="#007DFF" textSize={28} onClick={onConfirm}>
+    <TextButton textColor='#007DFF' textSize={28} onClick={onConfirm}>
       确定
     </TextButton>
   </RowView>
 )
 
 export class DateRangePickerContent extends Component {
-  
   onCurSorChange = newCursor => {
     this.setState({
       cursor: newCursor
     })
   }
+
   onDaySelect = d => {
     const { start, end, cursor } = this.state
     if (start && end) {
@@ -303,8 +300,7 @@ export class DateRangePickerContent extends Component {
         tip: '请选择结束日期',
         error: ''
       })
-    }
-    else if (start) {
+    } else if (start) {
       const newEnd = Object.assign(
         {
           day: d
@@ -316,8 +312,7 @@ export class DateRangePickerContent extends Component {
         end: newEnd,
         tip: `${dateFormator(start)} - ${dateFormator(newEnd)}`
       })
-    }
-    else {
+    } else {
       this.setState({
         start: Object.assign(
           {
@@ -330,11 +325,13 @@ export class DateRangePickerContent extends Component {
       })
     }
   }
+
   onError = error => {
     this.setState({
       error
     })
   }
+
   onConfirm = () => {
     const { start, end } = this.state
     const { cb, close } = this.props
@@ -343,7 +340,8 @@ export class DateRangePickerContent extends Component {
       close()
     }
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     let cursor = props.cursor
     if (!cursor && props.start) {
@@ -367,10 +365,11 @@ export class DateRangePickerContent extends Component {
       error: ''
     }
   }
-  render () {
+
+  render() {
     const { min, max, start, end, cursor, tip } = this.state
     return (
-      <ColumnView bgColor="#fff">
+      <ColumnView bgColor='#fff'>
         <Title onCancel={this.props.close} onConfirm={this.onConfirm}>
           {tip}
         </Title>
@@ -417,7 +416,8 @@ export class DateRangePicker extends Component {
       position: 'bottom'
     })
   }
-  render ({ children }) {
+
+  render({ children }) {
     return cloneElement(children, {
       $dateRangePicker: {
         show: this.show,
@@ -429,7 +429,7 @@ export class DateRangePicker extends Component {
 
 export const WithDateRangePicker = BaseComponent => {
   class ComponentWithDateRangePicker extends Component {
-    render () {
+    render() {
       return (
         <DateRangePicker>
           <BaseComponent {...this.props} />
