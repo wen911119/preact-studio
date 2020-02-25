@@ -2,7 +2,18 @@ export default class Base {
   constructor() {
     this.onPopListeners = []
     this.onBackListeners = []
-
+    this.current = window.location.pathname.replace(/\/(.+)\.html/, '$1')
+    this._p = {}
+    try {
+      this._p = JSON.parse(
+        decodeURIComponent(
+          window.location.search.replace(/.+_p=(.+)&.+|.+_p=(.+)/g, '$1$2')
+        ) || '{}'
+      )
+    } catch (err) {
+      console.log(err)
+    }
+    this.params = this._p.params || {}
     try {
       // $PAGES_TITLE_MAP$ 来自webpack定义的变量
       // eslint-disable-next-line

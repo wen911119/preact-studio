@@ -3,19 +3,6 @@ import Base from './base.js'
 export default class RouterForBrowser extends Base {
   constructor(props) {
     super(props)
-    this.current = window.location.pathname.replace(/\/(.+)\.html/, '$1')
-    this._p = {}
-    try {
-      this._p = JSON.parse(
-        decodeURIComponent(
-          window.location.search.replace(/.+_p=(.+)&.+|.+_p=(.+)/g, '$1$2')
-        ) || '{}'
-      )
-    } catch (err) {
-      console.log(err)
-    }
-    this.params = this._p.params || {}
-
     this.paths = this._p.paths || [this.current]
     window.addEventListener('pageshow', event => {
       // 部分安卓机event.persisted永远为false

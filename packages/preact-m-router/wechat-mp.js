@@ -1,28 +1,26 @@
 import Base from './base.js'
-import { serialize, parse } from './utils'
+import { serialize } from './utils'
 export default class RouterForWechatMp extends Base {
   constructor(props) {
     super(props)
-    const hashParams = parse(window.location.hash)
-    this.depth = parseInt(hashParams.depth)
-    this._p = {}
-    try {
-      this._p = JSON.parse(decodeURIComponent(hashParams._p) || '{}')
-    } catch (err) {
-      console.log(err)
-    }
-    this.params = this._p.params || {}
+    this.depth = parseInt(
+      window.location.search.replace(/.+depth=(.+)&.+|.+depth=(.+)/g, '$1$2')
+    )
     this.popToNative = this.pop
     this.backToNative = this.back
     window.addEventListener('hashchange', () => {
-      const hashParams = parse(window.location.hash)
-      if (hashParams.onPopParams) {
-        const onPopParamsStr = decodeURIComponent(hashParams.onPopParams)
+      const hash = window.location.hash
+      if (hash.indexOf('#onPopParams') > -1) {
+        const onPopParamsStr = decodeURIComponent(
+          hash.replace('#onPopParams=', '')
+        )
         const onPopParams =
           onPopParamsStr === '{}' ? undefined : JSON.parse(onPopParamsStr)
         this.onPopListeners.forEach(l => l(onPopParams))
-      } else if (hashParams.onBackParams) {
-        const onBackParamsStr = decodeURIComponent(hashParams.onBackParams)
+      } else if (hash.indexOf('#onBackParams') > -1) {
+        const onBackParamsStr = decodeURIComponent(
+          hash.replace('#onBackParams=', '')
+        )
         const onBackParams =
           onBackParamsStr === '{}' ? undefined : JSON.parse(onBackParamsStr)
         this.onBackListeners.forEach(l => l(onBackParams))
