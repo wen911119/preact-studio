@@ -32,9 +32,10 @@ export default class RouterForWechatMp extends Base {
     })
   }
 
-  push(path, params, headerConfig, host) {
+  push(path, params = {}, headerConfig = {}, host) {
     const newAppInfo = {
-      params
+      params,
+      title: headerConfig.title || this.pagesTitleMap[path]
     }
 
     const wxParams = {
@@ -52,19 +53,17 @@ export default class RouterForWechatMp extends Base {
     })
   }
 
-  pushToNative(path, params) {
-    if (params && typeof params !== 'object') {
-      throw new Error('参数必须为object')
-    }
+  pushToNative(path, params = {}) {
     // eslint-disable-next-line
     wx.miniProgram.navigateTo({
-      url: `/pages/${path}/index${serialize(params || {})}`
+      url: `/pages/${path}/index${serialize(params)}`
     })
   }
 
-  replace(path, params, headerConfig, host) {
+  replace(path, params = {}, headerConfig = {}, host) {
     const newAppInfo = {
-      params
+      params,
+      title: headerConfig.title || this.pagesTitleMap[path]
     }
 
     const wxParams = {
@@ -82,20 +81,14 @@ export default class RouterForWechatMp extends Base {
     })
   }
 
-  replaceToNative(path, params) {
-    if (params && typeof params !== 'object') {
-      throw new Error('参数必须为object')
-    }
+  replaceToNative(path, params = {}) {
     // eslint-disable-next-line
     wx.miniProgram.redirectTo({
-      url: `/pages/${path}/index${serialize(params || {})}`
+      url: `/pages/${path}/index${serialize(params)}`
     })
   }
 
   pop(params) {
-    if (params && typeof params !== 'object') {
-      throw new Error('参数必须为object')
-    }
     // eslint-disable-next-line
     wx.miniProgram.postMessage({
       data: {
@@ -108,9 +101,6 @@ export default class RouterForWechatMp extends Base {
   }
 
   back(steps, params) {
-    if (params && typeof params !== 'object') {
-      throw new Error('参数必须为object')
-    }
     // eslint-disable-next-line
     wx.miniProgram.postMessage({
       data: {

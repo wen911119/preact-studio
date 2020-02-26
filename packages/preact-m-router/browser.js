@@ -27,22 +27,24 @@ export default class RouterForBrowser extends Base {
   }
 
   // eslint-disable-next-line
-  push(path, params = {}, headerConfig, host) {
+  push(path, params = {}, headerConfig = {}, host) {
     const newAppInfo = {
       params,
-      paths: this.paths.concat([path])
+      paths: this.paths.concat([path]),
+      title: headerConfig.title || this.pagesTitleMap[path]
     }
     const newAppInfoStr = encodeURIComponent(JSON.stringify(newAppInfo))
     window.location.href = `/${path}.html?_p=${newAppInfoStr}`
   }
 
   // eslint-disable-next-line
-  replace(path, params = {}, headerConfig, host) {
+  replace(path, params = {}, headerConfig = {}, host) {
     this.paths.pop()
     this.paths.push(path)
     const newAppInfo = {
       params,
-      paths: this.paths
+      paths: this.paths,
+      title: headerConfig.title || this.pagesTitleMap[path]
     }
     const newAppInfoStr = encodeURIComponent(JSON.stringify(newAppInfo))
     window.location.replace(`/${path}.html?_p=${newAppInfoStr}`)
