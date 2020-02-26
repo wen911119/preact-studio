@@ -30,11 +30,11 @@ export default class RouterForBrowser extends Base {
   push(path, params = {}, headerConfig = {}, host) {
     const newAppInfo = {
       params,
-      paths: this.paths.concat([path]),
-      title: headerConfig.title || this.pagesTitleMap[path]
+      paths: this.paths.concat([path])
     }
     const newAppInfoStr = encodeURIComponent(JSON.stringify(newAppInfo))
-    window.location.href = `/${path}.html?_p=${newAppInfoStr}`
+    window.location.href = `/${path}.html?_p=${newAppInfoStr}&_t=${headerConfig.title ||
+      ''}`
   }
 
   // eslint-disable-next-line
@@ -43,11 +43,12 @@ export default class RouterForBrowser extends Base {
     this.paths.push(path)
     const newAppInfo = {
       params,
-      paths: this.paths,
-      title: headerConfig.title || this.pagesTitleMap[path]
+      paths: this.paths
     }
     const newAppInfoStr = encodeURIComponent(JSON.stringify(newAppInfo))
-    window.location.replace(`/${path}.html?_p=${newAppInfoStr}`)
+    window.location.replace(
+      `/${path}.html?_p=${newAppInfoStr}&_t=${headerConfig.title || ''}`
+    )
   }
 
   pop(params = {}) {

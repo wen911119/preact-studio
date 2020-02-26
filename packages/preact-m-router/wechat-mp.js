@@ -34,16 +34,12 @@ export default class RouterForWechatMp extends Base {
 
   push(path, params = {}, headerConfig = {}, host) {
     const newAppInfo = {
-      params,
-      title: headerConfig.title || this.pagesTitleMap[path]
+      params
     }
 
     const wxParams = {
       page: path,
-      headerConfig: Object.assign(
-        { title: this.pagesTitleMap[path] },
-        headerConfig
-      ),
+      headerConfig,
       _p: newAppInfo,
       host
     }
@@ -62,16 +58,12 @@ export default class RouterForWechatMp extends Base {
 
   replace(path, params = {}, headerConfig = {}, host) {
     const newAppInfo = {
-      params,
-      title: headerConfig.title || this.pagesTitleMap[path]
+      params
     }
 
     const wxParams = {
       page: path,
-      headerConfig: Object.assign(
-        { title: this.pagesTitleMap[path] },
-        headerConfig
-      ),
+      headerConfig,
       _p: newAppInfo,
       host
     }

@@ -14,13 +14,6 @@ export default class Base {
       console.log(err)
     }
     this.params = this._p.params || {}
-    try {
-      // $PAGES_TITLE_MAP$ 来自webpack定义的变量
-      // eslint-disable-next-line
-      this.pagesTitleMap = $PAGES_TITLE_MAP$
-    } catch (err) {
-      this.pagesTitleMap = {}
-    }
   }
 
   // eslint-disable-next-line
