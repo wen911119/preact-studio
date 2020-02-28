@@ -12,6 +12,9 @@
   "keywords": [
     "preact"
   ],
+  "dependencies": {
+    "@ruiyun/platform-env": "^0.1.1"
+  },
   "peerDependencies": {
     "preact": "^10.2.1"
   },
