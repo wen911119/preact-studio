@@ -12,7 +12,7 @@ export default class FormDatePicker extends Component {
 
   onClickHandler = () => {
     const { value, min, max } = this.props
-    this.props.$datePicker.show({
+    this.props.$dateRangePicker.show({
       start: value,
       min: min,
       max: max,
