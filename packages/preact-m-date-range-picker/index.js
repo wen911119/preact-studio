@@ -31,21 +31,10 @@ const dateFormator = dateObj => {
 
 // 计算出某年某月有多少天
 const getDays = (year, month) => {
-  let maxDay = 28
   const days = []
-  if (month === 2) {
-    const isLeapYear =
-      (year % 4 === 0 && year & (100 !== 0)) || year % 400 === 0
-    if (isLeapYear) {
-      // 润年
-      maxDay = 29
-    }
-  } else {
-    maxDay = 30
-    if ([1, 3, 5, 7, 8, 10, 12].indexOf(month) > -1) {
-      maxDay = 31
-    }
-  }
+  const date = new Date(year, month, 1, 0, 0, 0)
+  const yesterDay = new Date(date - 1000)
+  const maxDay = yesterDay.getDate()
   for (let d = 1; d <= maxDay; d++) {
     days.push(d)
   }
@@ -70,23 +59,34 @@ const DaysPannel = ({
   start,
   end,
   onChange,
-  onError
+  onError,
+  single
 }) => {
   const days = withWeekOffset(getDays(year, month), year, month)
   let minLimit = 0
   let maxLimit = 999
   let minObj = min
-  if (start && !end) {
-    minObj = start
-  }
-  if (minObj.year === year && minObj.month === month) {
-    minLimit = minObj.day
-  }
-  if (minObj.year > year || (minObj.year === year && minObj.month > month)) {
-    minLimit = 999
-  }
-  if (max.year === year && max.month === month) {
-    maxLimit = max.day
+
+  if (single) {
+    if (minObj.year === year && minObj.month === month) {
+      minLimit = minObj.day
+    }
+    if (max.year === year && max.month === month) {
+      maxLimit = max.day
+    }
+  } else {
+    if (start && !end) {
+      minObj = start
+    }
+    if (minObj.year === year && minObj.month === month) {
+      minLimit = minObj.day
+    }
+    if (minObj.year > year || (minObj.year === year && minObj.month > month)) {
+      minLimit = 999
+    }
+    if (max.year === year && max.month === month) {
+      maxLimit = max.day
+    }
   }
   const onSelectedHandler = useCallback(
     ([error, d]) => {
@@ -287,6 +287,22 @@ export class DateRangePickerContent extends Component {
 
   onDaySelect = d => {
     const { start, end, cursor } = this.state
+    const { single } = this.props
+    if (single) {
+      const value = Object.assign(
+        {
+          day: d
+        },
+        cursor
+      )
+      this.setState({
+        start: value,
+        end: undefined,
+        tip: dateFormator(value),
+        error: ''
+      })
+      return
+    }
     if (start && end) {
       // 重新选择start
       this.setState({
@@ -334,7 +350,12 @@ export class DateRangePickerContent extends Component {
 
   onConfirm = () => {
     const { start, end } = this.state
-    const { cb, close } = this.props
+    const { cb, close, single } = this.props
+    if (single && start) {
+      cb(dateFormator(start))
+      close()
+      return
+    }
     if (start && end && cb) {
       cb(dateFormator(start), dateFormator(end))
       close()
@@ -390,6 +411,7 @@ export class DateRangePickerContent extends Component {
             max={max}
             start={start}
             end={end}
+            single={this.props.single}
             onChange={this.onDaySelect}
             onError={this.onError}
           />
@@ -401,7 +423,7 @@ export class DateRangePickerContent extends Component {
 
 @WithModal
 export class DateRangePicker extends Component {
-  show = ({ start, end, cb, min, max }) => {
+  show = ({ start, end, cb, min, max, single }) => {
     this.props.$modal.show({
       content: () => (
         <DateRangePickerContent
@@ -410,6 +432,7 @@ export class DateRangePicker extends Component {
           cb={cb}
           min={min}
           max={max}
+          single={single}
           close={this.props.$modal.hide}
         />
       ),
