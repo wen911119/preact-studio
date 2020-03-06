@@ -20,6 +20,7 @@
     "@ruiyun/preact-line": "^1.2.39",
     "@ruiyun/preact-m-actionsheet": "^1.6.3",
     "@ruiyun/preact-m-date-range-picker": "^1.7.5",
+    "@ruiyun/preact-textarea": "^1.7.6",
     "@ruiyun/preact-m-picker": "^1.6.3",
     "@ruiyun/preact-m-tree-picker": "^1.6.3",
     "@ruiyun/preact-number-input": "^1.2.66",

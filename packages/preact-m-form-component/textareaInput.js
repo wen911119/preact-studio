@@ -28,7 +28,9 @@ export default class FormTextareaInput extends Component {
       labelColor,
       errorSize,
       errorColor,
-      direction,
+      direction = 'v',
+      height = 150,
+      width = '100%',
       slot,
       max,
       ...otherProps
@@ -49,6 +51,8 @@ export default class FormTextareaInput extends Component {
       >
         <RowView style={{ position: 'relative' }}>
           <TextareaInput
+            height={height}
+            width={width}
             {...otherProps}
             onChange={this.onChange}
             style={Object.assign(
