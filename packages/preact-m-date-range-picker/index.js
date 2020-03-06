@@ -379,8 +379,8 @@ export class DateRangePickerContent extends Component {
     this.state = {
       start: props.start && dateParser(props.start),
       end: props.end && dateParser(props.end),
-      min: dateParser(props.min),
-      max: dateParser(props.max),
+      min: dateParser(props.min || '1970/01/01'),
+      max: dateParser(props.max || '2099/01/01'),
       tip: '请选择开始日期',
       cursor,
       error: ''
