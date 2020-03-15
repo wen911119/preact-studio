@@ -45,15 +45,23 @@ export class SearchPicker extends Component {
         },
         searchbar
       )
-      const content = renderModalContent({
-        searchbar: mergedSearchBarConfig,
-        autolist,
-        slot
-      })
-      this.props.$modal.show({
-        content,
-        position: 'bottom',
-        allowContentTouchMove: true
+
+      return new Promise(resolve => {
+        const content = renderModalContent({
+          searchbar: mergedSearchBarConfig,
+          autolist: Object.assign({}, autolist, {
+            itemClickHandler: item => {
+              this.props.$modal.hide()
+              resolve(item)
+            }
+          }),
+          slot
+        })
+        this.props.$modal.show({
+          content,
+          position: 'bottom',
+          allowContentTouchMove: true
+        })
       })
     } else {
       console.warn(
