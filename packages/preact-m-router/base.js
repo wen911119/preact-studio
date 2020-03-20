@@ -6,7 +6,9 @@ export default class Base {
     this.current = window.location.pathname.replace(/\/(.+)\.html/, '$1')
     this._p = {}
     try {
-      this._p = JSON.parse(decodeURIComponent(parse(window.location.search)._p))
+      this._p = JSON.parse(
+        decodeURIComponent(parse(window.location.search)._p) || '{}'
+      )
     } catch (err) {
       console.log(err)
     }
