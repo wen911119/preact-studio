@@ -7,7 +7,7 @@ export default class Base {
     this._p = {}
     try {
       this._p = JSON.parse(
-        decodeURIComponent(parse(window.location.search)._p) || '{}'
+        decodeURIComponent(parse(window.location.search)._p || '{}')
       )
     } catch (err) {
       console.log(err)
