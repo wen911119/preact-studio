@@ -3,7 +3,7 @@ import { forwardRef } from 'preact/compat'
 
 import RouterForBrowser from './browser'
 import RouterForWechatMp from './wechat-mp'
-import { getEnv } from './utils'
+import { getEnv, parse, serialize } from './utils'
 
 let routerInstance
 
@@ -23,6 +23,8 @@ switch (getEnv()) {
 
 export const nav = routerInstance
 export const router = routerInstance
+export const urlParse = parse
+export const paramSerialize = serialize
 
 const WithRouter = BaseComponent =>
   forwardRef((props, ref) => (

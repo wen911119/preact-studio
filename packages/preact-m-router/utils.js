@@ -32,3 +32,12 @@ export const serialize = obj => {
       .join('&')
   return str
 }
+
+export const parse = search => {
+  const paramPart = search.substr(1).split('&')
+  return paramPart.reduce((res, item) => {
+    const parts = item.split('=')
+    res[parts[0]] = parts[1]
+    return res
+  }, {})
+}

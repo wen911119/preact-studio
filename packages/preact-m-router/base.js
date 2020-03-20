@@ -1,3 +1,4 @@
+import { parse } from './utils'
 export default class Base {
   constructor() {
     this.onPopListeners = []
@@ -5,11 +6,7 @@ export default class Base {
     this.current = window.location.pathname.replace(/\/(.+)\.html/, '$1')
     this._p = {}
     try {
-      this._p = JSON.parse(
-        decodeURIComponent(
-          window.location.search.replace(/.+_p=(.+)&.+|.+_p=(.+)/g, '$1$2')
-        ) || '{}'
-      )
+      this._p = JSON.parse(decodeURIComponent(parse(window.location.search)._p))
     } catch (err) {
       console.log(err)
     }

@@ -1,12 +1,10 @@
 import { getWechatWx } from '@ruiyun/platform-env'
 import Base from './base.js'
-import { serialize } from './utils'
+import { serialize, parse } from './utils'
 export default class RouterForWechatMp extends Base {
   constructor(props) {
     super(props)
-    this.depth = parseInt(
-      window.location.search.replace(/.+depth=(.+)&.+|.+depth=(.+)/g, '$1$2')
-    )
+    this.depth = parse(window.location.search).depth
     this.popToNative = this.pop
     this.backToNative = this.back
     window.addEventListener('hashchange', () => {
