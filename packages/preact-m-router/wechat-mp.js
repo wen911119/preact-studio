@@ -4,7 +4,7 @@ import { serialize, parse } from './utils'
 export default class RouterForWechatMp extends Base {
   constructor(props) {
     super(props)
-    this.depth = parse(window.location.search).depth
+    this.depth = parseInt(parse(window.location.search).depth || 1)
     this.popToNative = this.pop
     this.backToNative = this.back
     window.addEventListener('hashchange', () => {
