@@ -3,6 +3,9 @@ export const getEnv = () => {
   if (window.location.search.indexOf('_c=mp') > -1) {
     // 微信小程序内
     env = 'wechat-mp'
+  } else if (window.location.search.indexOf('_c=rn') > -1) {
+    // rn内
+    env = 'rn'
   } else if (navigator.userAgent.indexOf('Html5Plus') > -1) {
     // h5plus 在线包
     env = 'h5plus'

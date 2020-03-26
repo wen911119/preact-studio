@@ -3,6 +3,7 @@ import { forwardRef } from 'preact/compat'
 
 import RouterForBrowser from './browser'
 import RouterForWechatMp from './wechat-mp'
+import RouterForRN from './rn'
 import { getEnv, parse, serialize } from './utils'
 
 let routerInstance
@@ -10,6 +11,9 @@ let routerInstance
 switch (getEnv()) {
   case 'wechat-mp':
     routerInstance = new RouterForWechatMp()
+    break
+  case 'rn':
+    routerInstance = new RouterForRN()
     break
   case 'h5plus':
     // todo
