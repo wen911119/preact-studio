@@ -93,4 +93,14 @@ export default class RouterForRN extends Base {
       })
     )
   }
+
+  setTitle(title) {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        type: 'navigate',
+        action: 'setTitle',
+        data: title
+      })
+    )
+  }
 }
