@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-tabs-simple",
-  "version": "1.5.9",
+  "version": "1.8.7",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "@ruiyun/preact-layout-suite": "^1.2.77",
-    "@ruiyun/preact-text": "^1.2.39",
+    "@ruiyun/preact-text": "^1.8.7",
     "p-to-r": "^1.0.4"
   },
   "peerDependencies": {
