@@ -11,7 +11,7 @@ export default class LoadMoreStateless extends Component {
 
   renderFooter = position => {
     const { nomore, loading } = this.props
-    if (position !== '0') {
+    if (position !== '0' && position !== '1') {
       if (this.props.renderLoadMoreFooter) {
         return this.props.renderLoadMoreFooter({ nomore, loading, position })
       }
