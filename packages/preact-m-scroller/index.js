@@ -71,15 +71,14 @@ export default class Scroller extends Component {
     const { position } = this.state
     const angle = this.getSwipeAngle(event)
     const { onPullDown } = this.props
-    if (position === '0') {
-      if (angle < -0.5 && onPullDown) {
+    if (position === '0' && angle < -0.5) {
+      if (onPullDown || !event.NOT_PREVENT) {
         event.preventDefault()
+      }
+      onPullDown &&
         onPullDown(
           event.targetTouches[0].screenY - this.touchStartPoint.screenY
         )
-      } else if (!event.NOT_PREVENT) {
-        event.preventDefault()
-      }
     } else {
       if (position === '1' && angle < -0.5) {
         // 在最顶部下拉
