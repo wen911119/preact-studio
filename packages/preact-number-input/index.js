@@ -22,8 +22,7 @@ export default class NumberInput extends Component {
       parsedValue = parsedValue.replace(/[^0-9]/gi, '')
       parsedValue = parsedValue.replace(holder, '.')
       parsedValue = parsedValue.replace(regExp, '$1')
-    }
-    else {
+    } else {
       parsedValue = parsedValue.replace(/[^0-9]/gi, '')
     }
 
@@ -34,9 +33,10 @@ export default class NumberInput extends Component {
     }
 
     this.setState({ value: parsedValue }, () => {
-      onChange && onChange(parsedValue)
+      onChange && onChange(parsedValue * 1)
     })
   }
+
   format = rawValue => {
     const { format } = this.props
     if (format && rawValue) {
@@ -44,34 +44,33 @@ export default class NumberInput extends Component {
         // 数字千分位
         if (format === 'thousand') {
           if (rawValue.indexOf('.') > -1) {
-            let temp = rawValue.split('.')
+            const temp = rawValue.split('.')
             temp[0] = Number(temp[0]).toLocaleString('en-US')
             return temp.join('.')
           }
           return Number(rawValue).toLocaleString('en-US')
         }
-      }
-      else if (typeof format === 'object') {
+      } else if (typeof format === 'object') {
         const { delimiter, block } = format
         // 自定义分隔字符，分隔距离
         if (delimiter && block) {
           const reg = new RegExp(`(\\d)(?=(?:\\d{${block}})+$)`, 'g')
           if (rawValue.indexOf('.') > -1) {
             // 有小数点，要特殊处理，目前还没想到一个正则搞定
-            let temp = rawValue.split('.')
+            const temp = rawValue.split('.')
             temp[0] = temp[0].replace(reg, '$1' + delimiter)
             return temp.join('.')
           }
           return rawValue.replace(reg, '$1' + delimiter)
         }
-      }
-      else if (typeof format === 'function') {
+      } else if (typeof format === 'function') {
         // 自定义格式化函数
         return format(rawValue)
       }
     }
     return rawValue
   }
+
   onComplete = event => {
     const { value } = this.state
     if (value && /\d+\.$/.test(value)) {
@@ -82,19 +81,21 @@ export default class NumberInput extends Component {
           value: value.replace('.', '')
         },
         () => {
-          this.props.onChange && this.props.onChange(this.state.value)
+          this.props.onChange && this.props.onChange(this.state.value * 1)
         }
       )
     }
     this.props.onBlur && this.props.onBlur(event)
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     this.state = {
       value: props.value
     }
   }
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line
+  componentWillReceiveProps(nextProps) {
     if (
       nextProps.value !== this.props.value &&
       nextProps.value !== this.state.value
@@ -102,7 +103,8 @@ export default class NumberInput extends Component {
       this.setState({ value: nextProps.value })
     }
   }
-  render () {
+
+  render() {
     // eslint-disable-next-line
     const { onChange, value, type, float = false, ...otherProps } = this.props
     return (
