@@ -33,7 +33,7 @@ export default class RouterForBrowser extends Base {
       paths: this.paths.concat([path])
     }
     const newAppInfoStr = encodeURIComponent(JSON.stringify(newAppInfo))
-    window.location.href = `/${path}.html?_p=${newAppInfoStr}&_t=${headerConfig.title ||
+    window.location.href = `${path}.html?_p=${newAppInfoStr}&_t=${headerConfig.title ||
       ''}`
   }
 
@@ -47,7 +47,7 @@ export default class RouterForBrowser extends Base {
     }
     const newAppInfoStr = encodeURIComponent(JSON.stringify(newAppInfo))
     window.location.replace(
-      `/${path}.html?_p=${newAppInfoStr}&_t=${headerConfig.title || ''}`
+      `${path}.html?_p=${newAppInfoStr}&_t=${headerConfig.title || ''}`
     )
   }
 
