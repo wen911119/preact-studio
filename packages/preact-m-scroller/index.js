@@ -1,7 +1,7 @@
 import { h, Component, cloneElement } from 'preact'
 import debounce from 'lodash.debounce'
 
-import LoadMore from './loadmore'
+import LoadMore from './loadMore'
 import RefreshControl from './refreshControl'
 import classNames from './scroller.css'
 
