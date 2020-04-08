@@ -9,6 +9,7 @@ import {
 import { WithModal } from '@ruiyun/preact-modal'
 import Line from '@ruiyun/preact-line'
 import Input from '@ruiyun/preact-input'
+import Textarea from '@ruiyun/preact-textarea'
 import className from './index.css'
 
 const defaultConfig = {
@@ -17,7 +18,10 @@ const defaultConfig = {
   contentColor: '#666',
   contentSize: 28,
   btnsColor: ['#fc9153', '#fc9153'],
-  btnSize: 32
+  btnSize: 32,
+  width: 490,
+  textareaWith: '100%',
+  textareaHeight: 160
 }
 
 /* eslint-disable react/display-name */
@@ -30,12 +34,17 @@ const renderModalContent = ({
   inputId,
   value,
   config,
-  slot
+  slot,
+  type
 }) => () => (
-  <ColumnView bgColor="#fff" width={490} style={{ borderRadius: '0.08rem' }}>
+  <ColumnView
+    bgColor='#fff'
+    width={config.width}
+    style={{ borderRadius: '0.08rem' }}
+  >
     <SlotColumnView
-      hAlign="center"
-      vAlign="center"
+      hAlign='center'
+      vAlign='center'
       padding={[40, 32, 32, 32]}
       slot={20}
     >
@@ -50,7 +59,7 @@ const renderModalContent = ({
         </Text>
       )}
       {slot && slot()}
-      {placeholder && (
+      {placeholder && type === 'input' ? (
         <Input
           textSize={26}
           placeholder={placeholder}
@@ -58,9 +67,19 @@ const renderModalContent = ({
           id={inputId}
           value={value}
         />
+      ) : (
+        <Textarea
+          width={config.textareaWith}
+          height={config.textareaHeight}
+          textSize={26}
+          placeholder={placeholder}
+          id={inputId}
+          value={value}
+          className={className.promptTextarea}
+        />
       )}
     </SlotColumnView>
-    <Line color="#ebebeb" />
+    <Line color='#ebebeb' />
     <SlotRowView height={100} slot={<Line v />}>
       {btns.map((btn, i) => (
         <XCenterView
@@ -82,7 +101,7 @@ const renderModalContent = ({
 
 @WithModal
 export class Dialog extends Component {
-  alert ({ title, content, btn, cb, config, slot }) {
+  alert({ title, content, btn, cb, config, slot }) {
     const callback = btnIndex => {
       this.props.$modal.hide()
       cb && cb(btnIndex)
@@ -101,7 +120,8 @@ export class Dialog extends Component {
       autoClose: false
     })
   }
-  confirm ({ title, content, btns, cb, config, slot }) {
+
+  confirm({ title, content, btns, cb, config, slot }) {
     const callback = btnIndex => {
       this.props.$modal.hide()
       cb && cb(btnIndex)
@@ -120,7 +140,8 @@ export class Dialog extends Component {
       autoClose: false
     })
   }
-  prompt ({
+
+  prompt({
     title,
     content,
     btns,
@@ -128,7 +149,8 @@ export class Dialog extends Component {
     placeholder = '请输入',
     value,
     config,
-    slot
+    slot,
+    type = 'input'
   }) {
     const inputId = `input_${Math.random()}`
     const callback = btnIndex => {
@@ -145,21 +167,23 @@ export class Dialog extends Component {
       inputId,
       value,
       config: mergedConfig,
-      slot
+      slot,
+      type
     })
     this.props.$modal.show({
       content: c,
       autoClose: false
     })
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     this.alert = this.alert.bind(this)
     this.confirm = this.confirm.bind(this)
     this.prompt = this.prompt.bind(this)
   }
 
-  render ({ children }) {
+  render({ children }) {
     return cloneElement(children, {
       $alert: this.alert,
       $confirm: this.confirm,
@@ -170,7 +194,7 @@ export class Dialog extends Component {
 
 export const WithDialog = BaseComponent => {
   class ComponentWithDialog extends Component {
-    render () {
+    render() {
       return (
         <Dialog>
           <BaseComponent {...this.props} />

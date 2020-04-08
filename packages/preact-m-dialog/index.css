@@ -28,3 +28,11 @@
 .promptInput:active {
   border-color: #fc9153;
 }
+
+.promptTextarea:focus {
+  border-color: #fc9153;
+}
+
+.promptTextarea:active {
+  border-color: #fc9153;
+}

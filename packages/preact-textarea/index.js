@@ -1,7 +1,12 @@
 import { h } from 'preact'
 import px2rem from 'p-to-r'
-import { useState, useCallback } from 'preact/compat'
 import defaultStyle from './index.css'
+
+const onBlurWrap = onblur => e => {
+  onblur && onblur(e)
+  // fix#ios 键盘收起页面推上去没有自动拉下来的bug
+  window.scrollTo()
+}
 
 const TextArea = ({
   height,
@@ -12,28 +17,14 @@ const TextArea = ({
   className = '',
   value = '', // 解决undefined不能覆盖原值的问题
   onBlur,
-  onFocus,
   borderColor = '#eaeaea',
-  focusBorderColor = '#5581FA',
   padding = 10,
   ...otherProps
 }) => {
-  const [isFocus, toggleFocus] = useState(false)
-  const onFocusHandler = useCallback(e => {
-    onFocus && onFocus(e)
-    toggleFocus(true)
-  }, [])
-  const onBlurHandler = useCallback(e => {
-    onBlur && onBlur(e)
-    toggleFocus(false)
-    // fix#ios 键盘收起页面推上去没有自动拉下来的bug
-    window.scrollTo()
-  }, [])
   return (
     <textarea
       {...otherProps}
-      onBlur={onBlurHandler}
-      onFocus={onFocusHandler}
+      onBlur={onBlurWrap(onBlur)}
       value={value}
       className={`${defaultStyle.textArea} ${className}`}
       style={Object.assign(
@@ -42,9 +33,8 @@ const TextArea = ({
           width: px2rem(width),
           fontSize: px2rem(textSize),
           color: textColor,
-          lineHeight: px2rem(height),
           padding: px2rem(padding),
-          border: '1px solid ' + (isFocus ? focusBorderColor : borderColor)
+          border: '1px solid ' + borderColor
         },
         style
       )}
