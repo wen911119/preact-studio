@@ -59,25 +59,26 @@ const renderModalContent = ({
         </Text>
       )}
       {slot && slot()}
-      {placeholder && type === 'input' ? (
-        <Input
-          textSize={26}
-          placeholder={placeholder}
-          className={className.promptInput}
-          id={inputId}
-          value={value}
-        />
-      ) : (
-        <Textarea
-          width={config.textareaWith}
-          height={config.textareaHeight}
-          textSize={26}
-          placeholder={placeholder}
-          id={inputId}
-          value={value}
-          className={className.promptTextarea}
-        />
-      )}
+      {placeholder &&
+        (type === 'input' ? (
+          <Input
+            textSize={26}
+            placeholder={placeholder}
+            className={className.promptInput}
+            id={inputId}
+            value={value}
+          />
+        ) : (
+          <Textarea
+            width={config.textareaWith}
+            height={config.textareaHeight}
+            textSize={26}
+            placeholder={placeholder}
+            id={inputId}
+            value={value}
+            className={className.promptTextarea}
+          />
+        ))}
     </SlotColumnView>
     <Line color='#ebebeb' />
     <SlotRowView height={100} slot={<Line v />}>
