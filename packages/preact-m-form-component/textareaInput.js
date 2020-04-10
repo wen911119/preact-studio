@@ -11,9 +11,11 @@ export default class FormTextareaInput extends Component {
   }
 
   onChange = event => {
-    this.setState({
-      text: event.target.value
-    })
+    setTimeout(() => {
+      this.setState({
+        text: event.target.value
+      })
+    }, 0)
     this.props.sync(event.target.value)
   }
 
