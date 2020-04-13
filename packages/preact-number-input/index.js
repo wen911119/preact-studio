@@ -33,7 +33,7 @@ export default class NumberInput extends Component {
     }
 
     this.setState({ value: parsedValue }, () => {
-      onChange && onChange(parsedValue * 1)
+      onChange && onChange(parsedValue)
     })
   }
 
@@ -81,7 +81,7 @@ export default class NumberInput extends Component {
           value: value.replace('.', '')
         },
         () => {
-          this.props.onChange && this.props.onChange(this.state.value * 1)
+          this.props.onChange && this.props.onChange(this.state.value)
         }
       )
     }
