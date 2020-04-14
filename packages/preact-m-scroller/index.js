@@ -18,7 +18,7 @@ export default class Scroller extends Component {
     }
   }
 
-  updatePosition = debounce(() => {
+  updatePosition = () => {
     let position
     const { loadMoreThreshold = 25 } = this.props
     if (this.scroller.scrollHeight === this.scroller.clientHeight) {
@@ -49,7 +49,9 @@ export default class Scroller extends Component {
         this.positionUpdateCallBack
       )
     }
-  }, 50)
+  }
+
+  updatePositionDebounce = debounce(this.updatePosition, 50)
 
   onTouchStart = e => {
     this.touchStartPoint = e.targetTouches[0]
@@ -131,7 +133,7 @@ export default class Scroller extends Component {
   }
 
   onScroll = event => {
-    this.updatePosition(event)
+    this.updatePositionDebounce(event)
     this.props.onScroll && this.props.onScroll(event)
   }
 
