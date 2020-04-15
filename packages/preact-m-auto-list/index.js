@@ -68,31 +68,34 @@ class ListFragment extends Component {
     )
   }
 
+  computeVisiable = throttle(
+    () => {
+      const myPosition = this.f.getBoundingClientRect()
+      const { recycleThreshold = 1000 } = this.props
+      if (
+        myPosition.bottom < -recycleThreshold ||
+        myPosition.top > recycleThreshold
+      ) {
+        this.setState({
+          hide: true
+        })
+      } else {
+        this.setState({
+          hide: false
+        })
+      }
+    },
+    10,
+    100
+  )
+
   componentDidMount() {
-    const { scroller, recycleThreshold = 1000 } = this.props
     this.fragmentHeight = this.f.clientHeight
-    scroller.addEventListener(
-      'scroll',
-      throttle(
-        () => {
-          const myPosition = this.f.getBoundingClientRect()
-          if (
-            myPosition.bottom < -recycleThreshold ||
-            myPosition.top > recycleThreshold
-          ) {
-            this.setState({
-              hide: true
-            })
-          } else {
-            this.setState({
-              hide: false
-            })
-          }
-        },
-        10,
-        100
-      )
-    )
+    this.props.scroller.addEventListener('scroll', this.computeVisiable)
+  }
+
+  componentWillUnmount() {
+    this.props.scroller.removeEventListener('scroll', this.computeVisiable)
   }
 
   render() {

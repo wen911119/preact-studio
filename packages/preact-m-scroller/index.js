@@ -159,6 +159,11 @@ export default class Scroller extends Component {
     this.observer && this.observer.disconnect()
     this.observer = null
     this.scroller.removeEventListener('scroll', this.onScroll)
+    this.scroller.removeEventListener(
+      'touchmove',
+      this.onTouchMoveCapture,
+      true
+    )
   }
 
   render() {

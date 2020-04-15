@@ -38,15 +38,33 @@ export default class SearchInput extends Component {
     }
   }
 
+  onCompositionstart = () => {
+    this.isCompositing = true
+  }
+
+  onCompositionend = event => {
+    this.isCompositing = false
+    this.onTextInput(event.target.value)
+  }
+
   componentDidMount() {
-    const inputElement = document.getElementById(this.inputId)
-    inputElement.addEventListener('compositionstart', () => {
-      this.isCompositing = true
-    })
-    inputElement.addEventListener('compositionend', event => {
-      this.isCompositing = false
-      this.onTextInput(event.target.value)
-    })
+    this.inputElement = document.getElementById(this.inputId)
+    this.inputElement.addEventListener(
+      'compositionstart',
+      this.onCompositionstart
+    )
+    this.inputElement.addEventListener('compositionend', this.onCompositionend)
+  }
+
+  componentWillUnmount() {
+    this.inputElement.removeEventListener(
+      'compositionstart',
+      this.onCompositionstart
+    )
+    this.inputElement.removeEventListener(
+      'compositionend',
+      this.onCompositionend
+    )
   }
 
   render() {
