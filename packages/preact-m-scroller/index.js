@@ -1,5 +1,6 @@
 import { h, Component, cloneElement } from 'preact'
 import debounce from 'lodash.debounce'
+import { forwardRef } from 'preact/compat'
 
 import LoadMore from './loadMore'
 import RefreshControl from './refreshControl'
@@ -16,6 +17,10 @@ export default class Scroller extends Component {
       const { onBottom } = this.props
       onBottom && onBottom()
     }
+  }
+
+  scrollTo = (position = 0) => {
+    this.scroller.scrollTop = position
   }
 
   updatePosition = () => {
@@ -185,22 +190,28 @@ export default class Scroller extends Component {
   }
 }
 
-export const ScrollerWithLoadMore = ({ children, ...otherProps }) => (
-  <LoadMore {...otherProps}>
-    <Scroller>{children}</Scroller>
-  </LoadMore>
-)
-
-export const ScrollerWithRefreshAndLoadMore = ({ children, ...otherProps }) => (
-  <RefreshControl {...otherProps}>
-    <LoadMore>
-      <Scroller>{children}</Scroller>
+export const ScrollerWithLoadMore = forwardRef(
+  ({ children, ...otherProps }, ref) => (
+    <LoadMore {...otherProps}>
+      <Scroller ref={ref}>{children}</Scroller>
     </LoadMore>
-  </RefreshControl>
+  )
 )
 
-export const ScrollerWithRefresh = ({ children, ...otherProps }) => (
-  <RefreshControl {...otherProps}>
-    <Scroller>{children}</Scroller>
-  </RefreshControl>
+export const ScrollerWithRefreshAndLoadMore = forwardRef(
+  ({ children, ...otherProps }, ref) => (
+    <RefreshControl {...otherProps}>
+      <LoadMore>
+        <Scroller ref={ref}>{children}</Scroller>
+      </LoadMore>
+    </RefreshControl>
+  )
+)
+
+export const ScrollerWithRefresh = forwardRef(
+  ({ children, ...otherProps }, ref) => (
+    <RefreshControl {...otherProps}>
+      <Scroller ref={ref}>{children}</Scroller>
+    </RefreshControl>
+  )
 )
