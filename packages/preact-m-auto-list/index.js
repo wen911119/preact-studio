@@ -39,13 +39,20 @@ const DefaultEmptyView = () => <div>empty</div>
 const DefaultLoadingView = () => <div>loading...</div>
 
 class ListItem extends Component {
-  shouldComponentUpdate() {
-    return false
+  shouldComponentUpdate(nextProps) {
+    return (
+      nextProps.extraData[nextProps.itemKey] !==
+      this.props.extraData[nextProps.itemKey]
+    )
   }
 
   render() {
-    const { renderItem, data, itemId } = this.props
-    return <div data-list-item-id={itemId}>{renderItem(data)}</div>
+    const { renderItem, data, itemId, extraData, itemKey } = this.props
+    return (
+      <div data-list-item-id={itemId}>
+        {renderItem(data, extraData[itemKey])}
+      </div>
+    )
   }
 }
 
@@ -55,7 +62,10 @@ class ListFragment extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextState.hide !== this.state.hide
+    return (
+      nextState.hide !== this.state.hide ||
+      nextProps.extraData !== this.props.extraData
+    )
   }
 
   componentDidMount() {
@@ -86,9 +96,14 @@ class ListFragment extends Component {
   }
 
   render() {
-    const { data, fragmentId, keyExtractor, renderItem } = this.props
+    const {
+      data,
+      fragmentId,
+      keyExtractor,
+      renderItem,
+      extraData = {}
+    } = this.props
     const { hide } = this.state
-
     return (
       <div
         data-list-fragment-id={fragmentId}
@@ -101,7 +116,9 @@ class ListFragment extends Component {
             data={d}
             key={keyExtractor(d)}
             itemId={index}
+            itemKey={keyExtractor(d)}
             renderItem={renderItem}
+            extraData={extraData}
           />
         ))}
       </div>
@@ -111,7 +128,10 @@ class ListFragment extends Component {
 
 class List extends Component {
   shouldComponentUpdate(nextProps) {
-    return nextProps.data !== this.props.data
+    return (
+      nextProps.data !== this.props.data ||
+      nextProps.extraData !== this.props.extraData
+    )
   }
 
   render() {
@@ -123,7 +143,8 @@ class List extends Component {
       itemClickHandler,
       renderItem,
       scroller,
-      recycleThreshold
+      recycleThreshold,
+      extraData
     } = this.props
     if (!data) {
       return renderLoadingView()
@@ -142,6 +163,7 @@ class List extends Component {
               renderItem={renderItem}
               scroller={scroller}
               recycleThreshold={recycleThreshold}
+              extraData={extraData}
             />
           ))}
         </div>
@@ -249,7 +271,8 @@ export default class AutoList extends Base {
       FooterView,
       HeaderView,
       height,
-      recycleThreshold
+      recycleThreshold,
+      extraData
     } = this.props
     const { data, nomore, loading } = this.state
     return (
@@ -271,6 +294,7 @@ export default class AutoList extends Base {
           renderLoadingView={this.renderLoadingView}
           scroller={this.s && this.s.base.children[0]}
           recycleThreshold={recycleThreshold}
+          extraData={extraData}
         />
 
         {FooterView && <FooterView />}
@@ -287,7 +311,8 @@ export class AutoListWithRefresh extends Base {
       renderItem,
       FooterView,
       HeaderView,
-      recycleThreshold
+      recycleThreshold,
+      extraData
     } = this.props
     const { data, nomore, loading } = this.state
     return (
@@ -308,6 +333,7 @@ export class AutoListWithRefresh extends Base {
           renderLoadingView={this.renderLoadingView}
           scroller={this.s && this.s.base.children[0]}
           recycleThreshold={recycleThreshold}
+          extraData={extraData}
         />
 
         {FooterView && <FooterView />}
