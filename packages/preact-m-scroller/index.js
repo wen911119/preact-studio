@@ -84,13 +84,16 @@ export default class Scroller extends Component {
   }
 
   onTouchStart = event => {
-    this.touchStartPoint = event.targetTouches[0]
-    // 为了解决在顶部上滑，200毫秒内突然再次下拉导致position不正确
-    this.updatePosition(this.baseScrollerRef.current.base)
+    if (!event.LOCKED_BY_CHILDREN) {
+      event.LOCKED_BY_CHILDREN = true
+      this.touchStartPoint = event.targetTouches[0]
+      // 为了解决在顶部上滑，200毫秒内突然再次下拉导致position不正确
+      this.updatePosition(this.baseScrollerRef.current.base)
+    }
   }
 
   onTouchMove = event => {
-    if (this.position !== 2) {
+    if (this.position !== 2 && !event.LOCKED_BY_CHILDREN) {
       const { onPullDown, onPullUp } = this.props
       const { angle, yDistance } = computePosition(
         this.touchStartPoint,
@@ -110,16 +113,19 @@ export default class Scroller extends Component {
         onPullUp && onPullUp(-yDistance)
       }
     }
-    event.stopPropagation()
+    event.LOCKED_BY_CHILDREN = true
   }
 
   onTouchEnd = event => {
-    const { yDistance } = computePosition(
-      this.touchStartPoint,
-      event.changedTouches[0]
-    )
-    this.props.onPullDownEnd && this.props.onPullDownEnd(yDistance)
-    this.props.onPullUpEnd && this.props.onPullUpEnd(yDistance)
+    if (!event.LOCKED_BY_CHILDREN) {
+      event.LOCKED_BY_CHILDREN = true
+      const { yDistance } = computePosition(
+        this.touchStartPoint,
+        event.changedTouches[0]
+      )
+      this.props.onPullDownEnd && this.props.onPullDownEnd(yDistance)
+      this.props.onPullUpEnd && this.props.onPullUpEnd(yDistance)
+    }
   }
 
   componentDidMount() {
