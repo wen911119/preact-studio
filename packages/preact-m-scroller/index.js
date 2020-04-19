@@ -29,7 +29,9 @@ export const BaseScroller = ({
 }) => (
   <div
     style={Object.assign({ height: p2r(height) }, style)}
-    className={classNames.scroller + ' ' + className}
+    className={
+      classNames.scroller + (height ? ' ' : classNames.flex1) + className
+    }
     {...otherProps}
   >
     {children}

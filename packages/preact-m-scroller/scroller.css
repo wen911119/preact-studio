@@ -1,7 +1,10 @@
 .scroller {
   overflow-y: auto;
   overflow-x: hidden;
-  flex: 1;
+}
+
+.flex1 {
+  flex: 1
 }
 
 .scroller::-webkit-scrollbar {
