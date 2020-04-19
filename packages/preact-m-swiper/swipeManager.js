@@ -1,16 +1,20 @@
-import { h, Component, cloneElement } from 'preact'
+import { Component, cloneElement } from 'preact'
 
 export default class SwipeManager extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.containerWidth = props.containerWidth || document.body.clientWidth
+    this.containerWidth =
+      props.containerWidth ||
+      Math.max(document.body.scrollWidth, document.documentElement.clientWidth)
     this.state = {
       offset: -this.containerWidth * (props.activeIndex || 0),
       animation: false,
       index: props.activeIndex || 0
     }
   }
-  componentWillReceiveProps (nextProps) {
+
+  // eslint-disable-next-line
+  componentWillReceiveProps(nextProps) {
     const containerWidth = this.containerWidth
     const itemsNum = nextProps.itemsNum || 2
     if (
@@ -22,8 +26,7 @@ export default class SwipeManager extends Component {
         animation: true,
         index: nextProps.activeIndex
       })
-    }
-    else if (nextProps.stage === 'swipe-moving') {
+    } else if (nextProps.stage === 'swipe-moving') {
       if (
         (nextProps.swipeDistance > 0 && this.state.index === 0) ||
         (nextProps.swipeDistance < 0 && this.state.index === itemsNum - 1)
@@ -32,12 +35,10 @@ export default class SwipeManager extends Component {
         return
       }
       this.setState({
-        offset:
-          -this.state.index * containerWidth + nextProps.swipeDistance,
+        offset: -this.state.index * containerWidth + nextProps.swipeDistance,
         animation: false
       })
-    }
-    else if (
+    } else if (
       nextProps.stage === 'swipe-end' &&
       this.props.stage === 'swipe-moving'
     ) {
@@ -69,8 +70,7 @@ export default class SwipeManager extends Component {
           changed && this.props.onChange && this.props.onChange(newIndex)
         }
       )
-    }
-    else if (nextProps.stage === 'swipe-start') {
+    } else if (nextProps.stage === 'swipe-start') {
       const offset = -containerWidth * this.state.index
       if (offset !== this.state.offset) {
         this.setState({
@@ -80,7 +80,8 @@ export default class SwipeManager extends Component {
       }
     }
   }
-  render () {
+
+  render() {
     const { children, ...otherProps } = this.props
     const { animation, offset, index } = this.state
     return cloneElement(children, {
