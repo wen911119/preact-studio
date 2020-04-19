@@ -153,7 +153,6 @@ export default class Scroller extends Component {
   }
 
   render() {
-    console.log('render-scroller')
     return (
       <BaseScroller
         {...this.props}

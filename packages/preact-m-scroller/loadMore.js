@@ -78,7 +78,6 @@ export const WithLoadMore = BaseComponent =>
         !this.error &&
         this.props.onLoadMore
       ) {
-        console.log('onLoadMore')
         this.loadMoreRef.current.loading()
         this.loading = true
         this.props.onLoadMore(({ nomore, success }) => {
@@ -86,7 +85,6 @@ export const WithLoadMore = BaseComponent =>
           if (success) {
             if (nomore) {
               this.nomore = true
-              console.log('nomore')
               this.loadMoreRef.current.nomore()
             }
           } else {
