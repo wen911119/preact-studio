@@ -1,222 +1,159 @@
-import { h, Component, cloneElement } from 'preact'
-import debounce from 'lodash.debounce'
-import { forwardRef } from 'preact/compat'
+import { h, Component, createRef } from 'preact'
+import p2r from 'p-to-r'
 
-import LoadMore from './loadMore'
-import RefreshControl from './refreshControl'
+import debounce from 'lodash.debounce'
+
+import { WithRefreshController } from './refreshController.js'
+import { WithLoadMore } from './loadMore.js'
+
 import classNames from './scroller.css'
 
+const computePosition = (startPoint, currentPoint) => {
+  const xDistance = currentPoint.clientX - startPoint.clientX
+  const yDistance = currentPoint.clientY - startPoint.clientY
+  return {
+    angle: (Math.atan(xDistance / yDistance) * 180) / Math.PI,
+    xDistance,
+    yDistance
+  }
+}
+
+// 只是隐藏了滚动条的最基础scroller
+export const BaseScroller = ({
+  height,
+  style,
+  className = '',
+  children,
+  footerSlot,
+  ...otherProps
+}) => (
+  <div
+    style={Object.assign({ height: p2r(height) }, style)}
+    className={classNames.scroller + ' ' + className}
+    {...otherProps}
+  >
+    {children}
+    {footerSlot && footerSlot()}
+  </div>
+)
+
 export default class Scroller extends Component {
-  state = {
-    position: '0'
+  position = 0
+
+  touchStartPoint = null
+
+  baseScrollerRef = createRef()
+
+  scrollTo = position => {
+    this.baseScrollerRef.current.base.scrollTop = position
   }
 
-  positionUpdateCallBack = () => {
-    const { position } = this.state
-    if (position === '3') {
-      const { onBottom } = this.props
-      onBottom && onBottom()
-    }
-  }
-
-  scrollTo = (position = 0) => {
-    this.scroller.scrollTop = position
-  }
-
-  updatePosition = () => {
-    let position
-    const { loadMoreThreshold = 25 } = this.props
-    if (this.scroller.scrollHeight === this.scroller.clientHeight) {
-      // 内容高度小于等于容器高度，不能滚动
-      position = '0'
-    } else if (this.scroller.scrollTop === 0) {
+  updatePosition = target => {
+    const { onBottomThreshold = 25, onWillBottom } = this.props
+    if (target.scrollHeight === target.clientHeight) {
+      // 内容高度小于等于容器高度
+      this.position = 0
+    } else if (target.scrollTop === 0) {
       // 在顶部
-      position = '1'
-    } else if (
-      Math.abs(
-        this.scroller.scrollTop +
-          this.scroller.clientHeight -
-          this.scroller.scrollHeight
-      ) <= loadMoreThreshold
-    ) {
+      this.position = 1
+    } else if (target.scrollTop + target.clientHeight === target.scrollHeight) {
       // 在底部
-      position = '3'
+      this.position = 3
+      onWillBottom && onWillBottom()
     } else {
       // 在中间
-      position = '2'
+      if (
+        target.scrollHeight - target.scrollTop - target.clientHeight <=
+        onBottomThreshold
+      ) {
+        onWillBottom && onWillBottom()
+      }
+      this.position = 2
     }
-
-    if (position !== this.state.position) {
-      this.setState(
-        {
-          position
-        },
-        this.positionUpdateCallBack
-      )
-    }
+    this.props.onScrollerPositionChange &&
+      this.props.onScrollerPositionChange(this.position)
   }
 
   updatePositionDebounce = debounce(this.updatePosition, 50)
 
-  onTouchStart = e => {
-    this.touchStartPoint = e.targetTouches[0]
-    this.props.onGestureStart && this.props.onGestureStart()
+  onScroll = event => {
+    this.updatePositionDebounce(event.target)
+    this.props.onScroll && this.props.onScroll(event)
   }
 
-  getSwipeAngle = touchMoveEvent => {
-    if (!this.angle) {
-      this.angle =
-        (this.touchStartPoint.clientY - touchMoveEvent.touches[0].clientY) /
-        Math.abs(
-          this.touchStartPoint.clientX - touchMoveEvent.touches[0].clientX
-        )
-    }
-    return this.angle
+  onTouchStart = event => {
+    this.touchStartPoint = event.targetTouches[0]
+    // 为了解决在顶部上滑，200毫秒内突然再次下拉导致position不正确
+    this.updatePosition(this.baseScrollerRef.current.base)
   }
 
   onTouchMove = event => {
-    const { position } = this.state
-    const angle = this.getSwipeAngle(event)
-    const { onPullDown } = this.props
-    if (position === '0' && angle < -0.5) {
-      if (onPullDown || !event.NOT_PREVENT) {
+    if (this.position !== 2) {
+      const { onPullDown, onPullUp } = this.props
+      const { angle, yDistance } = computePosition(
+        this.touchStartPoint,
+        event.touches[0]
+      )
+      if (
+        (this.position === 0 || this.position === 1) &&
+        yDistance > 0 &&
+        Math.abs(angle) < 30
+      ) {
+        // 在对顶部下拉
         event.preventDefault()
-      }
-      onPullDown &&
-        onPullDown(
-          event.targetTouches[0].screenY - this.touchStartPoint.screenY
-        )
-    } else {
-      if (position === '1' && angle < -0.5) {
-        // 在最顶部下拉
-        if (onPullDown || !event.NOT_PREVENT) {
-          event.preventDefault()
-        }
-        onPullDown &&
-          onPullDown(
-            event.targetTouches[0].screenY - this.touchStartPoint.screenY
-          )
-      } else if (position === '3' && angle > 0.5) {
+        onPullDown && onPullDown(yDistance)
+      } else if (this.position === 3 && yDistance < 0 && Math.abs(angle) < 30) {
         // 在最底部上拉
-        const { onPullUp } = this.props
-        if (onPullUp || !event.NOT_PREVENT) {
-          event.preventDefault()
-        }
-        onPullUp &&
-          onPullUp(
-            this.touchStartPoint.screenY - event.targetTouches[0].screenY
-          )
-      } else {
-        event.NOT_PREVENT = true
+        event.preventDefault()
+        onPullUp && onPullUp(-yDistance)
       }
     }
+    event.stopPropagation()
   }
 
-  onTouchMoveCapture = event => {
-    if (this.state.position === '2') {
-      event.NOT_PREVENT = true
-    } else if (this.state.position === '1') {
-      // 在顶部
-      // 如果是上拉手势，告诉孩子不要阻止
-      const angle = this.getSwipeAngle(event)
-      if (angle > 0.5) {
-        event.NOT_PREVENT = true
-      }
-    } else if (this.state.position === '3') {
-      // 在底部
-      // 如果是下拉手势，告诉孩子不要阻止
-      const angle = this.getSwipeAngle(event)
-      if (angle < -0.5) {
-        event.NOT_PREVENT = true
-      }
-    }
-  }
-
-  onTouchEnd = () => {
-    this.angle = null
-    this.props.onGestureEnd && this.props.onGestureEnd()
-  }
-
-  onScroll = event => {
-    this.updatePositionDebounce(event)
-    this.props.onScroll && this.props.onScroll(event)
+  onTouchEnd = event => {
+    const { yDistance } = computePosition(
+      this.touchStartPoint,
+      event.changedTouches[0]
+    )
+    this.props.onPullDownEnd && this.props.onPullDownEnd(yDistance)
+    this.props.onPullUpEnd && this.props.onPullUpEnd(yDistance)
   }
 
   componentDidMount() {
     // eslint-disable-next-line
-    this.observer = new MutationObserver(this.updatePosition)
-    this.observer.observe(this.scroller, {
+    this.observer = new MutationObserver(() => {
+      this.updatePosition(this.baseScrollerRef.current.base)
+    })
+    this.observer.observe(this.baseScrollerRef.current.base, {
       childList: true,
       subtree: true
     })
-    // 需不需要debounce？
-    this.scroller.addEventListener('scroll', this.onScroll)
-    this.scroller.addEventListener('touchmove', this.onTouchMoveCapture, true)
-    this.updatePosition()
+    this.updatePosition(this.baseScrollerRef.current.base)
   }
 
   componentWillUnmount() {
     this.observer && this.observer.disconnect()
     this.observer = null
-    this.scroller.removeEventListener('scroll', this.onScroll)
-    this.scroller.removeEventListener(
-      'touchmove',
-      this.onTouchMoveCapture,
-      true
-    )
   }
 
   render() {
-    const { children, height, footer, ...otherProps } = this.props
-    const { position } = this.state
+    console.log('render-scroller')
     return (
-      <div
-        className={height ? '' : classNames.wrap}
-        style={{ height, overflow: 'hidden' }}
-      >
-        <div
-          ref={s => (this.scroller = s)}
-          className={classNames.scroller}
-          onTouchStart={this.onTouchStart}
-          onTouchMove={this.onTouchMove}
-          onTouchEnd={this.onTouchEnd}
-          style={{ height }}
-        >
-          {children &&
-            (children.length
-              ? children
-              : cloneElement(children, {
-                  ...otherProps
-                }))}
-          {footer && footer(position)}
-        </div>
-      </div>
+      <BaseScroller
+        {...this.props}
+        ref={this.baseScrollerRef}
+        onScroll={this.onScroll}
+        onTouchStart={this.onTouchStart}
+        onTouchMove={this.onTouchMove}
+        onTouchEnd={this.onTouchEnd}
+      />
     )
   }
 }
 
-export const ScrollerWithLoadMore = forwardRef(
-  ({ children, ...otherProps }, ref) => (
-    <LoadMore {...otherProps}>
-      <Scroller ref={ref}>{children}</Scroller>
-    </LoadMore>
-  )
-)
+export const ScrollerWithRefresh = WithRefreshController(Scroller)
 
-export const ScrollerWithRefreshAndLoadMore = forwardRef(
-  ({ children, ...otherProps }, ref) => (
-    <RefreshControl {...otherProps}>
-      <LoadMore>
-        <Scroller ref={ref}>{children}</Scroller>
-      </LoadMore>
-    </RefreshControl>
-  )
-)
+export const ScrollerWithLoadMore = WithLoadMore(Scroller)
 
-export const ScrollerWithRefresh = forwardRef(
-  ({ children, ...otherProps }, ref) => (
-    <RefreshControl {...otherProps}>
-      <Scroller ref={ref}>{children}</Scroller>
-    </RefreshControl>
-  )
-)
+export const ScrollerWithRefreshAndLoadMore = WithLoadMore(ScrollerWithRefresh)

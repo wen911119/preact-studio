@@ -1,38 +1,136 @@
-import { h, Component, cloneElement } from 'preact'
-import classNames from './loadmore.css'
+import { h, Component, createRef } from 'preact'
+import { XCenterView } from '@ruiyun/preact-layout-suite'
+import Text from '@ruiyun/preact-text'
 
-export default class LoadMoreStateless extends Component {
-  onBottom = () => {
-    const { nomore, loading } = this.props
-    if (!nomore && !loading) {
-      this.props.onLoadMore()
-    }
+export class LoadMoreFooter extends Component {
+  state = {
+    stage: 'loading'
   }
 
-  renderFooter = position => {
-    const { nomore, loading } = this.props
-    if (position !== '0' && position !== '1') {
-      if (this.props.renderLoadMoreFooter) {
-        return this.props.renderLoadMoreFooter({ nomore, loading, position })
-      }
-      let tip
-      if (nomore) {
-        tip = '没有更多了～'
-      } else if (loading || position === '3') {
-        tip = '加载中...'
-      } else {
-        tip = '上拉加载更多'
-      }
-      return <div className={classNames.tip}>{tip}</div>
-    }
+  stageMap = {
+    loading: '加载中...',
+    nomore: '没有更多了~',
+    error: '加载出错，点击重试'
+  }
+
+  hide = () => {
+    this.setState({
+      stage: null
+    })
+  }
+
+  loading = () => {
+    this.setState({
+      stage: 'loading'
+    })
+  }
+
+  nomore = () => {
+    this.setState({
+      stage: 'nomore'
+    })
+  }
+
+  error = () => {
+    this.setState({
+      stage: 'error'
+    })
   }
 
   render() {
-    const { children, ...otherProps } = this.props
-    return cloneElement(children, {
-      ...otherProps,
-      onBottom: this.onBottom,
-      footer: this.renderFooter
-    })
+    const { stage } = this.state
+    const { onReTry } = this.props
+    return (
+      stage && (
+        <XCenterView
+          height={80}
+          onClick={stage === 'error' ? onReTry : undefined}
+        >
+          <Text color='#ccc' size={26}>
+            {this.stageMap[this.state.stage]}
+          </Text>
+        </XCenterView>
+      )
+    )
   }
 }
+
+export const WithLoadMore = BaseComponent =>
+  class ComponentWithLoadMore extends Component {
+    loadMoreRef = createRef()
+    baseComponentRef = createRef()
+    loading = false
+    nomore = false
+    error = false
+
+    LoadMoreFooter = this.props.LoadMoreFooter || LoadMoreFooter
+
+    scrollTo = (position, anmation) => {
+      this.baseComponentRef &&
+        this.baseComponentRef.current &&
+        this.baseComponentRef.current.scrollTo(position, anmation)
+    }
+
+    onLoadMore = isReTry => {
+      if (
+        !this.loading &&
+        !this.nomore &&
+        !this.error &&
+        this.props.onLoadMore
+      ) {
+        console.log('onLoadMore')
+        this.loadMoreRef.current.loading()
+        this.loading = true
+        this.props.onLoadMore(({ nomore, success }) => {
+          this.loading = false
+          if (success) {
+            if (nomore) {
+              this.nomore = true
+              this.loadMoreRef.current.nomore()
+            }
+          } else {
+            this.error = true
+            this.loadMoreRef.current.error()
+          }
+        }, isReTry)
+      }
+    }
+
+    onReTry = () => {
+      this.error = false
+      this.onLoadMore(true)
+    }
+
+    renderFooterSlot = () => (
+      <this.LoadMoreFooter ref={this.loadMoreRef} onReTry={this.onReTry} />
+    )
+
+    resetLoadMore = () => {
+      this.nomore = false
+      this.error = false
+      this.loadMoreRef.current.loading()
+    }
+
+    onScrollerPositionChange = position => {
+      if (position === 0) {
+        // scroller内容剧烈改变的时候也应该清除错误
+        this.error = false
+        this.loadMoreRef.current.hide()
+      } else if (!this.error) {
+        this.loadMoreRef.current.loading()
+      }
+    }
+
+    render() {
+      return (
+        <BaseComponent
+          {...this.props}
+          ref={this.baseComponentRef}
+          resetLoadMore={this.resetLoadMore}
+          onScrollerPositionChange={this.onScrollerPositionChange}
+          footerSlot={this.renderFooterSlot}
+          onWillBottom={this.onLoadMore}
+        />
+      )
+    }
+  }
