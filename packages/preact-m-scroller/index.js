@@ -22,22 +22,29 @@ const computePosition = (startPoint, currentPoint) => {
 export const BaseScroller = ({
   height,
   style,
-  className = '',
+  className,
   children,
   footerSlot,
   ...otherProps
-}) => (
-  <div
-    style={Object.assign({ height: p2r(height) }, style)}
-    className={
-      classNames.scroller + (height ? ' ' : classNames.flex1) + className
-    }
-    {...otherProps}
-  >
-    {children}
-    {footerSlot && footerSlot()}
-  </div>
-)
+}) => {
+  const classNamesArr = [classNames.scroller]
+  if (className) {
+    classNamesArr.push(className)
+  }
+  if (!height) {
+    classNamesArr.push(classNames.flex1)
+  }
+  return (
+    <div
+      style={Object.assign({ height: p2r(height) }, style)}
+      className={classNamesArr.join(' ')}
+      {...otherProps}
+    >
+      {children}
+      {footerSlot && footerSlot()}
+    </div>
+  )
+}
 
 export default class Scroller extends Component {
   position = 0
