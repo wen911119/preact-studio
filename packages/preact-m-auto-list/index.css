@@ -3,3 +3,20 @@
 }
 
 .fragmentShow {}
+
+.icon-refresh {
+  font-size: 20px;
+}
+
+.icon-refresh::before {
+  width: .9em; height: .9em;
+  border: 2px solid;  
+  border-right-color: transparent;
+  border-radius: 50%;  
+}
+.icon-refresh::after {
+  border: .2em solid;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  left: 75%; top: 20%;
+}
