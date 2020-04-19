@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-tree-picker",
-  "version": "1.8.20",
+  "version": "1.9.0",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -16,7 +16,7 @@
     "@ruiyun/preact-layout-suite": "^1.2.77",
     "@ruiyun/preact-line": "^1.2.39",
     "@ruiyun/preact-loading": "^1.2.20",
-    "@ruiyun/preact-m-scroller": "^1.8.20",
+    "@ruiyun/preact-m-scroller": "^1.9.0",
     "@ruiyun/preact-m-tabs": "^1.8.7",
     "@ruiyun/preact-modal": "^1.6.3",
     "@ruiyun/preact-text": "^1.8.7",
