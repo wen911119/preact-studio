@@ -2,7 +2,7 @@ import { h, Component, createRef } from 'preact'
 import { XCenterView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 
-export class LoadMoreFooter extends Component {
+export class LoadMoreFooterDefault extends Component {
   state = {
     stage: 'loading'
   }
@@ -63,8 +63,6 @@ export const WithLoadMore = BaseComponent =>
     nomore = false
     error = false
 
-    LoadMoreFooter = this.props.LoadMoreFooter || LoadMoreFooter
-
     scrollTo = (position, anmation) => {
       this.baseComponentRef &&
         this.baseComponentRef.current &&
@@ -100,9 +98,10 @@ export const WithLoadMore = BaseComponent =>
       this.onLoadMore(true)
     }
 
-    renderFooterSlot = () => (
-      <this.LoadMoreFooter ref={this.loadMoreRef} onReTry={this.onReTry} />
-    )
+    renderFooterSlot = () => {
+      const LoadMoreFooter = this.props.LoadMoreFooter || LoadMoreFooterDefault
+      return <LoadMoreFooter ref={this.loadMoreRef} onReTry={this.onReTry} />
+    }
 
     resetLoadMore = () => {
       this.nomore = false
