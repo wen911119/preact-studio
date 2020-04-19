@@ -86,6 +86,7 @@ export const WithLoadMore = BaseComponent =>
           if (success) {
             if (nomore) {
               this.nomore = true
+              console.log('nomore')
               this.loadMoreRef.current.nomore()
             }
           } else {
@@ -116,8 +117,14 @@ export const WithLoadMore = BaseComponent =>
         // scroller内容剧烈改变的时候也应该清除错误
         this.error = false
         this.loadMoreRef.current.hide()
-      } else if (!this.error) {
-        this.loadMoreRef.current.loading()
+      } else {
+        if (this.error) {
+          this.loadMoreRef.current.error()
+        } else if (this.nomore) {
+          this.loadMoreRef.current.nomore()
+        } else {
+          this.loadMoreRef.current.loading()
+        }
       }
     }
 
