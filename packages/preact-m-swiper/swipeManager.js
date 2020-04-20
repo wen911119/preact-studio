@@ -3,9 +3,10 @@ import { Component, cloneElement } from 'preact'
 export default class SwipeManager extends Component {
   constructor(props) {
     super(props)
+    // 在rn安卓webview内document.documentElement.clientWidth有时候是0
     this.containerWidth =
       props.containerWidth ||
-      Math.max(document.body.scrollWidth, document.documentElement.clientWidth)
+      Math.max(document.documentElement.clientWidth, window.screen.width)
     this.state = {
       offset: -this.containerWidth * (props.activeIndex || 0),
       animation: false,
