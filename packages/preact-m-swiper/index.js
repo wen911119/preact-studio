@@ -3,7 +3,6 @@ import SwipeResponder from './swipeResponder'
 import Swipeable from './swipeable'
 import SwipeManager from './swipeManager'
 
-
 const Swiper = ({ children, ...otherProps }) => {
   const itemsNum = toChildArray(children).length
   return (
@@ -16,4 +15,3 @@ const Swiper = ({ children, ...otherProps }) => {
 }
 
 export default Swiper
- 

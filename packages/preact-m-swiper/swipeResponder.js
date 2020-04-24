@@ -7,11 +7,13 @@ export default class SwipeResponder extends Component {
     stage: 'swipe-end',
     freeze: false
   }
-  onTouchStart = (e) => {
+
+  onTouchStart = e => {
     this.touchStartPoint = e.touches[0]
     this.touchStartTime = Date.now()
     this.setState({ stage: 'swipe-start', freeze: true })
   }
+
   getSwipeAngle = touchMoveEvent => {
     if (!this.angle) {
       this.angle =
@@ -20,7 +22,8 @@ export default class SwipeResponder extends Component {
     }
     return this.angle
   }
-  onTouchMove = (e) => {
+
+  onTouchMove = e => {
     const angle = this.getSwipeAngle(e)
     if (Math.abs(angle) < 0.5) {
       // 判断角度
@@ -30,21 +33,22 @@ export default class SwipeResponder extends Component {
       const distance = e.touches[0].clientX - this.touchStartPoint.clientX
       this.setState({ distance, stage: 'swipe-moving', freeze: true })
       e.cancelable && e.preventDefault()
-    }
-    else {
+    } else {
       this.touchStartPoint = e.touches[0]
     }
   }
-  onTouchEnd = (e) => {
+
+  onTouchEnd = e => {
     this.angle = null
     const distance = e.changedTouches[0].clientX - this.touchStartPoint.clientX
     const speed = Math.abs(distance / (Date.now() - this.touchStartTime))
     this.setState({ distance, speed, stage: 'swipe-end', freeze: false })
   }
-  render () {
+
+  render() {
     const { children, style = {}, fill, ...otherProps } = this.props
     const { distance, speed, stage, freeze } = this.state
-    let wrapStyle = {
+    const wrapStyle = {
       overflow: 'hidden'
     }
     if (fill) {

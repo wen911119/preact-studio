@@ -5,7 +5,7 @@ export default class SwipeManager extends Component {
     super(props)
     // 在rn安卓webview内document.documentElement.clientWidth有时候是0
     this.containerWidth =
-      props.containerWidth ||
+      props.itemWidth ||
       Math.max(document.documentElement.clientWidth, window.screen.width)
     this.state = {
       offset: -this.containerWidth * (props.activeIndex || 0),
