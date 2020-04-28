@@ -37,7 +37,7 @@ const TabsSimple = ({
           onClick={() => onChange(i)}
         >
           {renderItem ? (
-            renderItem(item)
+            renderItem(item, i, index === i)
           ) : (
             <Text color={index === i ? activeColor : color} size={size}>
               {item}
