@@ -369,6 +369,10 @@ export class DateRangePickerContent extends Component {
       cursor = dateParser(props.start)
       delete cursor.day
     }
+    if (!cursor && props.min) {
+      cursor = dateParser(props.min)
+      delete cursor.day
+    }
     if (!cursor) {
       const now = new Date()
       cursor = {
