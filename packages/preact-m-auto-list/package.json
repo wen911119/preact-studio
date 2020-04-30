@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-auto-list",
-  "version": "1.9.2",
+  "version": "1.9.8",
   "description": "",
   "main": "index.js",
   "raw": "index.js",
@@ -13,7 +13,7 @@
   "dependencies": {
     "@ruiyun/preact-layout-suite": "^1.2.77",
     "@ruiyun/preact-loading": "^1.2.39",
-    "@ruiyun/preact-m-scroller": "^1.9.2",
+    "@ruiyun/preact-m-scroller": "^1.9.8",
     "@ruiyun/preact-text": "^1.9.1"
   },
   "compileDependencies": [
