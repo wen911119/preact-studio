@@ -59,7 +59,7 @@ export default class Scroller extends Component {
 
   updatePosition = target => {
     const { onBottomThreshold = 25, onWillBottom } = this.props
-    if (target.scrollHeight === target.clientHeight) {
+    if (target.scrollHeight <= target.clientHeight) {
       // 内容高度小于等于容器高度
       this.position = 0
     } else if (target.scrollTop === 0) {
