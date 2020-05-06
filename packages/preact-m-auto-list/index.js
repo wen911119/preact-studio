@@ -258,7 +258,7 @@ class Base extends Component {
       } else {
         newList.push(list)
       }
-      result.nomore = totalPage <= currentPage
+      this.nomore = result.nomore = totalPage <= currentPage
       this.setState({
         data: newList,
         pageNum,
@@ -295,7 +295,11 @@ class Base extends Component {
   }
 
   onLoadMore = doneCallBack => {
-    this.fecthListData(this.state.pageNum + 1).then(doneCallBack)
+    if (this.nomore) {
+      doneCallBack({ nomore: true, success: true })
+    } else {
+      this.fecthListData(this.state.pageNum + 1).then(doneCallBack)
+    }
   }
 
   onRefresh = done => {
