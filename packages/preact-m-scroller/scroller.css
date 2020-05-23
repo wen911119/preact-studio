@@ -1,12 +1,12 @@
-.scroller {
-  overflow-y: auto;
+.scrollerWithHeight {
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
-.flex1 {
-  flex: 1
+.scrollerWithNoHeight {
+  overflow: hidden;
 }
 
-.scroller::-webkit-scrollbar {
+.hideScrollBar::-webkit-scrollbar {
   display: none;
 }

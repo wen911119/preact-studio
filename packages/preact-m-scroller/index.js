@@ -1,106 +1,105 @@
-import { h, Component, createRef } from 'preact'
+import { h, Component } from 'preact'
 import p2r from 'p-to-r'
+import { getScrollEventTarget, computePosition, throttle } from './utils'
 
-import debounce from 'lodash.debounce'
-
-import { WithRefreshController } from './refreshController.js'
-import { WithLoadMore } from './loadMore.js'
+import WithRefresh from './withRefresh.js'
+import WithLoadMore from './withLoadMore.js'
 
 import classNames from './scroller.css'
 
-const computePosition = (startPoint, currentPoint) => {
-  const xDistance = currentPoint.clientX - startPoint.clientX
-  const yDistance = currentPoint.clientY - startPoint.clientY
-  return {
-    angle: (Math.atan(xDistance / yDistance) * 180) / Math.PI,
-    xDistance,
-    yDistance
-  }
-}
-
-// 只是隐藏了滚动条的最基础scroller
 export const BaseScroller = ({
-  height,
-  style,
-  className,
   children,
-  footerSlot,
-  ...otherProps
+  height,
+  className,
+  id,
+  hideScrollBar = true
 }) => {
-  const classNamesArr = [classNames.scroller]
+  const classNamesArr = []
+  const style = {}
+  if (height) {
+    classNamesArr.push(classNames.scrollerWithHeight)
+    style.height = p2r(height)
+  } else {
+    classNamesArr.push(classNames.scrollerWithNoHeight)
+  }
+  if (hideScrollBar) {
+    classNamesArr.push(classNames.hideScrollBar)
+  }
   if (className) {
     classNamesArr.push(className)
   }
-  if (!height) {
-    classNamesArr.push(classNames.flex1)
-  }
   return (
-    <div
-      style={Object.assign({ height: p2r(height) }, style)}
-      className={classNamesArr.join(' ')}
-      {...otherProps}
-    >
+    <div className={classNamesArr.join(' ')} style={style} id={id}>
       {children}
-      {footerSlot && footerSlot()}
     </div>
   )
 }
 
 export default class Scroller extends Component {
+  id = `scroller_${Date.now()}`
+
   position = 0
 
   touchStartPoint = null
 
-  baseScrollerRef = createRef()
+  gestureListenerBinded = false
 
   scrollTo = position => {
-    this.baseScrollerRef.current.base.scrollTop = position
+    this.scrollEle.scrollTop = position
   }
 
-  updatePosition = target => {
-    const { onBottomThreshold = 25, onWillBottom } = this.props
-    if (target.scrollHeight <= target.clientHeight) {
-      // 内容高度小于等于容器高度
-      this.position = 0
-    } else if (target.scrollTop === 0) {
-      // 在顶部
-      this.position = 1
-    } else if (target.scrollTop + target.clientHeight === target.scrollHeight) {
-      // 在底部
-      this.position = 3
-      onWillBottom && onWillBottom()
-    } else {
-      // 在中间
-      if (
-        target.scrollHeight - target.scrollTop - target.clientHeight <=
-        onBottomThreshold
-      ) {
-        onWillBottom && onWillBottom()
+  updatePosition = () => {
+    const { onBottomThreshold = 100 } = this.props
+
+    const { scrollTop, scrollHeight, clientHeight } = this.scrollEle
+    let newPosition
+    if (scrollTop <= 0) {
+      if (clientHeight >= scrollHeight) {
+        // 顶部，内容少，不足以滚动
+        newPosition = 0
+      } else {
+        // 顶部，可以滚动
+        newPosition = 1
       }
-      this.position = 2
+    } else if (scrollTop + clientHeight >= scrollHeight) {
+      // 底部
+      newPosition = 4
+    } else if (scrollTop + clientHeight > scrollHeight - onBottomThreshold) {
+      // 接近底部
+      newPosition = 3
+    } else {
+      // 中间
+      newPosition = 2
     }
-    this.props.onScrollerPositionChange &&
-      this.props.onScrollerPositionChange(this.position)
+    if (this.position !== newPosition) {
+      this.position = newPosition
+      this.onPositionChange(this.position)
+    }
   }
 
-  updatePositionDebounce = debounce(this.updatePosition, 50)
+  updatePositionThrottle = throttle(this.updatePosition, 200, 200)
 
-  onScroll = event => {
-    this.updatePositionDebounce(event.target)
-    this.props.onScroll && this.props.onScroll(event)
+  onPositionChange = newPosition => {
+    const { onWillBottom, onBottom, onScrollerPositionChange } = this.props
+    if (newPosition < 2 || newPosition > 3) {
+      this.bindGestureListener()
+    } else {
+      this.unbindGestureListener()
+    }
+    newPosition === 3 && onWillBottom && onWillBottom()
+    newPosition === 4 && onBottom && onBottom()
+    onScrollerPositionChange && onScrollerPositionChange(newPosition)
   }
 
   onTouchStart = event => {
     if (!event.LOCKED_BY_CHILDREN) {
       event.LOCKED_BY_CHILDREN = true
       this.touchStartPoint = event.targetTouches[0]
-      // 为了解决在顶部上滑，200毫秒内突然再次下拉导致position不正确
-      this.updatePosition(this.baseScrollerRef.current.base)
     }
   }
 
   onTouchMove = event => {
-    if (this.position !== 2 && !event.LOCKED_BY_CHILDREN) {
+    if (!event.LOCKED_BY_CHILDREN) {
       const { onPullDown, onPullUp } = this.props
       const { angle, yDistance } = computePosition(
         this.touchStartPoint,
@@ -111,10 +110,10 @@ export default class Scroller extends Component {
         yDistance > 0 &&
         Math.abs(angle) < 30
       ) {
-        // 在对顶部下拉
+        // 在顶部下拉
         event.preventDefault()
         onPullDown && onPullDown(yDistance)
-      } else if (this.position === 3 && yDistance < 0 && Math.abs(angle) < 30) {
+      } else if (this.position === 4 && yDistance < 0 && Math.abs(angle) < 30) {
         // 在最底部上拉
         event.preventDefault()
         onPullUp && onPullUp(-yDistance)
@@ -135,38 +134,92 @@ export default class Scroller extends Component {
     }
   }
 
-  componentDidMount() {
-    // eslint-disable-next-line
-    this.observer = new MutationObserver(() => {
-      this.updatePosition(this.baseScrollerRef.current.base)
-    })
-    this.observer.observe(this.baseScrollerRef.current.base, {
-      childList: true,
-      subtree: true
-    })
-    this.updatePosition(this.baseScrollerRef.current.base)
+  bindPositionListener = () => {
+    if (!this.scrollEventTarget.__LISTEN_BY__) {
+      this.scrollEventTarget.__LISTEN_BY__ = this.id
+      this.scrollEventTarget.addEventListener(
+        'scroll',
+        this.updatePositionThrottle,
+        {
+          passive: true
+        }
+      )
+      // eslint-disable-next-line
+      this.observer = new MutationObserver(this.updatePosition)
+      this.observer.observe(this.observerEle, {
+        childList: true,
+        subtree: true
+      })
+    }
   }
 
-  componentWillUnmount() {
+  unbindPositionListener = () => {
+    this.scrollEventTarget.__LISTEN_BY__ = undefined
+    this.scrollEventTarget.removeEventListener(
+      'scroll',
+      this.updatePositionThrottle,
+      {
+        passive: true
+      }
+    )
     this.observer && this.observer.disconnect()
     this.observer = null
   }
 
+  bindGestureListener = () => {
+    if (!this.gestureListenerBinded) {
+      this.mySelf.addEventListener('touchstart', this.onTouchStart, {
+        passive: true
+      })
+      this.mySelf.addEventListener('touchmove', this.onTouchMove, {
+        passive: false
+      })
+      this.mySelf.addEventListener('touchend', this.onTouchEnd, {
+        passive: true
+      })
+      this.gestureListenerBinded = true
+    }
+  }
+
+  unbindGestureListener = () => {
+    if (this.gestureListenerBinded) {
+      this.mySelf.removeEventListener('touchstart', this.onTouchStart, {
+        passive: true
+      })
+      this.mySelf.removeEventListener('touchmove', this.onTouchMove, {
+        passive: false
+      })
+      this.mySelf.removeEventListener('touchend', this.onTouchEnd, {
+        passive: true
+      })
+      this.gestureListenerBinded = false
+    }
+  }
+
+  componentDidMount() {
+    this.mySelf = document.getElementById(this.id)
+    this.scrollEventTarget = getScrollEventTarget(this.mySelf)
+    if (this.scrollEventTarget === window) {
+      this.scrollEle = document.documentElement
+      this.observerEle = document.body
+    } else {
+      this.observerEle = this.scrollEle = this.scrollEventTarget
+    }
+    this.bindPositionListener()
+    this.bindGestureListener()
+  }
+
+  componentWillUnmount() {
+    this.unbindPositionListener(this.scrollEventTarget)
+    this.unbindGestureListener()
+  }
+
   render() {
-    return (
-      <BaseScroller
-        {...this.props}
-        ref={this.baseScrollerRef}
-        onScroll={this.onScroll}
-        onTouchStart={this.onTouchStart}
-        onTouchMove={this.onTouchMove}
-        onTouchEnd={this.onTouchEnd}
-      />
-    )
+    return <BaseScroller {...this.props} id={this.id} />
   }
 }
 
-export const ScrollerWithRefresh = WithRefreshController(Scroller)
+export const ScrollerWithRefresh = WithRefresh(Scroller)
 
 export const ScrollerWithLoadMore = WithLoadMore(Scroller)
 

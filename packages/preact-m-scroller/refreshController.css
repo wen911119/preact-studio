@@ -1,11 +1,4 @@
 
-.refreshController {
-  position: relative;
-  overflow: hidden;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
 css-icon {
   display: inline-block;
   height: 1em; width: 1em;
