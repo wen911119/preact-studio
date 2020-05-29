@@ -3,7 +3,7 @@ import { WithModal } from '@ruiyun/preact-modal'
 import { XCenterView, RowView, SlotRowView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import Line from '@ruiyun/preact-line'
-import Scroller from '@ruiyun/preact-m-scroller'
+import { ScrollerWithPreventBounce } from '@ruiyun/preact-m-scroller'
 import p2r from 'p-to-r'
 import style from './index.css'
 
@@ -15,28 +15,30 @@ class PickerContent extends Component {
   onCancel = () => {
     this.props.cb && this.props.cb()
   }
+
   onConfirm = () => {
     this.props.cb && this.props.cb(Array.from(this.state.selectedIndexs))
   }
+
   onSelect = index => {
     const mode = this.props.mode || 1
     if (mode > 1) {
       // 多选模式
-      let selectedIndexs = Array.from(this.state.selectedIndexs)
+      const selectedIndexs = Array.from(this.state.selectedIndexs)
       if (selectedIndexs.length < mode) {
         selectedIndexs.push(index)
         this.setState({
           selectedIndexs
         })
       }
-    }
-    else if (mode === 1) {
+    } else if (mode === 1) {
       // 单选模式
       this.setState({
         selectedIndexs: [index]
       })
     }
   }
+
   onRemove = index => {
     const selectedIndexs = Array.from(this.state.selectedIndexs).filter(
       item => item !== index
@@ -45,29 +47,30 @@ class PickerContent extends Component {
       selectedIndexs
     })
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     this.state = {
       selectedIndexs: props.values || []
     }
   }
-  componentDidMount () {
+
+  componentDidMount() {
     let target
     if (this.state.selectedIndexs.length) {
       target = document.getElementsByClassName('_item_selected_')[0]
-    }
-    else {
+    } else {
       target = document.getElementsByClassName(style.shadow)[0]
     }
     try {
       // 不管有没有选中的值都要scrollIntoView,这样可以解决ios键盘把页面顶上去后不会自动收下来的奇怪bug
       target.scrollIntoView()
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err)
     }
   }
-  render () {
+
+  render() {
     const {
       title = '',
       options = [],
@@ -89,7 +92,7 @@ class PickerContent extends Component {
     return (
       <div style={{ backgroundColor: '#fff', width: '100vw' }}>
         <RowView
-          hAlign="between"
+          hAlign='between'
           height={80}
           padding={[0, 30, 0, 30]}
           style={{
@@ -102,10 +105,9 @@ class PickerContent extends Component {
           <Text size={titleSize} color={titleColor}>
             {title}
             {mode > 1 && mode !== 999 && (
-              <Text
-                color="#ccc"
-                size={24}
-              >{`(${selectedIndexs.length}/${mode})`}</Text>
+              <Text color='#ccc' size={24}>
+                {`(${selectedIndexs.length}/${mode})`}
+              </Text>
             )}
           </Text>
           <Text
@@ -116,7 +118,7 @@ class PickerContent extends Component {
             确定
           </Text>
         </RowView>
-        <Scroller height={p2r(440)}>
+        <ScrollerWithPreventBounce height={p2r(440)}>
           {options.map((item, i) => (
             <div
               key={item}
@@ -135,7 +137,7 @@ class PickerContent extends Component {
               <XCenterView height={itemHeight}>
                 <SlotRowView slot={30}>
                   {selectedIndexs.indexOf(i) > -1 && (
-                    <Text color="transparent" style={{ opacity: 0 }}>
+                    <Text color='transparent' style={{ opacity: 0 }}>
                       &#10003;
                     </Text>
                   )}
@@ -155,7 +157,7 @@ class PickerContent extends Component {
               <Line />
             </div>
           ))}
-        </Scroller>
+        </ScrollerWithPreventBounce>
       </div>
     )
   }
@@ -166,7 +168,7 @@ const renderModalContent = props => () => <PickerContent {...props} />
 
 @WithModal
 export class Picker extends Component {
-  picker ({ title, options, config, mode, values }) {
+  picker({ title, options, config, mode, values }) {
     const styleConfig = Object.assign(
       {
         titleSize: 30,
@@ -182,7 +184,7 @@ export class Picker extends Component {
       },
       config
     )
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       const cb = indexs => {
         this.props.$modal.hide()
         if (indexs) {
@@ -204,11 +206,13 @@ export class Picker extends Component {
       })
     })
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     this.picker = this.picker.bind(this)
   }
-  render ({ children }) {
+
+  render({ children }) {
     return cloneElement(children, {
       $picker: this.picker
     })
@@ -217,7 +221,7 @@ export class Picker extends Component {
 
 export const WithPicker = BaseComponent => {
   class ComponentWithPicker extends Component {
-    render () {
+    render() {
       return (
         <Picker>
           <BaseComponent {...this.props} />

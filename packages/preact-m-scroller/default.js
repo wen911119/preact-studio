@@ -2,7 +2,7 @@ import { h } from 'preact'
 import { XCenterView, RowView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import Loading from '@ruiyun/preact-loading'
-import classNames from './refreshController.css'
+import classNames from './default.css'
 
 const STAGE_MAP = {
   hide: '',
@@ -26,7 +26,7 @@ export const DefaultLoadMoreFooter = ({ stage, onRetry }) => {
 
 export const DefaultRefreshHeader = ({
   stage,
-  refreshHeaderHeight,
+  refreshHeaderHeight = 50,
   distance
 }) => {
   return (

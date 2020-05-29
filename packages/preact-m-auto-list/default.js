@@ -4,8 +4,8 @@ import { XCenterView, SlotColumnView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import classNames from './index.css'
 
-export const DefaultEmptyView = () => (
-  <XCenterView height='70%' bgColor='#fff'>
+export const DefaultEmptyView = ({ height = '70vh' }) => (
+  <XCenterView height={height} bgColor='#fff'>
     <SlotColumnView slot={30} hAlign='center'>
       <svg
         viewBox='0 0 1024 1024'
@@ -25,16 +25,16 @@ export const DefaultEmptyView = () => (
   </XCenterView>
 )
 
-export const DefaultLoadingView = () => (
-  <XCenterView height='70%' bgColor='#fff'>
+export const DefaultLoadingView = ({ height = '70vh' }) => (
+  <XCenterView height={height} bgColor='#fff'>
     <Loading />
   </XCenterView>
 )
 
-export const DefaultErrorView = retry => {
+export const DefaultErrorView = ({ onRetry, height = '70vh' }) => {
   return (
-    <XCenterView height='70%' bgColor='#fff'>
-      <SlotColumnView slot={50} hAlign='center' onClick={retry}>
+    <XCenterView height={height} bgColor='#fff'>
+      <SlotColumnView slot={50} hAlign='center' onClick={onRetry}>
         <css-icon className={classNames['icon-refresh']} />
         <Text size={26} color='#ccc'>
           加载出错，点击重试

@@ -2,7 +2,7 @@ import { h, Component, cloneElement } from 'preact'
 import { WithModal } from '@ruiyun/preact-modal'
 import { RowView, XCenterView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
-import Scroller from '@ruiyun/preact-m-scroller'
+import { ScrollerWithPreventBounce } from '@ruiyun/preact-m-scroller'
 import Tabs from '@ruiyun/preact-m-tabs'
 import Line from '@ruiyun/preact-line'
 import p2r from 'p-to-r'
@@ -139,7 +139,11 @@ class PickerContent extends Component {
           shadow={false}
         >
           {tabItems.map((tabItem, indexKey) => (
-            <Scroller height={p2r(440)} key={indexKey}>
+            <ScrollerWithPreventBounce
+              height={p2r(440)}
+              key={indexKey}
+              degree={30}
+            >
               <Line />
               {tabItem === 'loading' ? (
                 <XCenterView height={400}>
@@ -179,7 +183,7 @@ class PickerContent extends Component {
                   )
                 })
               )}
-            </Scroller>
+            </ScrollerWithPreventBounce>
           ))}
         </Tabs>
       </div>
