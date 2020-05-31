@@ -78,7 +78,11 @@ export const ScrollerWithRefresh = ({
 }) => {
   const id = useId()
   const position = usePosition(id)
-  const { stage, distance } = useRefresh(id, position, onRefresh, undefined, {
+  const { stage, distance } = useRefresh({
+    id,
+    position,
+    onRefresh,
+    resetLoadMore: undefined,
     refreshHeaderHeight,
     refreshDamping,
     degree
@@ -109,7 +113,11 @@ export const ScrollerWithRefreshAndLoadMore = ({
   const id = useId()
   const position = usePosition(id)
   const [stage, retry, reset] = useLoadMore(position, onLoadMore)
-  const { stage: step, distance } = useRefresh(id, position, onRefresh, reset, {
+  const { stage: step, distance } = useRefresh({
+    id,
+    position,
+    onRefresh,
+    resetLoadMore: reset,
     refreshHeaderHeight,
     refreshDamping,
     degree

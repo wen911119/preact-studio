@@ -40,9 +40,9 @@ const usePosition = (scrollerId, willBottomThreshold = 200) => {
       }
       updatePosition(newPosition)
     }
-    const computePositionThrottle1 = throttle(computePosition, 10, 100)
-    const computePositionThrottle2 = throttle(computePosition, 10, 100)
-    const computePositionThrottle3 = throttle(computePosition, 10, 300)
+    const computePositionThrottle1 = throttle(computePosition, 30, 100)
+    const computePositionThrottle2 = throttle(computePosition, 30, 100)
+    const computePositionThrottle3 = throttle(computePosition, 30, 300)
     scrollEventTarget.addEventListener('scroll', computePositionThrottle1, {
       passive: true
     })
@@ -66,7 +66,7 @@ const usePosition = (scrollerId, willBottomThreshold = 200) => {
       observer.disconnect()
       observer = null
     }
-  }, [scrollerId, willBottomThreshold])
+  }, [scrollerId, willBottomThreshold, updatePosition])
   return position
 }
 

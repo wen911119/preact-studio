@@ -1,65 +1,76 @@
-import { useState, useRef, useEffect } from 'preact/compat'
+import { useState, useRef, useEffect, useCallback } from 'preact/compat'
 import { computePosition } from './utils'
 
-const useRefresh = (id, position, onRefresh, resetLoadMore, config) => {
+const useRefresh = ({
+  id,
+  position,
+  onRefresh,
+  resetLoadMore,
+  degree = 30,
+  refreshHeaderHeight = 50,
+  refreshDamping = 2.5
+}) => {
   const [refreshState, updateRefreshState] = useState({
     stage: 1,
     distance: 0
   })
 
   const startPoint = useRef(null)
+  const isLoading = useRef(false)
 
-  useEffect(() => {
-    const defaultConfig = {
-      degree: 30,
-      refreshHeaderHeight: 50,
-      refreshDamping: 2.5
-    }
-    const mergedConfig = Object.assign(
-      {},
-      defaultConfig,
-      // 过滤掉undefined和null的属性
-      JSON.parse(JSON.stringify(config))
-    )
-    const { degree, refreshHeaderHeight, refreshDamping } = mergedConfig
-    const ele = document.getElementById(id)
-    const onTouchStartHandler = event => {
-      if (refreshState.stage === 4) {
-        updateRefreshState({
-          stage: 1,
-          distance: 0
-        })
+  const onTouchStartHandler = useCallback(
+    event => {
+      if (!isLoading.current) {
+        startPoint.current = event.touches[0]
       }
-      startPoint.current = event.touches[0]
-    }
-    const onTouchMoveHandler = event => {
-      const { angle, yDistance } = computePosition(
-        startPoint.current,
-        event.touches[0]
-      )
-      if (position < 2 && yDistance > 0 && Math.abs(angle) < degree) {
-        event.preventDefault()
-        if (refreshState.stage < 3) {
+    },
+    [isLoading, startPoint]
+  )
+  const onTouchMoveHandler = useCallback(
+    event => {
+      if (startPoint.current) {
+        const { angle, yDistance } = computePosition(
+          startPoint.current,
+          event.touches[0]
+        )
+        if (yDistance > 0 && Math.abs(angle) < degree) {
+          event.preventDefault()
           const distance = yDistance / refreshDamping
-          updateRefreshState({
-            stage: distance > refreshHeaderHeight ? 2 : 1,
-            distance
+          window.requestAnimationFrame(() => {
+            updateRefreshState({
+              stage: distance > refreshHeaderHeight ? 2 : 1,
+              distance
+            })
           })
         }
       }
-    }
-    const onTouchEndHandler = event => {
-      if (refreshState.stage < 3) {
+    },
+    [
+      startPoint,
+      updateRefreshState,
+      degree,
+      refreshDamping,
+      refreshHeaderHeight
+    ]
+  )
+  const onTouchEndHandler = useCallback(
+    event => {
+      if (startPoint.current) {
         const { yDistance } = computePosition(
           startPoint.current,
           event.changedTouches[0]
         )
         if (yDistance > refreshHeaderHeight * refreshDamping) {
-          updateRefreshState({
-            stage: 3,
-            distance: refreshHeaderHeight
+          window.requestAnimationFrame(() => {
+            updateRefreshState({
+              stage: 3,
+              distance: refreshHeaderHeight
+            })
           })
+
+          isLoading.current = true
           onRefresh(isSuccess => {
+            isLoading.current = false
             updateRefreshState({
               stage: 4,
               distance: 0
@@ -67,14 +78,30 @@ const useRefresh = (id, position, onRefresh, resetLoadMore, config) => {
             resetLoadMore && isSuccess && resetLoadMore()
           })
         } else {
-          updateRefreshState({
-            stage: 4,
-            distance: 0
+          window.requestAnimationFrame(() => {
+            updateRefreshState({
+              stage: 4,
+              distance: 0
+            })
           })
         }
+        startPoint.current = null
       }
-    }
-    if (position < 2) {
+    },
+    [
+      startPoint,
+      isLoading,
+      updateRefreshState,
+      refreshHeaderHeight,
+      refreshDamping,
+      onRefresh,
+      resetLoadMore
+    ]
+  )
+
+  const addListener = useCallback(() => {
+    const ele = document.getElementById(id)
+    if (ele) {
       ele.addEventListener('touchstart', onTouchStartHandler, {
         passive: true
       })
@@ -85,8 +112,11 @@ const useRefresh = (id, position, onRefresh, resetLoadMore, config) => {
         passive: true
       })
     }
-    return function cleanup() {
-      // 清理
+  }, [id, onTouchStartHandler, onTouchMoveHandler, onTouchEndHandler])
+
+  const removeListener = useCallback(() => {
+    const ele = document.getElementById(id)
+    if (ele) {
       ele.removeEventListener('touchstart', onTouchStartHandler, {
         passive: true
       })
@@ -97,7 +127,14 @@ const useRefresh = (id, position, onRefresh, resetLoadMore, config) => {
         passive: true
       })
     }
-  }, [position])
+  }, [id, onTouchStartHandler, onTouchMoveHandler, onTouchEndHandler])
+
+  useEffect(() => {
+    if (position < 2) {
+      addListener()
+    }
+    return removeListener
+  }, [position, addListener, removeListener])
 
   return refreshState
 }
