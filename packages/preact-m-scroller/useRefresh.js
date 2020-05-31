@@ -97,7 +97,7 @@ const useRefresh = (id, position, onRefresh, resetLoadMore, config) => {
         passive: true
       })
     }
-  }, [id, position, onRefresh, resetLoadMore, config])
+  }, [position])
 
   return refreshState
 }

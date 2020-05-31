@@ -1,11 +1,11 @@
-import { useState, useRef } from 'preact/compat'
+import { useState, useRef, useEffect } from 'preact/compat'
 const useLoadMore = (position, onLoadMore) => {
   const [stage, updateStage] = useState('hide')
   const isLoading = useRef(false)
   const isError = useRef(false)
   const isNoMore = useRef(false)
 
-  const computeStage = () => {
+  const computeStage = position => {
     if (position === 0) {
       updateStage('hide')
     } else {
@@ -30,7 +30,10 @@ const useLoadMore = (position, onLoadMore) => {
       }
     }
   }
-  computeStage()
+
+  useEffect(() => {
+    computeStage(position)
+  }, [position])
 
   const reset = () => {
     isLoading.current = false
@@ -40,7 +43,7 @@ const useLoadMore = (position, onLoadMore) => {
 
   const retry = () => {
     reset()
-    computeStage()
+    computeStage(position)
   }
 
   return [stage, retry, reset]

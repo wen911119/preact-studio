@@ -40,50 +40,49 @@ const useListController = ({ fetchListData, format, params, pageSize }) => {
     data: []
   })
 
-  const fetchFirstPage = () => {
+  const fetchFirstPage = async () => {
     try {
       dispatch({ type: 'LOAD_FIRST_PAGE_START' })
-      fetchListData(Object.assign({}, params, { pageNum: 1, pageSize })).then(
-        ret => {
-          const { list } = format(ret)
-          dispatch({ type: 'LOAD_FIRST_PAGE_SUCCESS', payload: list })
-        }
+      const { list } = format(
+        await fetchListData(Object.assign({}, params, { pageNum: 1, pageSize }))
       )
+      dispatch({ type: 'LOAD_FIRST_PAGE_SUCCESS', payload: list })
     } catch (error) {
       dispatch({ type: 'LOAD_FIRST_PAGE_ERROR' })
     }
   }
-  const onLoadMore = done => {
+  const onLoadMore = async done => {
     try {
-      fetchListData(
-        Object.assign({}, params, { pageNum: state.pageNum + 1, pageSize })
-      ).then(ret => {
-        const {
-          list,
-          pageInfo: { totalPage, currentPage }
-        } = format(ret)
-        dispatch({ type: 'LOAD_NEXT_PAGE_SUCCESS', payload: list })
-        done({ success: true, nomore: currentPage >= totalPage })
-      })
+      const {
+        list,
+        pageInfo: { totalPage, currentPage }
+      } = format(
+        await fetchListData(
+          Object.assign({}, params, { pageNum: state.pageNum + 1, pageSize })
+        )
+      )
+      dispatch({ type: 'LOAD_NEXT_PAGE_SUCCESS', payload: list })
+      done({ success: true, nomore: currentPage >= totalPage })
     } catch (error) {
       done({ success: false })
     }
   }
   const onRefresh = done => {
-    try {
-      // 故意加点延时，因为接口速度太快会导致动画时间太短
-      setTimeout(() => {
-        fetchListData(Object.assign({}, params, { pageNum: 1, pageSize })).then(
-          ret => {
-            const { list } = format(ret)
-            dispatch({ type: 'REFRESH_SUCCESS', payload: list })
-            done()
-          }
+    // 故意加点延时，因为接口速度太快会导致动画时间太短
+    setTimeout(async () => {
+      try {
+        const { list } = format(
+          await fetchListData(
+            Object.assign({}, params, { pageNum: 1, pageSize })
+          )
         )
-      }, 300)
-    } catch (error) {
-      console.log(error)
-    }
+        dispatch({ type: 'REFRESH_SUCCESS', payload: list })
+        done()
+      } catch (error) {
+        console.log(error)
+        done(error)
+      }
+    }, 300)
   }
   const onRetry = fetchFirstPage
 
@@ -94,52 +93,3 @@ const useListController = ({ fetchListData, format, params, pageSize }) => {
 }
 
 export default useListController
-
-// const useListDataFetcher = (
-//   fetchListData,
-//   params,
-//   format,
-//   pageSize,
-//   pageNum,
-//   cb
-// ) => {
-//   const [listData, updateListData] = useState([])
-//   const [isLoading, updateIsLoading] = useState(false)
-//   const [isError, updateIsError] = useState(false)
-//   useEffect(() => {
-//     updateIsLoading(true)
-//     const fetchData = async () => {
-//       try {
-//         const {
-//           list,
-//           pageInfo: { totalPage, currentPage }
-//         } = format(
-//           await fetchListData(Object.assign({}, params, { pageNum, pageSize }))
-//         )
-//       } catch (err) {
-//         console.log(err)
-//         updateIsError(true)
-//       }
-//     }
-//   }, [params, pageSize, pageNum, cb])
-//   return listData
-// }
-
-// export const usePagination = (defaultPageSize = 10) => {
-//   const [pageSize, updatePageSize] = useState(defaultPageSize)
-//   const [pageNum, updatePageNum] = useState(1)
-//   const next = useCallback(() => {
-//     updatePageNum(n => n + 1)
-//   }, [])
-//   const reset = useCallback(() => {
-//     updatePageSize(defaultPageSize)
-//     updatePageNum(1)
-//   }, [defaultPageSize])
-//   return {
-//     pageSize,
-//     pageNum,
-//     next,
-//     reset,
-//     updatePageSize
-//   }
-// }

@@ -9,9 +9,9 @@ class ListItem extends Component {
   }
 
   render() {
-    const { renderItem, data, extraData, itemKey } = this.props
+    const { renderItem, data, extraData, index, itemKey } = this.props
     return (
-      <div data-list-item-id={itemKey}>
+      <div data-list-item-index={index}>
         {renderItem(data, extraData[itemKey])}
       </div>
     )
@@ -30,15 +30,15 @@ export default class List extends Component {
     const { itemClickHandler, data } = this.props
     if (itemClickHandler) {
       let current = event.target
-      let itemId
-      while (current && !current.dataset.listItemId) {
+      let itemIndex
+      while (current && !current.dataset.listItemIndex) {
         current = current.parentElement
       }
       if (current) {
-        itemId = current.dataset.listItemId
+        itemIndex = current.dataset.listItemIndex
       }
-      if (itemId) {
-        itemClickHandler(data[itemId], event.target)
+      if (itemIndex) {
+        itemClickHandler(data[itemIndex], event.target)
       }
     }
   }
@@ -57,11 +57,12 @@ export default class List extends Component {
     } else {
       return (
         <div onClick={this.onItemClick}>
-          {data.map(item => (
+          {data.map((item, index) => (
             <ListItem
               data={item}
               key={keyExtractor(item)}
               itemKey={keyExtractor(item)}
+              index={index}
               renderItem={renderItem}
               extraData={extraData}
             />
