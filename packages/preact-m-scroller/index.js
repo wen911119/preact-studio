@@ -43,24 +43,25 @@ export const BaseScroller = ({
   )
 }
 
-export const ScrollerWithPreventBounce = ({ degree, ...otherProps }) => {
-  const id = useId()
-  const position = usePosition(id)
-  usePreventBounce(id, position, degree)
-  return <BaseScroller id={id} {...otherProps} />
+export const ScrollerWithPreventBounce = ({ degree, id, ...otherProps }) => {
+  const scrollerId = useId(id)
+  const position = usePosition(scrollerId)
+  usePreventBounce(scrollerId, position, degree)
+  return <BaseScroller id={scrollerId} {...otherProps} />
 }
 
 export const ScrollerWithLoadMore = ({
   onLoadMore,
   children,
   LoadMoreFooter = DefaultLoadMoreFooter,
+  id,
   ...otherProps
 }) => {
-  const id = useId()
-  const position = usePosition(id)
+  const scrollerId = useId(id)
+  const position = usePosition(scrollerId)
   const [stage, retry] = useLoadMore(position, onLoadMore)
   return (
-    <BaseScroller id={id} {...otherProps}>
+    <BaseScroller id={scrollerId} {...otherProps}>
       {children}
       <LoadMoreFooter stage={stage} onRetry={retry} />
     </BaseScroller>
@@ -74,12 +75,13 @@ export const ScrollerWithRefresh = ({
   refreshHeaderHeight,
   refreshDamping,
   degree,
+  id,
   ...otherProps
 }) => {
-  const id = useId()
-  const position = usePosition(id)
+  const scrollerId = useId(id)
+  const position = usePosition(scrollerId)
   const { stage, distance } = useRefresh({
-    id,
+    scrollerId,
     position,
     onRefresh,
     resetLoadMore: undefined,
@@ -88,7 +90,7 @@ export const ScrollerWithRefresh = ({
     degree
   })
   return (
-    <BaseScroller id={id} {...otherProps}>
+    <BaseScroller id={scrollerId} {...otherProps}>
       <RefreshHeader
         stage={stage}
         distance={distance}
@@ -108,13 +110,14 @@ export const ScrollerWithRefreshAndLoadMore = ({
   refreshHeaderHeight,
   refreshDamping,
   degree,
+  id,
   ...otherProps
 }) => {
-  const id = useId()
-  const position = usePosition(id)
+  const scrollerId = useId(id)
+  const position = usePosition(scrollerId)
   const [stage, retry, reset] = useLoadMore(position, onLoadMore)
   const { stage: step, distance } = useRefresh({
-    id,
+    scrollerId,
     position,
     onRefresh,
     resetLoadMore: reset,
@@ -123,7 +126,7 @@ export const ScrollerWithRefreshAndLoadMore = ({
     degree
   })
   return (
-    <BaseScroller id={id} {...otherProps}>
+    <BaseScroller id={scrollerId} {...otherProps}>
       <RefreshHeader
         stage={step}
         distance={distance}
