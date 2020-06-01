@@ -20,8 +20,7 @@ const isEqual = (obj1, obj2) => {
 }
 
 export default class AutoList extends Component {
-  scrollerId = `scroller_${Math.random()}`
-  scrollerRef = null
+  scrollerId = this.props.scrollerId || `scroller_${Math.random()}`
 
   state = {
     isError: false,
@@ -32,14 +31,18 @@ export default class AutoList extends Component {
   }
 
   scrollTo = (position, animation) => {
+    const scrollerRef = getScrollEventTarget(
+      document.getElementById(this.scrollerId)
+    )
     try {
-      this.scrollerRef.scrollTo({
+      scrollerRef.scrollTo({
         top: position,
-        behavior: animation ? 'smooth' : ''
+        left: 0,
+        behavior: animation && 'smooth'
       })
     } catch (err) {
       console.log(err)
-      this.scrollerRef.scrollTop = position
+      scrollerRef.scrollTop = position
     }
   }
 
@@ -110,7 +113,6 @@ export default class AutoList extends Component {
 
   componentDidMount() {
     this.fectchData({ pageNum: 1, type: 'INIT' })
-    this.scrollerRef = getScrollEventTarget(this.scrollerId)
   }
 
   componentDidUpdate(prevProps) {

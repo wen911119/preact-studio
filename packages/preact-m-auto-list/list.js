@@ -12,7 +12,7 @@ class ListItem extends Component {
     const { renderItem, data, extraData, index, itemKey } = this.props
     return (
       <div data-list-item-index={index}>
-        {renderItem(data, extraData[itemKey])}
+        {renderItem(data, extraData && extraData[itemKey])}
       </div>
     )
   }
