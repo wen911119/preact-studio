@@ -12,7 +12,7 @@ class ListItem extends Component {
     const { renderItem, data, extraData, index, itemKey } = this.props
     return (
       <div data-list-item-index={index}>
-        {renderItem(data, extraData && extraData[itemKey])}
+        {renderItem(data, extraData[itemKey])}
       </div>
     )
   }
@@ -50,7 +50,7 @@ export default class List extends Component {
       keyExtractor,
       renderItem,
       emptyViewHeight,
-      extraData
+      extraData = {}
     } = this.props
     if (data.length === 0) {
       return <EmptyView height={emptyViewHeight} />
