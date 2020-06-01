@@ -1,4 +1,4 @@
-import { h } from 'preact'
+import { h, Component } from 'preact'
 import {
   ScrollerWithLoadMore,
   ScrollerWithRefreshAndLoadMore
@@ -10,105 +10,147 @@ import {
   DefaultEmptyView
 } from './default'
 import List from './list'
-import useListController from './useListController'
 
-export const AutoList = ({
-  height,
-  fetchListData,
-  format,
-  params,
-  pageSize = 20,
-  LoadingView = DefaultLoadingView,
-  ErrorView = DefaultErrorView,
-  EmptyView = DefaultEmptyView,
-  loadingViewHeight,
-  errorViewHeight,
-  emptyViewHeight,
-  renderItem,
-  keyExtractor,
-  recycleThreshold,
-  extraData,
-  itemClickHandler
-}) => {
-  const [{ data, isLoading, isError }, loadMore, retry] = useListController({
-    fetchListData,
-    format,
-    params,
-    pageSize
-  })
-  if (isError) {
-    return <ErrorView onRetry={retry} height={errorViewHeight} />
+export default class AutoList extends Component {
+  state = {
+    isError: false,
+    isLoading: false,
+    isNoMore: false,
+    currentPage: 0,
+    data: []
   }
-  if (isLoading) {
-    return <LoadingView height={loadingViewHeight} />
+
+  fectchData = async ({ pageNum, type, done }) => {
+    const { fetchListData, format, params, pageSize, onError } = this.props
+    const queryParams = Object.assign({ pageSize, pageNum }, params)
+    try {
+      if (type === 'INIT') {
+        this.setState({
+          isLoading: true,
+          data: []
+        })
+      }
+      const { list, nomore } = format(await fetchListData(queryParams))
+      let newData = list
+      if (type === 'LOAD_MORE') {
+        newData = Array.from(this.state.data).concat(newData)
+      }
+      this.setState(
+        {
+          isLoading: false,
+          isError: false,
+          currentPage: pageNum,
+          data: newData,
+          isNoMore: nomore
+        },
+        () => {
+          if (type === 'REFRESH' || type === 'LOAD_MORE') {
+            done({ success: true, nomore })
+          }
+        }
+      )
+    } catch (error) {
+      onError(error, type)
+      if (type === 'INIT') {
+        this.setState({
+          isError: true,
+          isLoading: false
+        })
+      } else {
+        done({ success: false, nomore: false })
+      }
+    }
   }
-  return (
-    <ScrollerWithLoadMore height={height} onLoadMore={loadMore}>
-      <List
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        itemClickHandler={itemClickHandler}
-        data={data}
-        EmptyView={EmptyView}
-        emptyViewHeight={emptyViewHeight}
-        recycleThreshold={recycleThreshold}
-        extraData={extraData}
-      />
-    </ScrollerWithLoadMore>
-  )
+
+  onRefresh = done => {
+    this.fectchData({ pageNum: 1, type: 'REFRESH', done })
+  }
+
+  onRetry = () => {
+    this.fectchData({ pageNum: 1, type: 'INIT' })
+  }
+
+  onLoadMore = done => {
+    const { isNoMore, currentPage } = this.state
+    if (isNoMore) {
+      return done({ success: true, nomore: true })
+    }
+    return this.fectchData({
+      pageNum: currentPage + 1,
+      type: 'LOAD_MORE',
+      done
+    })
+  }
+
+  componentDidMount() {
+    this.fectchData({ pageNum: 1, type: 'INIT' })
+  }
+
+  render() {
+    const { isError, isLoading, data } = this.state
+    const {
+      refreshable,
+      ErrorView,
+      LoadingView,
+      EmptyView,
+      errorViewHeight,
+      loadingViewHeight,
+      emptyViewHeight,
+      height,
+      keyExtractor,
+      renderItem,
+      itemClickHandler,
+      recycleThreshold,
+      extraData
+    } = this.props
+    if (isError) {
+      return <ErrorView onRetry={this.onRetry} height={errorViewHeight} />
+    }
+    if (isLoading) {
+      return <LoadingView height={loadingViewHeight} />
+    }
+    if (refreshable) {
+      return (
+        <ScrollerWithRefreshAndLoadMore
+          height={height}
+          onLoadMore={this.onLoadMore}
+          onRefresh={this.onRefresh}
+        >
+          <List
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+            itemClickHandler={itemClickHandler}
+            data={data}
+            EmptyView={EmptyView}
+            emptyViewHeight={emptyViewHeight}
+            recycleThreshold={recycleThreshold}
+            extraData={extraData}
+          />
+        </ScrollerWithRefreshAndLoadMore>
+      )
+    }
+    return (
+      <ScrollerWithLoadMore height={height} onLoadMore={this.onLoadMore}>
+        <List
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          itemClickHandler={itemClickHandler}
+          data={data}
+          EmptyView={EmptyView}
+          emptyViewHeight={emptyViewHeight}
+          recycleThreshold={recycleThreshold}
+          extraData={extraData}
+        />
+      </ScrollerWithLoadMore>
+    )
+  }
 }
 
-export const AutoListWithRefresh = ({
-  height,
-  fetchListData,
-  format,
-  params,
-  pageSize = 20,
-  LoadingView = DefaultLoadingView,
-  ErrorView = DefaultErrorView,
-  EmptyView = DefaultEmptyView,
-  loadingViewHeight,
-  errorViewHeight,
-  emptyViewHeight,
-  renderItem,
-  keyExtractor,
-  recycleThreshold,
-  extraData,
-  itemClickHandler
-}) => {
-  const [
-    { data, isLoading, isError },
-    loadMore,
-    retry,
-    refresh
-  ] = useListController({
-    fetchListData,
-    format,
-    params,
-    pageSize
-  })
-  if (isError) {
-    return <ErrorView onRetry={retry} height={errorViewHeight} />
+AutoList.defaultProps = {
+  ErrorView: DefaultErrorView,
+  EmptyView: DefaultEmptyView,
+  LoadingView: DefaultLoadingView,
+  onError: (error, type) => {
+    console.log({ error, type })
   }
-  if (isLoading) {
-    return <LoadingView height={loadingViewHeight} />
-  }
-  return (
-    <ScrollerWithRefreshAndLoadMore
-      height={height}
-      onLoadMore={loadMore}
-      onRefresh={refresh}
-    >
-      <List
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        itemClickHandler={itemClickHandler}
-        data={data}
-        EmptyView={EmptyView}
-        emptyViewHeight={emptyViewHeight}
-        recycleThreshold={recycleThreshold}
-        extraData={extraData}
-      />
-    </ScrollerWithRefreshAndLoadMore>
-  )
 }
