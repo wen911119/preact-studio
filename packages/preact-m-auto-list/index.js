@@ -133,6 +133,7 @@ export default class AutoList extends Component {
       loadingViewHeight,
       emptyViewHeight,
       height,
+      minHeight,
       keyExtractor,
       renderItem,
       itemClickHandler,
@@ -149,6 +150,7 @@ export default class AutoList extends Component {
       return (
         <ScrollerWithRefreshAndLoadMore
           height={height}
+          minHeight={minHeight}
           onLoadMore={this.onLoadMore}
           onRefresh={this.onRefresh}
           id={this.scrollerId}
@@ -169,6 +171,7 @@ export default class AutoList extends Component {
     return (
       <ScrollerWithLoadMore
         height={height}
+        minHeight={minHeight}
         onLoadMore={this.onLoadMore}
         id={this.scrollerId}
       >
