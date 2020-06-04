@@ -35,6 +35,7 @@ const useRefresh = ({
         )
         if (yDistance > 0 && Math.abs(angle) < degree) {
           event.preventDefault()
+          event.stopPropagation()
           const distance = yDistance / refreshDamping
           window.requestAnimationFrame(() => {
             updateRefreshState({

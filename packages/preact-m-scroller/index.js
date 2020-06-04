@@ -81,7 +81,7 @@ export const ScrollerWithRefresh = ({
   const scrollerId = useId(id)
   const position = usePosition(scrollerId)
   const { stage, distance } = useRefresh({
-    scrollerId,
+    id: scrollerId,
     position,
     onRefresh,
     resetLoadMore: undefined,
@@ -117,7 +117,7 @@ export const ScrollerWithRefreshAndLoadMore = ({
   const position = usePosition(scrollerId)
   const [stage, retry, reset] = useLoadMore(position, onLoadMore)
   const { stage: step, distance } = useRefresh({
-    scrollerId,
+    id: scrollerId,
     position,
     onRefresh,
     resetLoadMore: reset,
