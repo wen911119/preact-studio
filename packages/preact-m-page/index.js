@@ -1,6 +1,9 @@
 import { h, Component } from 'preact'
 import { ColumnView } from '@ruiyun/preact-layout-suite'
-import { ScrollerWithPreventBounce } from '@ruiyun/preact-m-scroller'
+import {
+  ScrollerWithPreventBounce,
+  ScrollerWithRefresh
+} from '@ruiyun/preact-m-scroller'
 import classNames from './index.css'
 
 const preventTouchMove = event => event.preventDefault()
@@ -30,11 +33,24 @@ export default class Page extends Component {
     )
   }
 
-  static Content = ({ children, degree }) => (
-    <ScrollerWithPreventBounce height='flex1' degree={degree}>
-      {children}
-    </ScrollerWithPreventBounce>
-  )
+  static Content = ({ children, degree, onRefresh }) => {
+    if (onRefresh) {
+      return (
+        <ScrollerWithRefresh
+          height='flex1'
+          degree={degree}
+          onRefresh={onRefresh}
+        >
+          {children}
+        </ScrollerWithRefresh>
+      )
+    }
+    return (
+      <ScrollerWithPreventBounce height='flex1' degree={degree}>
+        {children}
+      </ScrollerWithPreventBounce>
+    )
+  }
 
   render() {
     return <ColumnView height='100%'>{this.props.children}</ColumnView>
