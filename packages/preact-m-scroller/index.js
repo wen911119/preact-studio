@@ -16,10 +16,13 @@ export const BaseScroller = ({
   height,
   className,
   id,
-  hideScrollBar = true
+  hideScrollBar = true,
+  minHeight
 }) => {
   const classNamesArr = []
-  const style = {}
+  const style = {
+    minHeight
+  }
   if (height) {
     classNamesArr.push(classNames.scrollerWithHeight)
     if (height === 'flex1') {
