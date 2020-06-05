@@ -53,6 +53,7 @@ export default class AutoList extends Component {
       if (type === 'INIT') {
         this.setState({
           isLoading: true,
+          isError: false,
           data: []
         })
       }
