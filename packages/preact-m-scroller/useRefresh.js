@@ -70,13 +70,13 @@ const useRefresh = ({
           })
 
           isLoading.current = true
-          onRefresh(isSuccess => {
+          onRefresh(ret => {
             isLoading.current = false
             updateRefreshState({
               stage: 4,
               distance: 0
             })
-            resetLoadMore && isSuccess && resetLoadMore()
+            resetLoadMore && ret && ret.success && resetLoadMore()
           })
         } else {
           window.requestAnimationFrame(() => {
