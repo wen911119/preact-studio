@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
 import Input from '@ruiyun/preact-input'
-import { FormRow } from './formRow'
+import FormRow from './formRow'
 import classNames from './nativeDateTime.css'
 
 export default class FormNativeDateTimeInput extends Component {
