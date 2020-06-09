@@ -1,9 +1,9 @@
-import { h, Component, toChildArray, cloneElement, Fragment } from 'preact'
+import { h, Component, toChildArray, cloneElement } from 'preact'
 import { RowView, SlotColumnView } from '@ruiyun/preact-layout-suite'
 import Text from '@ruiyun/preact-text'
 import Icon from '@ruiyun/preact-icon'
-import px2rem from 'p-to-r'
-import className from './index.css'
+import Page from '@ruiyun/preact-m-page'
+import classNames from './index.css'
 
 class Item extends Component {
   shouldComponentUpdate(nextProps) {
@@ -60,49 +60,48 @@ export default class Tabbar extends Component {
       padding = [0, 50, 0, 50],
       slot = 5,
       bgColor = '#fff',
-      zIndex = 1,
       barHeight = 100
     } = this.props
     const childrenArr = toChildArray(children)
     return (
-      <Fragment>
-        {childrenArr.map((child, key) => (
-          <div
-            key={key}
-            style={{ height: `calc(100% - ${px2rem(barHeight)})` }}
-            className={`${key === index ? className.show : className.hide}`}
-          >
-            <Item show={key === index}>{child}</Item>
-          </div>
-        ))}
-        <RowView
-          hAlign='between'
-          padding={padding}
-          className={className.fixBottom}
-          style={{ boxShadow: '0px -5px 5px -5px rgba(0,0,0,.1)', zIndex }}
-          bgColor={bgColor}
-          height={barHeight}
-        >
-          {options.map((item, i) => (
-            <SlotColumnView
-              slot={slot}
-              hAlign='center'
-              // eslint-disable-next-line
-              onClick={this.onSwitch.bind(this, i)}
-              key={item.text}
+      <Page>
+        <Page.Content>
+          {childrenArr.map((child, key) => (
+            <div
+              key={key}
+              className={`${key === index ? classNames.show : classNames.hide}`}
             >
-              <Icon
-                name={item.icon}
-                size={iconSize}
-                color={index === i ? activeColor : color}
-              />
-              <Text size={textSize} color={index === i ? activeColor : color}>
-                {item.text}
-              </Text>
-            </SlotColumnView>
+              <Item show={key === index}>{child}</Item>
+            </div>
           ))}
-        </RowView>
-      </Fragment>
+        </Page.Content>
+        <Page.Footer>
+          <RowView
+            hAlign='between'
+            padding={padding}
+            bgColor={bgColor}
+            height={barHeight}
+          >
+            {options.map((item, i) => (
+              <SlotColumnView
+                slot={slot}
+                hAlign='center'
+                onClick={() => this.onSwitch(i)}
+                key={item.text}
+              >
+                <Icon
+                  name={item.icon}
+                  size={iconSize}
+                  color={index === i ? activeColor : color}
+                />
+                <Text size={textSize} color={index === i ? activeColor : color}>
+                  {item.text}
+                </Text>
+              </SlotColumnView>
+            ))}
+          </RowView>
+        </Page.Footer>
+      </Page>
     )
   }
 }
