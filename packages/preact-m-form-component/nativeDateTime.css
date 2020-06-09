@@ -1,0 +1,16 @@
+.datetimeInput {
+  -webkit-appearance: none;
+  background-color: #fff;
+  justify-content: flex-end;
+}
+
+.datetimeInput:after {
+  color: #ccc;
+  content: attr(placeholder);
+}
+.datetimeInput::-webkit-date-and-time-value,
+.datetimeInput::-webkit--time-value {
+  margin-right: 0;
+  font-size: 0.4rem;
+  color: #666;
+}
