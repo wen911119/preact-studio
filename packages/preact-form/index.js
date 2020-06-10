@@ -18,7 +18,6 @@ const withFormContext = Component => props => (
 
 @withFormContext
 export class FormField extends Component {
-
   update = value => {
     const { field, update } = this.props
     update(field, value, [field])
@@ -32,33 +31,21 @@ export class FormField extends Component {
     const self = this
     const { validate = [], subscribeValidate } = self.props
     if (validate.length > 0) {
-      this.subscribeId = subscribeValidate(
-        () =>
-          new Promise(async (resolve, reject) => {
-            const {
-              validate,
-              label,
-              field,
-              parentData,
-              getFormData
-            } = self.props
-            let err
-            for (let rule of validate) {
-              err = await rule(parentData[field], getFormData)
-              if (err) {
-                break
-              }
-            }
-            if (err) {
-              this.setState({ err })
-              const errMsg = label + err + ''
-              resolve(errMsg)
-            }
-            else {
-              resolve()
-            }
-          })
-      )
+      this.subscribeId = subscribeValidate(async () => {
+        const { validate, label, field, parentData, getFormData } = self.props
+        let err
+        for (const rule of validate) {
+          err = await rule(parentData[field], getFormData)
+          if (err) {
+            break
+          }
+        }
+        if (err) {
+          this.setState({ err })
+          const errMsg = label + err + ''
+          return errMsg
+        }
+      })
     }
   }
 
@@ -74,11 +61,11 @@ export class FormField extends Component {
 
   getLinkData = () => {
     const { link, getFormData } = this.props
-    let linkData = {}
+    const linkData = {}
     if (link) {
       const formData = getFormData()
-      for (let key in link) {
-        if (link.hasOwnProperty(key)) {
+      for (const key in link) {
+        if (Object.prototype.hasOwnProperty.call(link, key)) {
           linkData[key] = safeGet(formData, link[key])
         }
       }
@@ -86,7 +73,7 @@ export class FormField extends Component {
     return linkData
   }
 
-  constructor (props){
+  constructor(props) {
     super(props)
     this.subscribeId = undefined
     this.state = {
@@ -94,11 +81,17 @@ export class FormField extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.subscribeValidate()
+    const { defaultValue } = this.props
+    if (defaultValue !== undefined) {
+      setTimeout(() => {
+        this.update(defaultValue)
+      }, 0)
+    }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate =
       this.props.parentData[this.props.field] !==
         nextProps.parentData[nextProps.field] ||
@@ -107,8 +100,8 @@ export class FormField extends Component {
       this.state.err !== nextState.err
 
     if (!shouldUpdate && nextProps.link) {
-      for (let key in nextProps.link) {
-        if (nextProps.link.hasOwnProperty(key)) {
+      for (const key in nextProps.link) {
+        if (Object.prototype.hasOwnProperty.call(nextProps.link, key)) {
           if (
             nextProps.link[key] === nextProps.lastUpdate ||
             nextProps.lastUpdate === 'all'
@@ -122,11 +115,11 @@ export class FormField extends Component {
     return shouldUpdate
   }
 
-  componentWillUnmount (){
+  componentWillUnmount() {
     this.unsubscribeValidate()
   }
 
-  render () {
+  render() {
     const { children, label, field, parentData } = this.props
     const linkData = this.getLinkData()
     return cloneElement(children, {
@@ -151,12 +144,15 @@ export class FormFragment extends Component {
       [namespace].concat(keypathsArr)
     )
   }
-  componentWillUnmount () {
+
+  componentWillUnmount() {
     const { cleanWhenUnmount = true, namespace, update } = this.props
     // 默认 被卸载的时候清除字段
-    cleanWhenUnmount && setTimeout(() => update(namespace, undefined, namespace), 0)
+    cleanWhenUnmount &&
+      setTimeout(() => update(namespace, undefined, namespace), 0)
   }
-  render () {
+
+  render() {
     const {
       children,
       namespace,
@@ -185,8 +181,7 @@ export class FormFragment extends Component {
 
 @withFormContext
 export class FormCondition extends Component {
-  
-  render () {
+  render() {
     const {
       children,
       parentData,
@@ -210,10 +205,11 @@ export class FormCondition extends Component {
       >
         {children}
       </FormContext.Provider>
-    ): undefined
+    ) : (
+      undefined
+    )
   }
 }
-
 
 export default class Form extends Component {
   static Fragment = FormFragment
@@ -225,14 +221,14 @@ export default class Form extends Component {
       lastUpdate: 'all'
     })
   }
+
   validate = (successCallback, failCallback) => {
     Promise.all(this.validateListeners.map(func => func()))
       .then(results => {
         if (results.some(result => result)) {
           // 有校验失败的
           failCallback && failCallback(results.filter(result => result))
-        }
-        else {
+        } else {
           successCallback && successCallback(this.state.formData)
         }
       })
@@ -241,24 +237,28 @@ export default class Form extends Component {
         console.log(error)
       })
   }
+
   getFormData = () => this.state.formData
   subscribeValidate = callback => {
     this.validateListeners.push(callback)
     return callback
   }
+
   unsubscribeValidate = callbackRef => {
     const index = this.validateListeners.findIndex(item => item === callbackRef)
     this.validateListeners.splice(index, 1)
   }
+
   update = (key, value, keypathsArr) => {
-    let newFormData = { ...this.state.formData }
+    const newFormData = { ...this.state.formData }
     newFormData[key] = value
     this.setState({
       formData: newFormData,
       lastUpdate: keypathsArr.join('.')
     })
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     this.changeListeners = []
     this.validateListeners = []
@@ -268,7 +268,7 @@ export default class Form extends Component {
     }
   }
 
-  render () {
+  render() {
     const { children } = this.props
     return (
       <FormContext.Provider
