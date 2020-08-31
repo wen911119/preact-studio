@@ -392,11 +392,11 @@ export class DateRangePickerContent extends Component {
   }
 
   render() {
-    const { min, max, start, end, cursor, tip } = this.state
+    const { min, max, start, end, cursor, tip, error } = this.state
     return (
       <ColumnView bgColor='#fff'>
         <Title onCancel={this.props.close} onConfirm={this.onConfirm}>
-          {tip}
+          {error || tip}
         </Title>
         <ColumnView padding={[0, 30, 30, 30]}>
           <Cursor
