@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-form-component",
-  "version": "1.10.17",
+  "version": "1.10.18",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -19,7 +19,7 @@
     "@ruiyun/preact-layout-suite": "^1.2.77",
     "@ruiyun/preact-line": "^1.2.39",
     "@ruiyun/preact-m-actionsheet": "^1.9.1",
-    "@ruiyun/preact-m-date-range-picker": "^1.10.17",
+    "@ruiyun/preact-m-date-range-picker": "^1.10.18",
     "@ruiyun/preact-m-picker": "^1.10.12",
     "@ruiyun/preact-m-tree-picker": "^1.10.12",
     "@ruiyun/preact-number-input": "^1.8.15",
