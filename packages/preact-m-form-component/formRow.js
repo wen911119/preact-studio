@@ -29,7 +29,7 @@ const FormRow = ({
 }) => {
   if (direction === 'h') {
     return (
-      <SlotRowView padding={padding} bgColor={bgColor} slot={slot}>
+      <SlotRowView padding={padding} bgColor={bgColor} slot={slot} className={className.flex1}>
         <Text
           size={labelSize}
           color={labelColor}
@@ -73,7 +73,7 @@ const FormRow = ({
     )
   }
   return (
-    <SlotColumnView padding={padding} bgColor={bgColor} slot={slot}>
+    <SlotColumnView padding={padding} bgColor={bgColor} slot={slot} className={className.flex1}>
       <RowView hAlign='between'>
         <SlotRowView slot={slot}>
           <Text
