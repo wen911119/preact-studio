@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-tree-picker",
-  "version": "1.10.12",
+  "version": "1.10.20",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -16,10 +16,10 @@
     "@ruiyun/preact-layout-suite": "^1.2.77",
     "@ruiyun/preact-line": "^1.2.39",
     "@ruiyun/preact-loading": "^1.2.20",
-    "@ruiyun/preact-m-scroller": "^1.10.12",
-    "@ruiyun/preact-m-tabs": "^1.9.5",
+    "@ruiyun/preact-m-scroller": "^1.10.20",
+    "@ruiyun/preact-m-tabs": "^1.10.20",
     "@ruiyun/preact-modal": "^1.6.3",
-    "@ruiyun/preact-text": "^1.9.1",
+    "@ruiyun/preact-text": "^1.10.20",
     "p-to-r": "^1.0.4"
   },
   "peerDependencies": {

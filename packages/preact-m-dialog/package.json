@@ -1,6 +1,6 @@
 {
   "name": "@ruiyun/preact-m-dialog",
-  "version": "1.9.1",
+  "version": "1.10.20",
   "description": "",
   "author": "wen911119@gmail.com",
   "license": "ISC",
@@ -17,7 +17,7 @@
     "@ruiyun/preact-layout-suite": "^1.2.77",
     "@ruiyun/preact-line": "^1.2.39",
     "@ruiyun/preact-modal": "^1.6.3",
-    "@ruiyun/preact-text": "^1.9.1",
+    "@ruiyun/preact-text": "^1.10.20",
     "@ruiyun/preact-textarea": "^1.8.12"
   },
   "compileDependencies": [
