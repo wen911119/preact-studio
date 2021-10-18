@@ -4,7 +4,7 @@ import px2rem from 'p-to-r'
 const Text = ({
   children,
   size = 30,
-  color = '#333',
+  color = '#333333',
   weight = 'initial',
   style,
   lineHeight = 'normal',
