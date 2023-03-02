@@ -250,11 +250,13 @@ export default class Form extends Component {
   }
 
   update = (key, value, keypathsArr) => {
-    const newFormData = { ...this.state.formData }
-    newFormData[key] = value
-    this.setState({
-      formData: newFormData,
-      lastUpdate: keypathsArr.join('.')
+    this.setState(prevState => {
+      const newFormData = { ...prevState.formData }
+      newFormData[key] = value
+      return {
+        formData: newFormData,
+        lastUpdate: keypathsArr.join('.')
+      }
     })
   }
 
